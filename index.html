@@ -128,7 +128,17 @@
     color: var(--panel);
   }
 
-  /* --- PROTEZIONE LIVELLO A: ADMIN VIA CSS --- */
+  .btn-ai {
+    background: linear-gradient(135deg, #00296e, #0064a8);
+    border-color: #00296e;
+    color: #ffffff;
+  }
+  .btn-ai:hover {
+    background: linear-gradient(135deg, #0a1f44, #00296e);
+    color: #ffffff;
+  }
+
+  /* --- PROTEZIONE ADMIN (VISIBILE SOLO IN ADMIN-MODE) --- */
   .admin-only {
     display: none !important;
   }
@@ -229,6 +239,7 @@
     margin-bottom: 26px;
     position: relative;
     scroll-margin-top: 20px;
+    transition: border-color 0.3s ease;
   }
 
   .card::before{
@@ -466,7 +477,177 @@
     display:none;
   }
 
-  /* --- STAMPA PDF VETTORIALE --- */
+  /* --- MODALI AI --- */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 31, 68, 0.6);
+    backdrop-filter: blur(3px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+  .modal-overlay.open {
+    display: flex;
+  }
+  .modal-box {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 30px rgba(10,31,68,0.25);
+    max-width: 650px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    position: relative;
+  }
+  .modal-box::before {
+    content: "";
+    position: absolute;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    border: 1px solid rgba(0,41,110,0.15);
+    pointer-events: none;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .modal-close {
+    background: transparent;
+    border: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .modal-body {
+    overflow-y: auto;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    padding-right: 6px;
+  }
+  .chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .chat-msg {
+    padding: 12px 16px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    max-width: 88%;
+  }
+  .chat-msg.user {
+    align-self: flex-end;
+    background: var(--accent2);
+    color: #ffffff;
+  }
+  .chat-msg.ai {
+    align-self: flex-start;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .quick-prompts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .quick-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .quick-btn:hover {
+    border-color: var(--accent);
+  }
+  .chat-input-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .chat-input-row input {
+    flex: 1;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    outline: none;
+  }
+  .chat-input-row input:focus {
+    border-color: var(--accent);
+  }
+  .ai-link {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px 0;
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13.5px;
+    text-decoration: underline;
+  }
+
+  /* --- FOOTER E LUCCHETTO SEGRETO --- */
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #5a6684;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .secret-lock {
+    cursor: pointer;
+    opacity: 0.2;
+    font-size: 12px;
+    user-select: none;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+  }
+  .secret-lock:hover {
+    opacity: 0.85;
+    transform: scale(1.15);
+  }
+  body.admin-mode .secret-lock {
+    opacity: 1;
+    filter: drop-shadow(0 0 2px var(--accent));
+  }
+
+  /* --- STAMPA PDF --- */
   @page {
     size: A4 portrait;
     margin: 15mm 15mm;
@@ -474,7 +655,7 @@
 
   @media print {
     body { padding: 0 !important; background: var(--panel) !important; color: var(--ink) !important; }
-    .tools-bar, .search-wrap, .form-panel, .card-actions-edit, footer, .no-results { display: none !important; }
+    .tools-bar, .search-wrap, .form-panel, .card-actions-edit, footer, .no-results, .modal-overlay { display: none !important; }
     .menu { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
     header { margin-bottom: 30px !important; }
     .card { page-break-inside: avoid !important; break-inside: avoid !important; border: 1px solid var(--line) !important; box-shadow: none !important; margin-bottom: 24px !important; padding: 28px 32px !important; background: var(--panel) !important; display: block !important; }
@@ -482,16 +663,6 @@
     .ingredients .amt { color: var(--accent) !important; }
     .method .label, .garnish .label { color: var(--gold) !important; }
     .divider { background: var(--accent) !important; }
-  }
-
-  footer{
-    text-align:center;
-    margin-top: 50px;
-    font-family:'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #5a6684;
   }
 
   @media (max-width: 640px){
@@ -526,10 +697,12 @@
     <div class="divider"></div>
   </header>
 
-  <!-- Barra Strumenti con Blocco Admin -->
+  <!-- Barra Strumenti -->
   <div class="tools-bar">
     <button type="button" class="btn btn-pdf" onclick="window.print()">📄 Stampa PDF</button>
-    <button type="button" class="btn" id="adminToggleBtn" onclick="toggleAdminMode()">🔒 Area Riservata</button>
+    <button type="button" class="btn btn-ai admin-only" onclick="openBarmanAi()">🤖 Barman AI</button>
+    <button type="button" class="btn btn-ai admin-only" onclick="openLabAi()">✨ Inventa Ricetta AI</button>
+    <button type="button" class="btn admin-only" onclick="openApiKeyModal()">⚙️ API Key</button>
     <button type="button" class="btn btn-primary admin-only" onclick="toggleForm()">➕ Aggiungi Ricetta</button>
     <button type="button" class="btn admin-only" onclick="exportHtmlFile()">📥 Esporta HTML</button>
     <button type="button" class="btn admin-only" onclick="exportBackupJson()">📤 Backup Dati</button>
@@ -582,7 +755,7 @@
     <div class="no-results" id="noResults">Nessun cocktail trovato.</div>
   </div>
 
-  <!-- Maschera Aggiunta / Modifica (Riservata ad Admin) -->
+  <!-- Maschera Aggiunta / Modifica -->
   <div id="formPanel" class="form-panel admin-only" style="display: none;">
     <div class="form-title" id="formTitle">Nuova Ricetta</div>
     <form id="cocktailForm" onsubmit="saveCocktail(event)">
@@ -652,14 +825,86 @@
 
   <div id="cocktailsContainer"></div>
 
-  <footer id="footerCount">Carta creata su misura — Gradisca 1973</footer>
+  <!-- Footer con icona lucchetto discreta per accedere alla modalità Admin -->
+  <footer>
+    <span id="footerCount">Carta creata su misura</span>
+    <span>—</span>
+    <span>Gradisca 1973</span>
+    <span id="secretLockIcon" class="secret-lock" onclick="toggleAdminMode()" title="Accesso Riservato">🔒</span>
+  </footer>
+</div>
+
+<!-- MODALE: BARMAN AI -->
+<div class="modal-overlay" id="barmanAiModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">🤖 Barman AI — Consulente di Sala</div>
+      <button class="modal-close" onclick="closeModal('barmanAiModal')">✕</button>
+    </div>
+    <div class="quick-prompts">
+      <button class="quick-btn" onclick="sendQuickPrompt('Consigliami un aperitivo fresco e amaricante ma leggero')">Aperitivo Leggero</button>
+      <button class="quick-btn" onclick="sendQuickPrompt('Un cliente vuole qualcosa di dolce, tropicale e fruttato')">Dolce & Fruttato</button>
+      <button class="quick-btn" onclick="sendQuickPrompt('Cosa abbiamo di analcolico ma non stucchevole?')">Analcolico Fresco</button>
+      <button class="quick-btn" onclick="sendQuickPrompt('Un cocktail robusto con whisky o bourbon dopocena')">Dopocena Whisky</button>
+    </div>
+    <div class="modal-body">
+      <div class="chat-messages" id="barmanChat">
+        <div class="chat-msg ai">Ciao! Sono il Barman AI di Gradisca 1973. Dimmi cosa cerca il cliente (gusti, alcolicità, momento della serata) e ti suggerirò i drink ideali dal nostro menù con link diretto alla scheda!</div>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="barmanInput" placeholder="Chiedi un consiglio o descrivi cosa cerca il cliente..." onkeydown="if(event.key==='Enter') sendBarmanMsg()">
+      <button class="btn btn-primary" onclick="sendBarmanMsg()">Invia</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALE: INVENTA RICETTA AI -->
+<div class="modal-overlay" id="labAiModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">✨ Lab Miscelazione — Inventa Ricetta AI</div>
+      <button class="modal-close" onclick="closeModal('labAiModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 14.5px; color:#33456b; margin-bottom:14px;">Descrivi gli ingredienti che vuoi valorizzare o lo stile del cocktail. L'AI formulerà una ricetta bilanciata e la caricherà direttamente nella scheda di modifica!</p>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>Ispirazione / Ingredienti Disponibili</label>
+        <textarea id="labPromptInput" placeholder="Es. Un twist sul Negroni con note di bergamotto e rosmarino, oppure un drink estivo con Tequila, zenzero e basilico..." style="min-height: 80px;"></textarea>
+      </div>
+      <div id="labStatus" style="font-size: 13.5px; color: var(--accent); font-style:italic; margin-bottom: 10px; display:none;">Elaborazione ricetta in corso...</div>
+      <button class="btn btn-primary" style="width: 100%; justify-content:center;" onclick="generateAiRecipe()">Crea e Carica nel Modulo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALE: GESTIONE API KEY -->
+<div class="modal-overlay" id="apiKeyModal">
+  <div class="modal-box" style="max-width: 480px;">
+    <div class="modal-header">
+      <div class="modal-title">⚙️ Chiave API Google Gemini</div>
+      <button class="modal-close" onclick="closeModal('apiKeyModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 14px; color:#33456b; margin-bottom:14px;">Se non vuoi incollarla nel codice HTML come predefinita, puoi inserirla qui per salvarla nel browser.</p>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label>Gemini API Key</label>
+        <input type="password" id="apiKeyInput" placeholder="AIzaSy...">
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button class="btn" onclick="saveApiKey()">Salva Chiave</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-  // PIN per l'accesso responsabile
+  // SE VUOI CHE TUTTI I DISPOSITIVI ABBIANO L'AI ATTIVA SENZA DIGITARE NULLA,
+  // INCOLLA LA TUA CHIAVE DI GOOGLE AI STUDIO QUI TRA LE VIRGOLETTE:
+  const DEFAULT_API_KEY = ""; 
+
   const ADMIN_PIN = "1973";
 
-  // Database completo con categorizzazione pulita e senza sovrapposizioni errate
   const initialCocktails = [
     { id: "allafrutta", name: "Alla Frutta", base: "analcolico", menu_status: "menu", category: "classici", desc: "Analcolico. Un mix libero di succhi freschi e sciroppi a piacere: fruttato, fresco e sempre dissetante, da comporre secondo la stagione.", ingredients: [{name: "Mix di succhi freschi e sciroppi", qty: "q.b."}], preparation: "Componi a piacere con frutta fresca e servi con ghiaccio.", garnish: "Spicchio d'agrume", taste: "Fruttato, fresco, dissetante", glass: "Highball / Calice" },
     { id: "americano", name: "Americano", base: "campari vermut", menu_status: "menu", category: "aperitivo classici", desc: "Ricetta IBA. Campari e vermouth rosso allungati da soda: l'aperitivo italiano per eccellenza, amaricante e dissetante.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Campari", qty:"30 ml"}, {name:"Vermouth rosso", qty:"30 ml"}], preparation: "Versa Campari e vermouth su ghiaccio in rocks glass, completa con soda, mescola.", garnish: "Fetta d'arancia", taste: "Amaricante, aromatico, dissetante", glass: "Rocks Glass" },
@@ -725,7 +970,7 @@
     { id: "mojitomarquez", name: "Mojito Marquez", base: "cachaca rum", menu_status: "menu", category: "mojito", desc: "Twist sul classico mojito con Cachaça e Passion Fruit.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Cachaça", qty:"50 ml"}, {name:"Passion Fruit", qty:"20 ml"}, {name:"Succo di lime", qty:"20 ml"}, {name:"Sciroppo di zucchero", qty:"20 ml"}, {name:"Foglie di menta", qty:"8-10"}, {name:"Tabasco", qty:"1-2 gocce"}], preparation: "Pesta lime, zucchero, menta e passion fruit, aggiungi cachaça, tabasco e soda.", garnish: "Menta", taste: "Tropicale, piccante", glass: "Highball" },
     { id: "monkeygland", name: "Monkey Gland", base: "gin", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Gin e arancia con un tocco di assenzio e granatina: fruttato, con una nota anisata e speziata sul finale.", ingredients: [{name:"Gin", qty:"45 ml"}, {name:"Succo d'arancia", qty:"25 ml"}, {name:"Assenzio", qty:"2 dash"}, {name:"Granatina", qty:"2 dash"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Fruttato, speziato, anisato", glass: "Coppetta Cocktail" },
     { id: "moscowmule", name: "Moscow Mule", base: "vodka", menu_status: "menu", category: "classici", desc: "Ricetta IBA. Vodka, lime e ginger beer, servito nella tipica coppa di rame: piccante, agrumato e sempre dissetante.", ingredients: [{name:"Ginger beer", qty:"120 ml"}, {name:"Vodka", qty:"45 ml"}, {name:"Succo di lime", qty:"10 ml"}], preparation: "Versa vodka e ginger beer nella mule cup con ghiaccio, aggiungi il lime e mescola delicatamente.", garnish: "Fetta di lime", taste: "Piccante, agrumato, dissetante", glass: "Mule Cup / Rocks Glass" },
-    { id: "moscowmuleanalcolico", name: "Moscow Mule Analcolico", base: "analcolico", menu_status: "menu", category: "classici", desc: "Analcolico. Pompelmo e lime allungati da Ginger Beer: agrumato, pungente e fresco, la stessa spina dorsale del classico senza alcol.", ingredients: [{name:"Ginger Beer", qty:"a colmare"}, {name:"Succo di pompelmo", qty:"45 ml"}, {name:"Succo di lime", qty:"15 ml"}], preparation: "Versa succo di pompelmo e lime su ghiaccio, completa con Ginger Beer.", garnish: "Spicchio di pompelmo", taste: "Agrumato, pungente, fresco", glass: "Tazza di Rame" },
+    { id: "moscowmuleanalcolico", name: "Moscow Mule Analcolico", base: "analcolico", menu_status: "menu", category: "classici", desc: "Analcolico. Pompelmo e lime allungati da Ginger Beer: agrumato, pungente e fresco.", ingredients: [{name:"Ginger Beer", qty:"a colmare"}, {name:"Succo di pompelmo", qty:"45 ml"}, {name:"Succo di lime", qty:"15 ml"}], preparation: "Versa succo di pompelmo e lime su ghiaccio, completa con Ginger Beer.", garnish: "Spicchio di pompelmo", taste: "Agrumato, pungente, fresco", glass: "Tazza di Rame" },
     { id: "negroni", name: "Negroni", base: "gin campari vermut", menu_status: "menu", category: "classici negroni aperitivo", desc: "Il re dell'aperitivo italiano: perfetta armonia in parti uguali tra la balsamicità del gin, il dolce erbaceo del vermut e l'amaro deciso del bitter.", ingredients: [{name:"Gin Bombay Sapphire", qty:"30 ml"}, {name:"Martini Rosso", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
     { id: "negroniallajuri", name: "Alla Juri", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Twist su Negroni arricchito dalla profondità speziata e complessa dell'Angostura Bitters.", ingredients: [{name:"Gin Bombay Sapphire", qty:"30 ml"}, {name:"Martini Rubino", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}, {name:"Angostura", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
     { id: "negronibalsamico", name: "Balsamico", base: "vodka campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Incontro intrigante tra le note agrodolci del vermut all'aceto balsamico e il cacao.", ingredients: [{name:"Vodka B42", qty:"30 ml"}, {name:"Vermut Aceto Balsamico", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}, {name:"Cacao Bitters", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
@@ -775,7 +1020,7 @@
     { id: "whiterussian", name: "White Russian", base: "vodka", menu_status: "menu", category: "classici caffeina", desc: "La versione ammorbidita del Black Russian: panna versata a strato addolcisce vodka e caffè in un sorso cremoso e avvolgente.", ingredients: [{name:"Vodka", qty:"50 ml"}, {name:"Liquore al caffè (Kahlúa)", qty:"20 ml"}, {name:"Panna liquida", qty:"20 ml"}], preparation: "Versa vodka e Kahlúa su ghiaccio, completa con panna versata delicatamente a strato sul dorso di un cucchiaio.", garnish: "Twist di limone", taste: "Cremoso, dolce, intenso", glass: "Rocks Glass" }
   ];
 
-  let cocktails = JSON.parse(localStorage.getItem('gradisca_db_v5')) || initialCocktails;
+  let cocktails = JSON.parse(localStorage.getItem('gradisca_db_v7')) || initialCocktails;
   
   const searchInput = document.getElementById('searchInput');
   const noResults = document.getElementById('noResults');
@@ -786,14 +1031,12 @@
   let activeCategory = '';
 
   function saveToLocalStorage() {
-    localStorage.setItem('gradisca_db_v5', JSON.stringify(cocktails));
+    localStorage.setItem('gradisca_db_v7', JSON.stringify(cocktails));
   }
 
-  // --- MOTORE DI VERIFICA (Unico per conteggio e rendering) ---
   function matchesItem(item, filters) {
     const { base, menuStatus, category, query } = filters;
     
-    // Filtro Base
     if (base) {
       const b = (item.base || '').toLowerCase();
       if (base === 'vodka' && !b.includes('vodka')) return false;
@@ -806,13 +1049,11 @@
       if (base === 'analcolico' && !(b.includes('analcolico') || b.includes('zero') || b.includes('caffè'))) return false;
     }
     
-    // Filtro Menù / Fuori Menù
     if (menuStatus) {
       const s = (item.menu_status || 'menu').toLowerCase();
       if (s !== menuStatus) return false;
     }
     
-    // Filtro Categoria Gradisca
     if (category) {
       const c = ((item.category || '') + ' ' + (item.tags || '') + ' ' + (item.special || '')).toLowerCase();
       if (category === 'nostri' && !(c.includes('nostri') || c.includes('i-nostri'))) return false;
@@ -825,7 +1066,6 @@
       if (category === 'caffeina' && !c.includes('caffeina')) return false;
     }
     
-    // Ricerca testuale
     if (query) {
       const q = query.toLowerCase().trim();
       const name = (item.name || '').toLowerCase();
@@ -846,11 +1086,9 @@
     return true;
   }
 
-  // --- CALCOLO ESATTO E MATEMATICO DEI CONTATORI ---
   function updateFilterCounts() {
     const q = searchInput.value.trim();
 
-    // 1. Contatori Basi
     const bases = [
       { id: 'chip-base-all', key: '', label: 'Tutte le basi' },
       { id: 'chip-base-vodka', key: 'vodka', label: 'Vodka' },
@@ -873,7 +1111,6 @@
       if (el) el.innerHTML = `${b.label} <span class="count" style="opacity:0.6; font-size:0.9em;">(${count})</span>`;
     });
 
-    // 2. Contatori Menù / Fuori Menù
     const menus = [
       { id: 'chip-menu-all', key: '', label: 'Tutti' },
       { id: 'chip-menu-in', key: 'menu', label: 'Menù' },
@@ -890,7 +1127,6 @@
       if (el) el.innerHTML = `${m.label} <span class="count" style="opacity:0.6; font-size:0.9em;">(${count})</span>`;
     });
 
-    // 3. Contatori Categorie
     const cats = [
       { id: 'chip-cat-all', key: '', label: 'Tutte le categorie' },
       { id: 'chip-cat-nostri', key: 'nostri', label: '⭐ I Nostri' },
@@ -914,7 +1150,6 @@
     });
   }
 
-  // Costruisce la scheda HTML del singolo cocktail
   function createCardHTML(item) {
     let ingHtml = item.ingredients ? item.ingredients.map(ing => `<li><span>${escapeHtml(ing.name)}</span> <span class="amt">${escapeHtml(ing.qty)}</span></li>`).join('') : '';
 
@@ -961,13 +1196,11 @@
     `;
   }
 
-  // --- RENDERIZZAZIONE ---
   function renderCocktails() {
     container.innerHTML = '';
     let visibleCount = 0;
     const q = searchInput.value.trim();
 
-    // Ordinamento alfabetico
     const sorted = [...cocktails].sort((a,b) => (a.name || '').localeCompare(b.name || ''));
 
     sorted.forEach(item => {
@@ -994,7 +1227,6 @@
     updateFilterCounts();
   }
 
-  // --- AZIONI SUI BOTTONI FILTRO ---
   function setBaseFilter(val){
     activeBase = val;
     document.querySelectorAll('#baseFilters .filter-chip').forEach(c => c.classList.toggle('active', c.getAttribute('data-filter-value') === val));
@@ -1025,51 +1257,45 @@
     chip.addEventListener('click', () => setCategoryFilter(chip.getAttribute('data-filter-value')));
   });
 
-  // --- GESTIONE MODALITÀ ADMIN CON PIN ---
+  // --- GESTIONE ADMIN (LUCCHETTO DISCRETO) ---
   function toggleAdminMode() {
     if (document.body.classList.contains('admin-mode')) {
       document.body.classList.remove('admin-mode');
       sessionStorage.removeItem('gradisca_admin');
-      updateAdminBtn();
+      updateAdminState();
       document.getElementById('formPanel').style.display = 'none';
       return;
     }
-    const pin = prompt("Inserisci il PIN responsabile per sbloccare le modifiche:");
+    const pin = prompt("Inserisci il PIN per sbloccare le funzioni riservate:");
     if (pin === ADMIN_PIN) {
       document.body.classList.add('admin-mode');
       sessionStorage.setItem('gradisca_admin', 'true');
-      updateAdminBtn();
+      updateAdminState();
     } else if (pin !== null) {
       alert("PIN errato.");
     }
   }
 
-  function updateAdminBtn() {
-    const btn = document.getElementById('adminToggleBtn');
-    if (!btn) return;
+  function updateAdminState() {
+    const lockIcon = document.getElementById('secretLockIcon');
+    if (!lockIcon) return;
     if (document.body.classList.contains('admin-mode')) {
-      btn.innerHTML = '🔓 Esci Admin';
-      btn.style.borderColor = 'var(--accent)';
-      btn.style.color = 'var(--accent)';
+      lockIcon.innerHTML = '🔓';
+      lockIcon.title = 'Modalità Admin attiva (Clicca per uscire)';
     } else {
-      btn.innerHTML = '🔒 Area Riservata';
-      btn.style.borderColor = 'var(--line)';
-      btn.style.color = 'var(--ink)';
+      lockIcon.innerHTML = '🔒';
+      lockIcon.title = 'Accesso Riservato';
     }
   }
 
-  // Controllo sessione admin all'avvio
   if (sessionStorage.getItem('gradisca_admin') === 'true') {
     document.body.classList.add('admin-mode');
   }
-  updateAdminBtn();
+  updateAdminState();
 
-  // --- GESTIONE FORM AGGIUNTA / MODIFICA ---
+  // --- MODULO AGGIUNTA / MODIFICA ---
   function toggleForm() {
-    if (!document.body.classList.contains('admin-mode')) {
-      alert("Funzione riservata. Accedi prima come Admin.");
-      return;
-    }
+    if (!document.body.classList.contains('admin-mode')) return;
     const p = document.getElementById('formPanel');
     p.style.display = p.style.display === 'none' ? 'block' : 'none';
     if (p.style.display === 'block') document.getElementById('nameInput').focus();
@@ -1237,6 +1463,192 @@
   function escapeHtml(t) {
     if (!t) return '';
     return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // --- GEMINI AI & MODALI ---
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+
+  function openApiKeyModal() {
+    if (!document.body.classList.contains('admin-mode')) return;
+    const key = localStorage.getItem('gradisca_gemini_api_key') || DEFAULT_API_KEY;
+    document.getElementById('apiKeyInput').value = key;
+    openModal('apiKeyModal');
+  }
+
+  function saveApiKey() {
+    const key = document.getElementById('apiKeyInput').value.trim();
+    if (key) {
+      localStorage.setItem('gradisca_gemini_api_key', key);
+      closeModal('apiKeyModal');
+      alert("Chiave API salvata con successo!");
+    } else {
+      localStorage.removeItem('gradisca_gemini_api_key');
+      closeModal('apiKeyModal');
+      alert("Chiave rimossa.");
+    }
+  }
+
+  function getApiKey() {
+    return localStorage.getItem('gradisca_gemini_api_key') || DEFAULT_API_KEY;
+  }
+
+  function openBarmanAi() {
+    openModal('barmanAiModal');
+    document.getElementById('barmanInput').focus();
+  }
+
+  function openLabAi() {
+    if (!document.body.classList.contains('admin-mode')) return;
+    openModal('labAiModal');
+    document.getElementById('labPromptInput').focus();
+  }
+
+  function sendQuickPrompt(txt) {
+    document.getElementById('barmanInput').value = txt;
+    sendBarmanMsg();
+  }
+
+  async function sendBarmanMsg() {
+    const inp = document.getElementById('barmanInput');
+    const q = inp.value.trim();
+    if (!q) return;
+
+    const chat = document.getElementById('barmanChat');
+    chat.innerHTML += `<div class="chat-msg user">${escapeHtml(q)}</div>`;
+    inp.value = '';
+    chat.scrollTop = chat.scrollHeight;
+
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      setTimeout(() => {
+        chat.innerHTML += `<div class="chat-msg ai">Configura una chiave Google Gemini per abilitare il Barman AI.</div>`;
+        chat.scrollTop = chat.scrollHeight;
+      }, 300);
+      return;
+    }
+
+    const aiMsgEl = document.createElement('div');
+    aiMsgEl.className = 'chat-msg ai';
+    aiMsgEl.innerText = 'Sto consultando il ricettario di Gradisca...';
+    chat.appendChild(aiMsgEl);
+    chat.scrollTop = chat.scrollHeight;
+
+    const catalogContext = cocktails.map(c => `[${c.id}] ${c.name} | Base: ${c.base} | Categorie: ${c.category} | Gusto: ${c.taste} | Ingredienti: ${(c.ingredients||[]).map(i=>i.name).join(', ')}`).join('\n');
+
+    const systemPrompt = `Sei il Barman AI del cocktail bar "Gradisca 1973" a Prato. Aiuta il team e i clienti consigliando drink dal catalogo ufficiale del bar.
+Se citi uno o più cocktail presenti nel catalogo, racchiudili rigorosamente tra doppie parentesi quadre con il loro esatto ID e Nome nel formato: [[id|Nome Cocktail]].
+Esempio: "Ti consiglio il [[negronitoscano|Toscano]] oppure un fresco [[annaemarco|Anna e Marco]]."
+Rispondi in modo professionale, caldo, competente e sintetico.
+
+Ecco il catalogo completo di Gradisca 1973:
+${catalogContext}`;
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            { role: 'user', parts: [{ text: `${systemPrompt}\n\nRichiesta: ${q}` }] }
+          ]
+        })
+      });
+
+      const data = await response.json();
+      if (data.candidates && data.candidates[0].content.parts[0].text) {
+        let text = data.candidates[0].content.parts[0].text;
+        text = text.replace(/\[\[(.*?)\Vert{}(.*?)\]\]/g, (m, id, name) => {
+          return `<span class="ai-link" onclick="closeModal('barmanAiModal'); scrollToCard('${id}')">${name}</span>`;
+        });
+        aiMsgEl.innerHTML = text.replace(/\n/g, '<br>');
+      } else {
+        aiMsgEl.innerText = "Non sono riuscito a elaborare una risposta. Controlla la tua chiave API.";
+      }
+    } catch (err) {
+      console.error(err);
+      aiMsgEl.innerText = "Errore di connessione a Gemini AI. Verifica la chiave o la connessione.";
+    }
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  async function generateAiRecipe() {
+    const promptText = document.getElementById('labPromptInput').value.trim();
+    if (!promptText) return;
+
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      alert("Nessuna chiave API trovata.");
+      return;
+    }
+
+    const statusEl = document.getElementById('labStatus');
+    statusEl.style.display = 'block';
+
+    const systemPrompt = `Sei l'head bartender creativo di Gradisca 1973 a Prato. Formula una ricetta originale, bilanciata e pronta per il bancone bar.
+Rispondi RIGOROSAMENTE con un oggetto JSON valido privo di markdown backtick con questa struttura:
+{
+  "name": "Nome drink",
+  "glass": "Tipo bicchiere (es. Rocks Glass, Highball, Coppetta)",
+  "base": "basi alcoliche in minuscolo separate da spazio",
+  "category": "categorie in minuscolo (es. nostri sour aperitivo)",
+  "desc": "Breve descrizione poetica del profilo aromatico",
+  "ingredients": [
+    {"name": "Nome ingrediente", "qty": "quantità (es. 45 ml)"}
+  ],
+  "preparation": "Metodo e passaggi di preparazione",
+  "garnish": "Guarnizione",
+  "taste": "Gusto sintetico (es. Amaricante, citrico, balsamico)"
+}`;
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            { role: 'user', parts: [{ text: `${systemPrompt}\n\nIdea/Richiesta: ${promptText}` }] }
+          ]
+        })
+      });
+
+      const data = await response.json();
+      let rawText = data.candidates[0].content.parts[0].text;
+      rawText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+
+      const recipe = JSON.parse(rawText);
+
+      document.getElementById('editingId').value = '';
+      document.getElementById('nameInput').value = recipe.name || '';
+      document.getElementById('glassInput').value = recipe.glass || '';
+      document.getElementById('baseInput').value = recipe.base || '';
+      document.getElementById('menuStatusInput').value = 'menu';
+      document.getElementById('categoryInput').value = recipe.category || 'nostri';
+      document.getElementById('descInput').value = recipe.desc || '';
+      document.getElementById('prepInput').value = recipe.preparation || '';
+      document.getElementById('garnishInput').value = recipe.garnish || '';
+      document.getElementById('tasteInput').value = recipe.taste || '';
+
+      if (recipe.ingredients) {
+        document.getElementById('ingredientsInput').value = recipe.ingredients.map(i => `${i.name} - ${i.qty}`).join('\n');
+      }
+
+      closeModal('labAiModal');
+      statusEl.style.display = 'none';
+
+      document.getElementById('formTitle').innerText = 'Nuova Ricetta (Creata da Lab AI)';
+      document.getElementById('formPanel').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (err) {
+      console.error(err);
+      statusEl.style.display = 'none';
+      alert("Errore nella generazione della ricetta con l'AI.");
+    }
   }
 
   // Avvio iniziale
