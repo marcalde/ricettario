@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gradisca — Ricette</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap');
 
   :root{
     --ink:#0a1f44;
@@ -15,8 +15,6 @@
     --accent:#c8102e;
     --accent2:#00296e;
     --gold:#0064a8;
-    --ai-purple:#5c2d91;
-    --ai-purple-light:#ede4f7;
   }
 
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -30,6 +28,7 @@
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
+
   .menu{
     max-width: 760px;
     margin: 0 auto;
@@ -73,6 +72,7 @@
     background: var(--accent);
     margin: 26px auto 0;
   }
+
   /* --- STRUMENTI GESTIONALI --- */
   .tools-bar {
     display: flex;
@@ -96,8 +96,7 @@
     transition: all 0.15s ease;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    border-radius: 4px;
+    gap: 5px;
   }
 
   .btn:hover {
@@ -129,18 +128,19 @@
     color: var(--panel);
   }
 
-  .btn-ai {
-    background: linear-gradient(135deg, #1f104f, #00296e);
-    border-color: #3b1e7c;
-    color: #ffffff;
-    box-shadow: 0 2px 8px rgba(92,45,145,0.25);
+  /* --- PROTEZIONE LIVELLO A: ADMIN VIA CSS --- */
+  .admin-only {
+    display: none !important;
   }
 
-  .btn-ai:hover {
-    background: linear-gradient(135deg, #3b1e7c, #c8102e);
-    border-color: var(--accent);
-    color: #ffffff;
+  body.admin-mode .admin-only {
+    display: inline-flex !important;
   }
+
+  body.admin-mode div.card-actions-edit.admin-only {
+    display: flex !important;
+  }
+
   /* --- MODULO AGGIUNGI / MODIFICA --- */
   .form-panel {
     background: var(--panel);
@@ -149,7 +149,6 @@
     padding: 34px 38px;
     margin-bottom: 40px;
     position: relative;
-    border-radius: 4px;
   }
 
   .form-panel::before {
@@ -164,9 +163,6 @@
     font-size: 26px;
     font-weight: 700;
     margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 
   .form-grid {
@@ -197,13 +193,12 @@
 
   .form-group input, .form-group textarea, .form-group select {
     font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 15px;
+    font-size: 15.5px;
     border: 1px solid var(--line);
-    background: #f8fafc;
+    background: var(--paper);
     color: var(--ink);
     padding: 10px 14px;
     outline: none;
-    border-radius: 4px;
   }
 
   .form-group textarea {
@@ -215,7 +210,6 @@
 
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
     border-color: var(--accent);
-    background: #ffffff;
   }
 
   .form-actions {
@@ -226,158 +220,6 @@
     z-index: 10;
   }
 
-  /* --- AI PANELS & MODALS --- */
-  .ai-panel {
-    background: #ffffff;
-    border: 1.5px solid var(--accent2);
-    box-shadow: 0 4px 20px rgba(0,41,110,0.15);
-    padding: 28px 32px;
-    margin-bottom: 35px;
-    position: relative;
-    border-radius: 6px;
-    animation: fadeIn 0.25s ease-out;
-  }
-
-  .ai-panel::before {
-    content: "";
-    position: absolute;
-    top: 6px; left: 6px; right: 6px; bottom: 6px;
-    border: 1px dashed rgba(92,45,145,0.25);
-    pointer-events: none;
-  }
-
-  .ai-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    border-bottom: 1px dashed var(--line);
-    padding-bottom: 12px;
-  }
-
-  .ai-badge {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    background: var(--ai-purple-light);
-    color: var(--ai-purple);
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-weight: 700;
-  }
-
-  .ai-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .ai-chat-history {
-    max-height: 320px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-right: 4px;
-  }
-
-  .ai-msg {
-    padding: 12px 16px;
-    border-radius: 6px;
-    font-size: 14.5px;
-    line-height: 1.55;
-  }
-
-  .ai-msg-user {
-    background: var(--paper);
-    color: var(--ink);
-    align-self: flex-end;
-    max-width: 85%;
-    font-weight: 500;
-  }
-
-  .ai-msg-bot {
-    background: #fbf9ff;
-    border: 1px solid #e0d5f2;
-    color: var(--ink);
-    align-self: flex-start;
-    max-width: 95%;
-  }
-
-  .ai-msg-bot strong {
-    color: var(--accent2);
-  }
-
-  .ai-cocktail-link {
-    display: inline-block;
-    color: var(--accent);
-    text-decoration: underline;
-    cursor: pointer;
-    font-weight: 700;
-  }
-  .ai-cocktail-link:hover {
-    color: var(--accent2);
-  }
-
-  .ai-input-row {
-    display: flex;
-    gap: 8px;
-  }
-
-  .ai-quick-prompts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-  }
-
-  .ai-quick-chip {
-    font-family: 'Space Mono', monospace;
-    font-size: 10.5px;
-    background: #f1f4f9;
-    border: 1px solid var(--line);
-    padding: 4px 10px;
-    border-radius: 14px;
-    cursor: pointer;
-    color: #2c3e5c;
-    transition: all 0.15s ease;
-  }
-
-  .ai-quick-chip:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: #ffffff;
-  }
-
-  .ai-loading {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: var(--accent2);
-  }
-  .ai-loading-spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid #ccc;
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
   /* --- SCHEDE COCKTAIL --- */
   .card{
     background: var(--panel);
@@ -387,8 +229,6 @@
     margin-bottom: 26px;
     position: relative;
     scroll-margin-top: 20px;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
   }
 
   .card::before{
@@ -421,22 +261,6 @@
     text-transform: uppercase;
     color: var(--accent2);
     white-space: nowrap;
-  }
-
-  .card-image-container {
-    margin: 14px 0 18px;
-    text-align: center;
-    position: relative;
-    z-index: 10;
-  }
-
-  .card-image-preview {
-    max-width: 100%;
-    height: 240px;
-    object-fit: cover;
-    border-radius: 6px;
-    border: 1px solid var(--line);
-    box-shadow: 0 3px 12px rgba(10,31,68,0.12);
   }
 
   .desc{
@@ -523,43 +347,21 @@
     border-radius: 20px;
     background: var(--paper);
     color: var(--ink);
-    cursor: pointer;
+    cursor: default;
     user-select: none;
-    transition: all 0.15s ease;
   }
 
-  .card-tag:hover{
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .card-tag--negroni{ border-color:#8a1f1c66; color:#8a1f1c; }
-  .card-tag--spritz{ border-color:#e0893966; color:#b5651d; }
-  .card-tag--mojito{ border-color:#2e6b4166; color:#2e6b41; }
-  .card-tag--sour{ border-color:#1f7a8c66; color:#145b68; }
-  .card-tag--caffeina{ border-color:#5c403366; color:#5c4033; }
-  .card-tag--nostri{ border-color:#d4af3766; color:#997a00; }
-  .card-tag--aperitivo{ border-color:#d3540066; color:#d35400; }
-  .card-tag--vermut{ border-color:#80002066; color:#800020; }
-  .card-tag--fuori-menu{ border-color:#8a8f9c; color:#5a6684; }
+  .card-tag--fuorimenu { border-color: #8a8f9c; color: #5a6684; }
 
   .card-actions-edit {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 20px;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
     padding-top: 14px;
     border-top: 1px dashed var(--line);
     position: relative;
     z-index: 10;
-  }
-
-  .card-ai-buttons, .card-crud-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
   }
 
   .btn-action {
@@ -573,10 +375,6 @@
     color: #55503f;
     cursor: pointer;
     transition: all 0.15s ease;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
   }
 
   .btn-action:hover {
@@ -584,18 +382,6 @@
     color: var(--accent);
   }
 
-  .btn-action-ai {
-    background: #fbf8ff;
-    border-color: #d1b8ea;
-    color: var(--ai-purple);
-    font-weight: 700;
-  }
-
-  .btn-action-ai:hover {
-    background: var(--ai-purple-light);
-    border-color: var(--ai-purple);
-    color: var(--ai-purple);
-  }
   /* --- RICERCA E FILTRI --- */
   .search-wrap{
     max-width: 760px;
@@ -609,7 +395,6 @@
     border: 1.5px solid var(--line);
     padding: 14px 20px;
     gap: 12px;
-    border-radius: 4px;
   }
 
   .search-box svg{
@@ -638,7 +423,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--accent2);
-    margin-top: 18px;
+    margin-top: 20px;
     margin-bottom: 8px;
     font-weight: 700;
   }
@@ -661,7 +446,6 @@
     cursor: pointer;
     user-select:none;
     transition: all 0.15s ease;
-    border-radius: 4px;
   }
 
   .filter-chip:hover{
@@ -682,70 +466,7 @@
     display:none;
   }
 
-  /* --- MODAL DI CONFERMA & TOAST (NO ALERT / CONFIRM) --- */
-  .custom-modal-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10,31,68,0.65);
-    backdrop-filter: blur(3px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  }
-
-  .custom-modal-box {
-    background: #ffffff;
-    max-width: 440px;
-    width: 90%;
-    padding: 28px 30px;
-    border: 2px solid var(--accent);
-    border-radius: 6px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    position: relative;
-    animation: fadeIn 0.2s ease-out;
-  }
-
-  .custom-modal-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: var(--ink);
-  }
-
-  .custom-modal-desc {
-    font-size: 14px;
-    color: #4a5875;
-    line-height: 1.5;
-    margin-bottom: 20px;
-  }
-
-  .custom-modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-  }
-
-  .toast-notification {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    background: var(--ink);
-    color: #ffffff;
-    padding: 12px 20px;
-    border-radius: 6px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    z-index: 10000;
-    display: none;
-    align-items: center;
-    gap: 8px;
-    border-left: 4px solid var(--accent);
-  }
-
-  /* --- REGOLE STAMPA PDF VETTORIALE --- */
+  /* --- STAMPA PDF VETTORIALE --- */
   @page {
     size: A4 portrait;
     margin: 15mm 15mm;
@@ -753,7 +474,7 @@
 
   @media print {
     body { padding: 0 !important; background: var(--panel) !important; color: var(--ink) !important; }
-    .tools-bar, .search-wrap, .form-panel, .ai-panel, .card-actions-edit, footer, .no-results { display: none !important; }
+    .tools-bar, .search-wrap, .form-panel, .card-actions-edit, footer, .no-results { display: none !important; }
     .menu { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
     header { margin-bottom: 30px !important; }
     .card { page-break-inside: avoid !important; break-inside: avoid !important; border: 1px solid var(--line) !important; box-shadow: none !important; margin-bottom: 24px !important; padding: 28px 32px !important; background: var(--panel) !important; display: block !important; }
@@ -804,81 +525,25 @@
     <h1>Ricette</h1>
     <div class="divider"></div>
   </header>
+
+  <!-- Barra Strumenti con Blocco Admin -->
   <div class="tools-bar">
-    <button type="button" class="btn btn-ai" onclick="toggleAiAssistant()">✨ Barman AI</button>
-    <button type="button" class="btn btn-ai" onclick="toggleAiGenerator()">🧪 Inventa Ricetta AI</button>
-    <button type="button" class="btn btn-primary" onclick="toggleForm()">➕ Aggiungi Ricetta</button>
     <button type="button" class="btn btn-pdf" onclick="window.print()">📄 Stampa PDF</button>
-    <button type="button" class="btn" onclick="exportHtmlFile()">📥 Esporta HTML</button>
-    <button type="button" class="btn" onclick="exportBackupJson()">📤 Backup Dati</button>
-    <button type="button" class="btn" onclick="document.getElementById('importFile').click()">📥 Importa Dati</button>
+    <button type="button" class="btn" id="adminToggleBtn" onclick="toggleAdminMode()">🔒 Area Riservata</button>
+    <button type="button" class="btn btn-primary admin-only" onclick="toggleForm()">➕ Aggiungi Ricetta</button>
+    <button type="button" class="btn admin-only" onclick="exportHtmlFile()">📥 Esporta HTML</button>
+    <button type="button" class="btn admin-only" onclick="exportBackupJson()">📤 Backup Dati</button>
+    <button type="button" class="btn admin-only" onclick="document.getElementById('importFile').click()">📥 Importa Dati</button>
     <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importBackupJson(event)">
   </div>
 
-  <!-- AI ASSISTANT PANEL: Barman Virtuale Gradisca -->
-  <div id="aiAssistantPanel" class="ai-panel" style="display: none;">
-    <div class="ai-panel-header">
-      <div class="ai-title">
-        <span>🍸 Barman AI</span>
-        <span class="ai-badge">Gemini Flash</span>
-      </div>
-      <button class="btn" style="padding: 4px 8px; font-size: 10px;" onclick="toggleAiAssistant()">Chiudi ✕</button>
-    </div>
-    <div style="font-size: 13.5px; color: #4a5875; margin-bottom: 12px;">
-      Chiedi un consiglio personalizzato al Barman di Gradisca: indica i tuoi gusti, la gradazione desiderata o l'abbinamento culinario.
-    </div>
-    <div class="ai-chat-history" id="aiChatHistory">
-      <div class="ai-msg ai-msg-bot">
-        Ciao! Sono il tuo <strong>Sommelier & Barman AI</strong> per Gradisca 1973. Conosco tutte le ricette della nostra carta. Cosa ti andrebbe di bere oggi?
-      </div>
-    </div>
-    <div id="aiAssistantLoading" class="ai-loading" style="display: none; margin-bottom: 10px;">
-      <div class="ai-loading-spinner"></div>
-      <span>Il Barman sta consultando il ricettario...</span>
-    </div>
-    <div class="ai-input-row">
-      <input type="text" id="aiUserInput" placeholder="Es. Cerco qualcosa di fresco e leggermente amaricante con note di gin..." onkeydown="if(event.key==='Enter') sendAiMessage()">
-      <button class="btn btn-ai" onclick="sendAiMessage()">Invia</button>
-    </div>
-    <div class="ai-quick-prompts">
-      <span class="ai-quick-chip" onclick="askQuickPrompt('Consigliami un aperitivo fresco e fruttato a bassa gradazione')">🍹 Aperitivo Fruttato</span>
-      <span class="ai-quick-chip" onclick="askQuickPrompt('Voglio un twist intrigante sul classico Negroni')">🍸 Twist sul Negroni</span>
-      <span class="ai-quick-chip" onclick="askQuickPrompt('Cosa posso bere dopo cena di intenso e avvolgente?')">🌙 Dopo Cena Intenso</span>
-      <span class="ai-quick-chip" onclick="askQuickPrompt('Qual è il miglior cocktail analcolico aromatico?')">🌿 Analcolico Aromatico</span>
-    </div>
-  </div>
-
-  <!-- AI RECIPE CREATOR PANEL: Inventa Ricetta con Gemini Structured JSON -->
-  <div id="aiGeneratorPanel" class="ai-panel" style="display: none;">
-    <div class="ai-panel-header">
-      <div class="ai-title">
-        <span>🧪 Lab Miscelazione AI</span>
-        <span class="ai-badge">Structured Generator</span>
-      </div>
-      <button class="btn" style="padding: 4px 8px; font-size: 10px;" onclick="toggleAiGenerator()">Chiudi ✕</button>
-    </div>
-    <div style="font-size: 13.5px; color: #4a5875; margin-bottom: 12px;">
-      Descrivi un'idea, ingredienti a disposizione o un concept toscano. Gemini elaborerà una scheda tecnica completa pronta per essere salvata nel ricettario.
-    </div>
-    <div class="form-group full-width" style="margin-bottom: 12px;">
-      <input type="text" id="aiRecipePrompt" placeholder="Es. Un drink autunnale toscano con Bourbon, castagna, arancia amara e rosmarino affumicato">
-    </div>
-    <div style="display: flex; gap: 8px; align-items: center;">
-      <button class="btn btn-ai" id="aiGenerateBtn" onclick="generateCocktailWithAi()">✨ Genera Scheda Tecnica</button>
-      <div id="aiGenLoading" class="ai-loading" style="display: none;">
-        <div class="ai-loading-spinner"></div>
-        <span>Composizione ricetta in corso...</span>
-      </div>
-    </div>
-  </div>
-  <!-- Search & 3 Livelli di Filtro -->
   <div class="search-wrap">
     <div class="search-box">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       <input type="text" id="searchInput" placeholder="Cerca per nome, base o ingrediente...">
     </div>
     
-    <!-- Livello 1: Base Alcolica -->
+    <!-- 1. Basi Alcoliche -->
     <div class="filter-label">Base Alcolica</div>
     <div class="filter-row" id="baseFilters">
       <span class="filter-chip active" data-filter-type="base" data-filter-value="" id="chip-base-all">Tutte le basi</span>
@@ -888,22 +553,23 @@
       <span class="filter-chip" data-filter-type="base" data-filter-value="tequila" id="chip-base-tequila">Tequila</span>
       <span class="filter-chip" data-filter-type="base" data-filter-value="whiskey" id="chip-base-whiskey">Whiskey</span>
       <span class="filter-chip" data-filter-type="base" data-filter-value="campari" id="chip-base-campari">Campari / Bitter</span>
+      <span class="filter-chip" data-filter-type="base" data-filter-value="vermut" id="chip-base-vermut">Vermut</span>
       <span class="filter-chip" data-filter-type="base" data-filter-value="analcolico" id="chip-base-analcolico">Analcolico</span>
     </div>
 
-    <!-- Livello 2: Menù / Fuori Menù -->
-    <div class="filter-label">Disponibilità Carta</div>
+    <!-- 2. Menù vs Fuori Menù -->
+    <div class="filter-label">Disponibilità</div>
     <div class="filter-row" id="menuFilters">
-      <span class="filter-chip active" data-filter-type="menu" data-filter-value="" id="chip-menu-all">Tutti</span>
-      <span class="filter-chip" data-filter-type="menu" data-filter-value="menu" id="chip-menu-menu">Menù</span>
-      <span class="filter-chip" data-filter-type="menu" data-filter-value="fuori-menu" id="chip-menu-fuori">Fuori Menù</span>
+      <span class="filter-chip active" data-filter-type="menu-status" data-filter-value="" id="chip-menu-all">Tutti</span>
+      <span class="filter-chip" data-filter-type="menu-status" data-filter-value="menu" id="chip-menu-in">Menù</span>
+      <span class="filter-chip" data-filter-type="menu-status" data-filter-value="fuori-menu" id="chip-menu-out">Fuori Menù</span>
     </div>
 
-    <!-- Livello 3: Categorie Gradisca -->
+    <!-- 3. Categorie Gradisca -->
     <div class="filter-label">Categorie Gradisca</div>
     <div class="filter-row" id="categoryFilters">
-      <span class="filter-chip active" data-filter-type="category" data-filter-value="" id="chip-cat-all">Tutte</span>
-      <span class="filter-chip" data-filter-type="category" data-filter-value="nostri" id="chip-cat-nostri">⭐ Nostri</span>
+      <span class="filter-chip active" data-filter-type="category" data-filter-value="" id="chip-cat-all">Tutte le categorie</span>
+      <span class="filter-chip" data-filter-type="category" data-filter-value="nostri" id="chip-cat-nostri">⭐ I Nostri</span>
       <span class="filter-chip" data-filter-type="category" data-filter-value="aperitivo" id="chip-cat-aperitivo">Aperitivo</span>
       <span class="filter-chip" data-filter-type="category" data-filter-value="spritz" id="chip-cat-spritz">🥂 Spritz</span>
       <span class="filter-chip" data-filter-type="category" data-filter-value="mojito" id="chip-cat-mojito">🌿 Mojito</span>
@@ -911,17 +577,14 @@
       <span class="filter-chip" data-filter-type="category" data-filter-value="negroni" id="chip-cat-negroni">🍸 Negroni</span>
       <span class="filter-chip" data-filter-type="category" data-filter-value="sour" id="chip-cat-sour">🍋 Sour</span>
       <span class="filter-chip" data-filter-type="category" data-filter-value="caffeina" id="chip-cat-caffeina">☕ Caffeina</span>
-      <span class="filter-chip" data-filter-type="category" data-filter-value="vermut" id="chip-cat-vermut">🍷 Vermut</span>
     </div>
 
     <div class="no-results" id="noResults">Nessun cocktail trovato.</div>
   </div>
-  <!-- Maschera Aggiunta/Modifica -->
-  <div id="formPanel" class="form-panel" style="display: none;">
-    <div class="form-title">
-      <span id="formTitle">Nuova Ricetta</span>
-      <span style="font-size: 12px; font-family:'Space Mono'; color:var(--gold); font-weight:normal;">Compilazione Manuale o Assistita</span>
-    </div>
+
+  <!-- Maschera Aggiunta / Modifica (Riservata ad Admin) -->
+  <div id="formPanel" class="form-panel admin-only" style="display: none;">
+    <div class="form-title" id="formTitle">Nuova Ricetta</div>
     <form id="cocktailForm" onsubmit="saveCocktail(event)">
       <input type="hidden" id="editingId" value="">
       
@@ -935,38 +598,38 @@
           <input type="text" id="glassInput" placeholder="Es. Rocks Glass">
         </div>
         <div class="form-group">
-          <label for="baseInput">Base Alcolica (es. gin, vodka, rum, whiskey, tequila, campari, analcolico, liquore)</label>
-          <input type="text" id="baseInput" placeholder="Es. gin">
+          <label for="baseInput">Basi Alcoliche (es. gin vermut campari)</label>
+          <input type="text" id="baseInput" placeholder="Es. gin vermut">
         </div>
       </div>
 
       <div class="form-grid">
         <div class="form-group">
-          <label for="menuSelect">Carta</label>
-          <select id="menuSelect">
-            <option value="menu">Menù</option>
+          <label for="menuStatusInput">Disponibilità Menù *</label>
+          <select id="menuStatusInput">
+            <option value="menu">In Menù</option>
             <option value="fuori-menu">Fuori Menù</option>
           </select>
         </div>
-        <div class="form-group" style="grid-column: span 2;">
-          <label for="categoryInput">Categorie Gradisca (es. nostri, aperitivo, spritz, mojito, classici, negroni, sour, caffeina, vermut)</label>
-          <input type="text" id="categoryInput" placeholder="Es. negroni aperitivo vermut">
+        <div class="form-group full-width">
+          <label for="categoryInput">Categorie Gradisca (es. aperitivo negroni sour)</label>
+          <input type="text" id="categoryInput" placeholder="Es. aperitivo negroni">
         </div>
       </div>
 
       <div class="form-group full-width" style="margin-bottom: 16px;">
-        <label for="descInput">Descrizione e Profilo Aromatico</label>
-        <textarea id="descInput" placeholder="Breve descrizione..."></textarea>
+        <label for="descInput">Descrizione</label>
+        <textarea id="descInput" placeholder="Breve descrizione del profilo aromatico..."></textarea>
       </div>
 
       <div class="form-group full-width" style="margin-bottom: 16px;">
-        <label for="ingredientsInput">Ingredienti e Dosaggi (uno per riga, es. Gin - 30 ml)</label>
+        <label for="ingredientsInput">Ingredienti e Dosaggi (es. Gin - 30 ml)</label>
         <textarea id="ingredientsInput" placeholder="Gin - 30 ml&#10;Campari - 30 ml&#10;Vermouth Rosso - 30 ml"></textarea>
       </div>
 
       <div class="form-group full-width" style="margin-bottom: 16px;">
         <label for="prepInput">Metodo di Preparazione</label>
-        <textarea id="prepInput" placeholder="Descrivi il metodo..."></textarea>
+        <textarea id="prepInput" placeholder="Descrivi il metodo di preparazione..."></textarea>
       </div>
 
       <div class="form-grid">
@@ -989,671 +652,127 @@
 
   <div id="cocktailsContainer"></div>
 
-  <footer id="footerCount">Carta creata su misura</footer>
+  <footer id="footerCount">Carta creata su misura — Gradisca 1973</footer>
 </div>
 
-<!-- Modal di Conferma Personalizzato (Elimina confirm nativo) -->
-<div id="customModal" class="custom-modal-overlay">
-  <div class="custom-modal-box">
-    <div class="custom-modal-title" id="customModalTitle">Conferma Operazione</div>
-    <div class="custom-modal-desc" id="customModalDesc">Sei sicuro di voler procedere?</div>
-    <div class="custom-modal-actions">
-      <button class="btn" onclick="closeCustomModal()">Annulla</button>
-      <button class="btn btn-pdf" id="customModalConfirmBtn">Conferma</button>
-    </div>
-  </div>
-</div>
-
-<!-- Toast Banner per Notifiche (Elimina alert nativo) -->
-<div id="toastNotification" class="toast-notification">
-  <span id="toastIcon">ℹ️</span>
-  <span id="toastMessage">Operazione completata con successo.</span>
-</div>
 <script>
-  // Database Completo (84 ricette verificate senza errori Disaronno/Whisky)
+  // PIN per l'accesso responsabile
+  const ADMIN_PIN = "1973";
+
+  // Database completo con categorizzazione pulita e senza sovrapposizioni errate
   const initialCocktails = [
-    {
-      id: "whiskeysour", name: "Whiskey Sour", glass: "Rocks Glass", base: "whiskey bourbon", menu: "menu", category: "classici sour",
-      desc: "Ricetta IBA. Bourbon, limone e zucchero shakerati in perfetto equilibrio agrodolce: un sour robusto e vellutato, intramontabile.",
-      ingredients: [{"name": "Bourbon Whiskey", "qty": "50 ml"}, {"name": "Succo di limone", "qty": "30 ml"}, {"name": "Sciroppo di zucchero", "qty": "15 ml"}, {"name": "Albume d'uovo", "qty": "qualche goccia (opzionale)"}],
-      preparation: "Shakera con ghiaccio, filtra in rocks glass con ghiaccio.", garnish: "Twist di limone", taste: "Agrumato, robusto, vellutato"
-    },
-    {
-      id: "oldfashioned", name: "Old Fashioned", glass: "Rocks Glass", base: "whiskey bourbon", menu: "menu", category: "classici",
-      desc: "Il grande classico americano: bourbon, zucchero e Angostura in un rituale essenziale, dove il liquore resta sempre protagonista assoluto.",
-      ingredients: [{"name": "Bourbon (o rye)", "qty": "60 ml"}, {"name": "Angostura bitter", "qty": "2-3 dash"}, {"name": "Zucchero", "qty": "1 zolletta / 10 ml sciroppo"}],
-      preparation: "Sciogli zucchero e Angostura con un goccio d'acqua nel bicchiere, aggiungi il liquore e ghiaccio, mescola bene.", garnish: "Twist d'arancia", taste: "Robusto, speziato, avvolgente"
-    },
-    {
-      id: "disaronnosour", name: "Disaronno Sour", glass: "Rocks Glass", base: "liquore disaronno", menu: "menu", category: "sour",
-      desc: "Disaronno, limone e zucchero shakerati in un sour dolce e avvolgente, dal carattere amaretto ben riconoscibile.",
-      ingredients: [{"name": "Disaronno", "qty": "60 ml"}, {"name": "Succo di limone", "qty": "30 ml"}, {"name": "Zucchero (sciroppo)", "qty": "5 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in rocks glass con ghiaccio.", garnish: "Twist di limone", taste: "Dolce, agrumato, avvolgente"
-    },
-    {
-      id: "disaronnosourmorg", name: "Disaronno Sour — Variante Morgenthaler", glass: "Rocks Glass", base: "liquore disaronno", menu: "fuori-menu", category: "sour",
-      desc: "Variante del Disaronno Sour con l'aggiunta di una parte di bourbon per bilanciare la dolcezza dell'amaretto.",
-      ingredients: [{"name": "Disaronno", "qty": "30 ml"}, {"name": "Bourbon", "qty": "20 ml"}, {"name": "Succo di limone", "qty": "30 ml"}, {"name": "Zucchero (sciroppo)", "qty": "10 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in rocks glass con ghiaccio.", garnish: "Twist di limone", taste: "Agrumato, robusto, equilibrato"
-    },
-    {
-      id: "godfather", name: "Godfather", glass: "Rocks Glass", base: "whiskey scotch", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Scotch whisky e Disaronno: after-dinner intenso e robusto, con una dolcezza di mandorla ad ammorbidire il whisky.",
-      ingredients: [{"name": "Scotch whisky", "qty": "45 ml"}, {"name": "Disaronno", "qty": "15 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola delicatamente.", garnish: "Twist d'arancia", taste: "Intenso, dolce, robusto"
-    },
-    {
-      id: "godmother", name: "Godmother", glass: "Rocks Glass", base: "vodka liquore", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Vodka e Disaronno: la versione 'al femminile' del Godfather, più morbida e altrettanto intensa.",
-      ingredients: [{"name": "Vodka", "qty": "45 ml"}, {"name": "Disaronno", "qty": "15 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola delicatamente.", garnish: "Twist di limone", taste: "Dolce, morbido, intenso"
-    },
-    {
-      id: "paloma", name: "Paloma", glass: "Highball", base: "tequila", menu: "menu", category: "classici",
-      desc: "Il long drink messicano per eccellenza: tequila, pompelmo e lime si fondono in un sorso fresco, leggermente amaro e dissetante, chiuso da una nota salina.",
-      ingredients: [{"name": "Soda al pompelmo", "qty": "a colmare"}, {"name": "Tequila blanco", "qty": "50 ml"}, {"name": "Succo di lime", "qty": "10 ml"}, {"name": "Sale", "qty": "un pizzico"}],
-      preparation: "Versa tequila e lime su ghiaccio in tumbler alto, completa con soda al pompelmo, mescola delicatamente.", garnish: "Rondella di lime", taste: "Agrumato, amaricante, fresco"
-    },
-    {
-      id: "sally", name: "Sally", glass: "Highball", base: "tequila campari bitter", menu: "menu", category: "nostri",
-      desc: "Tequila come spina dorsale, Bitter Riserva Martini per profondità erbacea, pompelmo e passion fruit per succosità tropicale, chiuso dalla tonica.",
-      ingredients: [{"name": "Acqua tonica", "qty": "a colmare"}, {"name": "Tequila", "qty": "40 ml"}, {"name": "Succo di pompelmo", "qty": "20 ml"}, {"name": "Bitter Riserva Martini", "qty": "15 ml"}, {"name": "Sciroppo frutto della passione", "qty": "10 ml"}],
-      preparation: "Shakera tequila, bitter, pompelmo e sciroppo con ghiaccio. Filtra in tumbler alto, completa con tonica e mescola delicatamente.", garnish: "Fetta di lime", taste: "Amaricante, agrumato, aromatico"
-    },
-    {
-      id: "stregowich", name: "Stregowich", glass: "Highball", base: "vodka liquore", menu: "menu", category: "nostri",
-      desc: "Le note speziate e balsamiche del liquore Strega incontrano la freschezza agrumata di lime e pompelmo, allungate dal frizzante amaro della tonica.",
-      ingredients: [{"name": "Acqua tonica", "qty": "a colmare"}, {"name": "Liquore Strega", "qty": "30 ml"}, {"name": "Vodka", "qty": "20 ml"}, {"name": "Succo di pompelmo", "qty": "20 ml"}, {"name": "Succo di lime", "qty": "15 ml"}],
-      preparation: "Shakera Strega, vodka, lime e pompelmo con ghiaccio. Filtra in tumbler alto pieno di ghiaccio, completa con tonica e mescola delicatamente.", garnish: "Rametto di menta", taste: "Erbaceo, agrumato, amaricante"
-    },
-    {
-      id: "tropicana", name: "Tropicana", glass: "Balloon 45cl", base: "rum liquore", menu: "menu", category: "nostri",
-      desc: "Midori dal colore verde brillante, avvolto da rum bianco, ananas succoso e una punta cremosa di cocco. Scenografico e conviviale.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Midori", "qty": "40 ml"}, {"name": "Succo di ananas", "qty": "30 ml"}, {"name": "Rum bianco", "qty": "20 ml"}, {"name": "Succo di lime", "qty": "15 ml"}, {"name": "Sciroppo di cocco", "qty": "10 ml"}],
-      preparation: "Shakera Midori, rum, ananas, cocco e lime con ghiaccio. Filtra nel balloon pieno di ghiaccio, completa con soda a colmare.", garnish: "Fetta di lime", taste: "Dolce, tropicale, cremoso"
-    },
-    {
-      id: "volevoesseremunduro", name: "Volevo Essere un Duro", glass: "Calice / Highball", base: "analcolico", menu: "menu", category: "nostri aperitivo",
-      desc: "Analcolico. Martini Vibrante e sciroppo di lampone allungati da Lemon Soda: fruttato, frizzante e agrodolce, per chi vuole solo sembrare tosto.",
-      ingredients: [{"name": "Lemon Soda", "qty": "a colmare"}, {"name": "Martini Vibrante", "qty": "60 ml"}, {"name": "Sciroppo di lampone", "qty": "15 ml"}],
-      preparation: "Versa Martini Vibrante e sciroppo di lampone su ghiaccio, completa con Lemon Soda e mescola.", garnish: "Fetta di limone", taste: "Fruttato, frizzante, agrodolce"
-    },
-    {
-      id: "allafrutta", name: "Alla Frutta", glass: "Highball / Calice", base: "analcolico", menu: "menu", category: "classici",
-      desc: "Analcolico. Un mix libero di succhi freschi e sciroppi a piacere: fruttato, fresco e sempre dissetante, da comporre secondo la stagione.",
-      ingredients: [{"name": "Mix di succhi freschi e sciroppi", "qty": "q.b."}],
-      preparation: "Componi a piacere con frutta fresca e servi con ghiaccio.", garnish: "Spicchio d'agrume", taste: "Fruttato, fresco, dissetante"
-    },
-    {
-      id: "americano", name: "Americano", glass: "Rocks Glass", base: "campari vermouth bitter", menu: "menu", category: "aperitivo classici vermut",
-      desc: "Ricetta IBA. Campari e vermouth rosso allungati da soda: l'aperitivo italiano per eccellenza, amaricante e dissetante.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Campari", "qty": "30 ml"}, {"name": "Vermouth rosso", "qty": "30 ml"}],
-      preparation: "Versa Campari e vermouth su ghiaccio in rocks glass, completa con soda, mescola.", garnish: "Fetta d'arancia", taste: "Amaricante, aromatico, dissetante"
-    },
-    {
-      id: "annaemarco", name: "Anna e Marco", glass: "Balloon 45cl", base: "vodka rum", menu: "menu", category: "nostri",
-      desc: "Rum bianco e vodka fanno da base a un'onda di pesca, frutto della passione e fragola, ammorbidita dal triple sec. Colorato e conviviale.",
-      ingredients: [{"name": "Succo di pesca", "qty": "80 ml"}, {"name": "Rum bianco", "qty": "30 ml"}, {"name": "Triple sec", "qty": "20 ml"}, {"name": "Sciroppo frutto della passione", "qty": "20 ml"}, {"name": "Vodka", "qty": "10 ml"}, {"name": "Sciroppo di fragola", "qty": "10 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio. Filtra nel balloon riempito di ghiaccio fresco.", garnish: "Fetta d'arancia", taste: "Dolce, fruttato, tropicale"
-    },
-    {
-      id: "bacardi", name: "Bacardi", glass: "Coppetta Cocktail", base: "rum", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Rum Bacardi, lime e granatina: un Daiquiri addolcito dalla granatina, agrumato e fresco.",
-      ingredients: [{"name": "Rum Bacardi Carta Blanca", "qty": "45 ml"}, {"name": "Succo di lime", "qty": "20 ml"}, {"name": "Granatina", "qty": "15 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Rondella di lime", taste: "Agrumato, dolce, fresco"
-    },
-    {
-      id: "bahamamama", name: "Bahama Mama", glass: "Tiki mug / Highball", base: "rum", menu: "menu", category: "classici",
-      desc: "Il rum scuro prende il comando con note calde di caramello e spezie, addolcito da arancia e ananas, con un tocco cremoso di cocco e granatina.",
-      ingredients: [{"name": "Rum scuro", "qty": "60 ml"}, {"name": "Succo d'arancia", "qty": "40 ml"}, {"name": "Succo di ananas", "qty": "40 ml"}, {"name": "Sciroppo di cocco", "qty": "15 ml"}, {"name": "Granatina", "qty": "10 ml"}],
-      preparation: "Shakera tutti gli ingredienti energicamente con ghiaccio. Filtra in tiki mug o tumbler alto pieno di ghiaccio tritato.", garnish: "Fetta d'arancia", taste: "Dolce, speziato, avvolgente"
-    },
-    {
-      id: "bahamaninho", name: "Bahama Ninho", glass: "Hurricane / Highball", base: "analcolico", menu: "menu", category: "classici",
-      desc: "Analcolico. Arancia, ananas e cocco shakerati con un fondo di granatina: dolce, tropicale e cremoso.",
-      ingredients: [{"name": "Succo d'arancia", "qty": "60 ml"}, {"name": "Succo d'ananas", "qty": "60 ml"}, {"name": "Sciroppo di cocco", "qty": "20 ml"}, {"name": "Granatina", "qty": "10 ml"}],
-      preparation: "Shakera i succhi e il cocco con ghiaccio. Versa nel bicchiere con la granatina sul fondo.", garnish: "Fetta d'ananas", taste: "Dolce, tropicale, cremoso"
-    },
-    {
-      id: "bellini", name: "Bellini", glass: "Flute", base: "prosecco vino", menu: "menu", category: "aperitivo classici",
-      desc: "Ricetta IBA. Nato al Harry's Bar di Venezia: Prosecco e purea di pesca in un aperitivo elegante, delicato e frizzante.",
-      ingredients: [{"name": "Prosecco", "qty": "100 ml"}, {"name": "Purea di pesca", "qty": "50 ml"}],
-      preparation: "Versa direttamente nel flute la purea di pesca, poi completa con Prosecco ben freddo.", garnish: "Nessuno", taste: "Fruttato, delicato, frizzante"
-    },
-    {
-      id: "blackrussian", name: "Black Russian", glass: "Rocks Glass", base: "vodka", menu: "menu", category: "classici caffeina",
-      desc: "Vodka e liquore al caffè in purezza: un drink essenziale, deciso e senza compromessi.",
-      ingredients: [{"name": "Vodka", "qty": "50 ml"}, {"name": "Liquore al caffè (Kahlúa)", "qty": "20 ml"}],
-      preparation: "Versa direttamente su ghiaccio in rocks glass, mescola.", garnish: "Twist di limone", taste: "Intenso, dolce, robusto"
-    },
-    {
-      id: "bloodymary", name: "Bloody Mary", glass: "Highball", base: "vodka", menu: "menu", category: "classici",
-      desc: "Il cocktail 'salato' per eccellenza: vodka e succo di pomodoro si incontrano con la piccantezza del Tabasco e Worcestershire.",
-      ingredients: [{"name": "Succo di pomodoro", "qty": "90 ml"}, {"name": "Vodka", "qty": "40 ml"}, {"name": "Salsa Worcestershire", "qty": "10 ml"}, {"name": "Succo di limone", "qty": "5 ml"}, {"name": "Tabasco", "qty": "2-3 dash"}, {"name": "Sale e pepe nero", "qty": "q.b."}],
-      preparation: "Versa tutti gli ingredienti in tumbler alto pieno di ghiaccio, mescola bene dal basso verso l'alto.", garnish: "Rondella di limone", taste: "Speziato, sapido, robusto"
-    },
-    {
-      id: "buonanottefiorellino", name: "Buonanotte Fiorellino", glass: "Highball", base: "gin", menu: "menu", category: "nostri sour",
-      desc: "Gin Bathtub Numquam e St Germain si aprono in un long drink floreale, rinfrescato da limone e soda: delicato e profumato.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Gin Bathtub Numquam", "qty": "50 ml"}, {"name": "Succo di limone", "qty": "20 ml"}, {"name": "St Germain", "qty": "10 ml"}, {"name": "Zucchero (sciroppo)", "qty": "10 ml"}],
-      preparation: "Shakera gin, St Germain, limone e zucchero con ghiaccio, filtra in tumbler alto pieno di ghiaccio, completa con soda.", garnish: "Rametto di menta", taste: "Floreale, agrumato, fresco"
-    },
-    {
-      id: "caipirinha", name: "Caipirinha", glass: "Rocks Glass", base: "cachaca rum", menu: "menu", category: "classici sour",
-      desc: "Il cocktail nazionale brasiliano: cachaça, lime pestato e zucchero in un drink diretto e rustico.",
-      ingredients: [{"name": "Cachaça", "qty": "50 ml"}, {"name": "Zucchero semolato", "qty": "2 cucchiaini"}, {"name": "Lime a spicchi", "qty": "1/2"}],
-      preparation: "Taglia il lime a spicchi eliminando le estremità bianche, pestalo con lo zucchero nel bicchiere, riempi con ghiaccio tritato, versa la cachaça e mescola bene.", garnish: "Spicchio di lime", taste: "Agrumato, deciso, rustico"
-    },
-    {
-      id: "catatumbo", name: "Catatumbo", glass: "Highball / Mug da Mule", base: "rum", menu: "fuori-menu", category: "nostri",
-      desc: "Rum bianco, limone e miele in equilibrio agrodolce, allungati dalla piccantezza speziata della ginger beer.",
-      ingredients: [{"name": "Ginger beer", "qty": "a colmare"}, {"name": "Rum bianco", "qty": "50 ml"}, {"name": "Succo di limone", "qty": "20 ml"}, {"name": "Miele (in sciroppo)", "qty": "15 ml"}],
-      preparation: "Shakera rum, limone e miele con ghiaccio. Filtra in tumbler alto o mug da mule, completa con ginger beer.", garnish: "Fetta di limone", taste: "Agrodolce, speziato, fresco"
-    },
-    {
-      id: "cloverclub", name: "Clover Club", glass: "Coppetta Cocktail", base: "gin", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Gin, limone e sciroppo di lampone montati con albume: fruttato e vellutato.",
-      ingredients: [{"name": "Gin", "qty": "45 ml"}, {"name": "Succo di limone", "qty": "15 ml"}, {"name": "Sciroppo di lampone", "qty": "15 ml"}, {"name": "Albume d'uovo", "qty": "1 (o 15 ml aquafaba)"}],
-      preparation: "Dry shake senza ghiaccio per montare l'albume, poi shake normale con ghiaccio. Filtra in coppetta cocktail.", garnish: "Twist di limone", taste: "Fruttato, vellutato, agrumato"
-    },
-    {
-      id: "cubalibre", name: "Cuba Libre", glass: "Highball", base: "rum", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Rum, cola e lime: il long drink cubano più semplice ed essenziale.",
-      ingredients: [{"name": "Cola", "qty": "a colmare"}, {"name": "Rum", "qty": "45 ml"}, {"name": "Succo di lime", "qty": "10 ml"}],
-      preparation: "Versa rum e lime su ghiaccio in highball, completa con cola, mescola delicatamente.", garnish: "Rondella di lime", taste: "Agrumato, dolce, dissetante"
-    },
-    {
-      id: "cuccurucupaloma", name: "Cucurrucucú Paloma", glass: "Highball", base: "tequila", menu: "menu", category: "nostri",
-      desc: "Una rivisitazione della Paloma classica: la tequila incontra la nota dolce-agrumata dell'Acqua di Cedro Nardini, ravvivata dal limone e chiusa dalla soda al pompelmo.",
-      ingredients: [{"name": "Soda al pompelmo", "qty": "a colmare"}, {"name": "Tequila", "qty": "40 ml"}, {"name": "Acqua di Cedro Nardini", "qty": "20 ml"}, {"name": "Succo di limone", "qty": "10 ml"}],
-      preparation: "Versa tequila, Acqua di Cedro e limone su ghiaccio direttamente nel tumbler alto, completa con soda al pompelmo.", garnish: "Rondella di limone", taste: "Agrumato, amaricante, fresco"
-    },
-    {
-      id: "daiquiri", name: "Daiquiri", glass: "Coppetta Martini", base: "rum", menu: "menu", category: "classici sour",
-      desc: "La quintessenza del cocktail shakerato: rum bianco, lime fresco e zucchero in un sorso pulito, fresco e diretto.",
-      ingredients: [{"name": "Rum bianco", "qty": "50 ml"}, {"name": "Succo di lime", "qty": "30 ml"}, {"name": "Sciroppo di zucchero", "qty": "20 ml"}],
-      preparation: "Shakera energicamente con ghiaccio. Filtra in coppetta martini fredda.", garnish: "Rondella di lime", taste: "Fresco, acidulo, pulito"
-    },
-    {
-      id: "darknstormy", name: "Dark 'n' Stormy", glass: "Highball", base: "rum", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA (variante con Kraken spiced rum). Rum scuro e ginger beer con lime: piccante, speziato.",
-      ingredients: [{"name": "Ginger beer", "qty": "a colmare"}, {"name": "Kraken (rum scuro)", "qty": "50 ml"}, {"name": "Succo di lime", "qty": "10 ml"}],
-      preparation: "Versa il rum e il lime su ghiaccio in highball, completa con ginger beer, mescola delicatamente.", garnish: "Rondella di lime", taste: "Piccante, speziato, dissetante"
-    },
-    {
-      id: "drymartini", name: "Dry Martini", glass: "Coppetta Martini", base: "gin vermouth", menu: "menu", category: "classici aperitivo vermut",
-      desc: "Ricetta IBA. Gin e vermouth secco in purezza: l'aperitivo più iconico e dibattuto della storia della miscelazione.",
-      ingredients: [{"name": "Gin", "qty": "60 ml"}, {"name": "Vermouth secco", "qty": "10 ml"}],
-      preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Filtra in coppetta martini fredda.", garnish: "Twist di limone", taste: "Secco, aromatico, deciso"
-    },
-    {
-      id: "espressomartini", name: "Espresso Martini", glass: "Coppetta Martini", base: "vodka", menu: "menu", category: "classici caffeina",
-      desc: "Vodka e Caffè Borghetti si fondono con un espresso fresco in un drink intenso e vellutato, chiuso da una schiuma dorata.",
-      ingredients: [{"name": "Vodka", "qty": "35 ml"}, {"name": "Caffè Borghetti", "qty": "25 ml"}, {"name": "Espresso fresco", "qty": "1"}, {"name": "Sciroppo di zucchero", "qty": "10-15 ml"}],
-      preparation: "Shakera energicamente tutti gli ingredienti con ghiaccio. Doppio filtraggio in coppetta martini fredda.", garnish: "Rametto di menta", taste: "Intenso, cremoso, tostato"
-    },
-    {
-      id: "fernandito", name: "Fernandito", glass: "Highball", base: "fernet amaro", menu: "menu", category: "classici",
-      desc: "Non IBA — celebre long drink sudamericano: Fernet-Branca e cola in un mix amaricante e rinfrescante.",
-      ingredients: [{"name": "Cola", "qty": "a colmare"}, {"name": "Fernet-Branca", "qty": "50 ml"}],
-      preparation: "Versa il Fernet su ghiaccio in tumbler alto, completa con cola e mescola delicatamente.", garnish: "Fetta di lime", taste: "Amaricante, deciso, rinfrescante"
-    },
-    {
-      id: "garibaldi", name: "Garibaldi", glass: "Highball", base: "campari bitter", menu: "menu", category: "classici aperitivo",
-      desc: "Ricetta IBA. Campari e succo d'arancia fresco: un aperitivo italiano semplice, colorato e dal carattere amaricante.",
-      ingredients: [{"name": "Succo d'arancia fresco", "qty": "120 ml"}, {"name": "Campari", "qty": "50 ml"}],
-      preparation: "Riempi il bicchiere di ghiaccio, versa Campari e succo d'arancia, mescola bene.", garnish: "Fetta d'arancia", taste: "Agrumato, amaricante, fresco"
-    },
-    {
-      id: "ginfizz", name: "Gin Fizz", glass: "Tumbler", base: "gin", menu: "menu", category: "classici sour",
-      desc: "Ricetta IBA. Gin, limone e zucchero shakerati e allungati da un tocco di soda: fresco, frizzante, senza ghiaccio in bicchiere.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Gin", "qty": "45 ml"}, {"name": "Succo di limone", "qty": "30 ml"}, {"name": "Sciroppo di zucchero", "qty": "10 ml"}],
-      preparation: "Shakera gin, limone e sciroppo con ghiaccio. Filtra in tumbler stretto e alto, completa con soda. Servi senza ghiaccio.", garnish: "Fetta di limone", taste: "Agrumato, frizzante, fresco"
-    },
-    {
-      id: "gintoniczero", name: "Gin Tonic Zero 0%", glass: "Highball", base: "analcolico gin", menu: "menu", category: "classici",
-      desc: "Analcolico. Gin 0.0 e acqua tonica: la stessa struttura secca e botanica del classico, senza alcol.",
-      ingredients: [{"name": "Acqua Tonica", "qty": "a colmare"}, {"name": "Tanqueray 0.0 (o Gin Zero)", "qty": "50 ml"}],
-      preparation: "Riempi il bicchiere di ghiaccio, versa il Gin 0.0 e completa con tonica.", garnish: "Fetta di limone o bacche di ginepro", taste: "Secco, botanico, rinfrescante"
-    },
-    {
-      id: "hankypanky", name: "Hanky Panky", glass: "Coppetta Cocktail", base: "gin vermouth fernet amaro", menu: "fuori-menu", category: "classici vermut",
-      desc: "Ricetta IBA. Gin e vermouth rosso con un tocco di Fernet Branca: amaricante, erbaceo e deciso.",
-      ingredients: [{"name": "Gin", "qty": "45 ml"}, {"name": "Vermouth rosso", "qty": "45 ml"}, {"name": "Fernet Branca", "qty": "2 dash"}],
-      preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Amaricante, erbaceo, deciso"
-    },
-    {
-      id: "hemingwayspecial", name: "Hemingway Special", glass: "Coppetta Cocktail", base: "rum", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Rum bianco, pompelmo, lime e maraschino: un Daiquiri più secco e agrumato, ispirato allo scrittore.",
-      ingredients: [{"name": "Rum bianco", "qty": "45 ml"}, {"name": "Succo di pompelmo", "qty": "20 ml"}, {"name": "Succo di lime", "qty": "15 ml"}, {"name": "Maraschino", "qty": "7,5 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Rondella di lime", taste: "Agrumato, secco, fresco"
-    },
-    {
-      id: "horsesneck", name: "Horse's Neck", glass: "Highball", base: "whiskey bourbon", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Bourbon e ginger ale con un lungo twist di limone a spirale: secco, speziato e rinfrescante.",
-      ingredients: [{"name": "Ginger ale", "qty": "a colmare"}, {"name": "Bourbon", "qty": "50 ml"}, {"name": "Angostura bitter", "qty": "2 dash"}],
-      preparation: "Disponi una lunga scorza di limone a spirale nel bicchiere, versa il bourbon e l'Angostura su ghiaccio, completa con ginger ale.", garnish: "Lunga scorza di limone a spirale", taste: "Secco, speziato, rinfrescante"
-    },
-    {
-      id: "iovemsour", name: "Iovem Sour", glass: "Coppetta Cocktail", base: "iovem amaro", menu: "menu", category: "sour",
-      desc: "Liquore Iovem, lime e zucchero shakerati con un tocco di orange bitter: un sour agrumato ed equilibrato, dal carattere aromatico distintivo.",
-      ingredients: [{"name": "Liquore Iovem", "qty": "60 ml"}, {"name": "Succo di lime", "qty": "30 ml"}, {"name": "Zucchero (sciroppo)", "qty": "10 ml"}, {"name": "Orange bitter", "qty": "2 dash"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Scorza di limone", taste: "Agrumato, aromatico, equilibrato"
-    },
-    {
-      id: "irishcoffee", name: "Irish Coffee", glass: "Bicchiere da Irish Coffee", base: "whiskey jameson", menu: "fuori-menu", category: "classici caffeina",
-      desc: "Ricetta IBA. Whiskey irlandese, caffè caldo e zucchero, chiuso da un velo di panna fresca non montata: caldo, dolce e robusto.",
-      ingredients: [{"name": "Caffè caldo", "qty": "120 ml"}, {"name": "Jameson (Irish Whiskey)", "qty": "40 ml"}, {"name": "Panna fresca", "qty": "20 ml"}, {"name": "Zucchero di canna", "qty": "10 ml"}],
-      preparation: "Sciogli lo zucchero nel caffè caldo, aggiungi il whiskey. Versa delicatamente la panna fresca sul dorso di un cucchiaio.", garnish: "Nessuna", taste: "Caldo, dolce, robusto"
-    },
-    {
-      id: "johncollins", name: "John Collins", glass: "Collins Glass", base: "gin", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Gin, limone, zucchero e soda costruiti direttamente sul ghiaccio: il fratello 'build' del Gin Fizz.",
-      ingredients: [{"name": "Soda", "qty": "60 ml"}, {"name": "Gin", "qty": "45 ml"}, {"name": "Succo di limone", "qty": "30 ml"}, {"name": "Sciroppo di zucchero", "qty": "15 ml"}],
-      preparation: "Versa tutti gli ingredienti direttamente in un Collins glass pieno di ghiaccio, mescola delicatamente.", garnish: "Fetta di limone", taste: "Agrumato, dissetante, fresco"
-    },
-    {
-      id: "kamikaze", name: "Kamikaze", glass: "Coppetta Cocktail", base: "vodka", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Vodka, triple sec e lime in parti uguali: secco, agrumato e diretto, da bere tutto d'un fiato.",
-      ingredients: [{"name": "Vodka", "qty": "30 ml"}, {"name": "Triple sec", "qty": "30 ml"}, {"name": "Succo di lime", "qty": "30 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Rondella di lime", taste: "Agrumato, secco, deciso"
-    },
-    {
-      id: "lemondrop", name: "Lemon Drop Martini", glass: "Coppetta Martini", base: "vodka", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Vodka, triple sec, limone e zucchero: agrodolce e secco, spesso servito con un bordo di zucchero semolato.",
-      ingredients: [{"name": "Vodka", "qty": "40 ml"}, {"name": "Triple sec", "qty": "15 ml"}, {"name": "Succo di limone", "qty": "15 ml"}, {"name": "Sciroppo di zucchero", "qty": "10 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta martini fredda.", garnish: "Twist di limone", taste: "Agrumato, dolce, secco"
-    },
-    {
-      id: "gintonic", name: "Gin Tonic", glass: "Highball", base: "gin", menu: "menu", category: "classici",
-      desc: "Il re dei long drink: l'aroma secco e balsamico del ginepro incontra l'effervescenza amaricante del chinino.",
-      ingredients: [{"name": "Acqua Tonica", "qty": "a colmare"}, {"name": "Gin", "qty": "50 ml"}],
-      preparation: "Versa il distillato su ghiaccio in tumbler alto, completa con tonica e mescola.", garnish: "Lime", taste: "Dissetante, versatile, essenziale"
-    },
-    {
-      id: "vodkatonic", name: "Vodka Tonic", glass: "Highball", base: "vodka", menu: "menu", category: "classici",
-      desc: "Un long drink lineare, pulito e fresco.",
-      ingredients: [{"name": "Acqua Tonica", "qty": "a colmare"}, {"name": "Vodka", "qty": "50 ml"}],
-      preparation: "Costruisci direttamente nel bicchiere colmo di ghiaccio, versa la vodka e completa con l'acqua tonica.", garnish: "Lime", taste: "Fresco, citrico, pulito"
-    },
-    {
-      id: "tequilatonic", name: "Tequila Tonic", glass: "Highball", base: "tequila", menu: "menu", category: "classici",
-      desc: "Il carattere vegetale e pungente della Tequila spinta dalle bollicine.",
-      ingredients: [{"name": "Acqua Tonica", "qty": "a colmare"}, {"name": "Tequila", "qty": "50 ml"}],
-      preparation: "Versa su ghiaccio in tumbler alto, completa con tonica.", garnish: "Lime", taste: "Vegetale, pungente, fresco"
-    },
-    {
-      id: "whiskycola", name: "Whisky e Cola", glass: "Highball", base: "whiskey", menu: "menu", category: "classici",
-      desc: "L'incontro classico ed inossidabile tra il calore legnoso del whisky e la dolcezza della cola.",
-      ingredients: [{"name": "Cola", "qty": "a colmare"}, {"name": "Whisky", "qty": "50 ml"}],
-      preparation: "Versa il whisky sul ghiaccio, completa con cola e mescola.", garnish: "Fetta di limone", taste: "Dolce, speziato, robusto"
-    },
-    {
-      id: "rumcola", name: "Rum e Cola", glass: "Highball", base: "rum", menu: "menu", category: "classici",
-      desc: "Il celebre Cuba Libre essenziale.",
-      ingredients: [{"name": "Cola", "qty": "a colmare"}, {"name": "Rum", "qty": "50 ml"}],
-      preparation: "Riempi il bicchiere di ghiaccio, aggiungi il rum e colma con cola fresca.", garnish: "Lime", taste: "Morbido, dolce, dissetante"
-    },
-    {
-      id: "vodkaspuma", name: "Vodka Spuma", glass: "Highball", base: "vodka", menu: "menu", category: "classici",
-      desc: "Il grande classico da bar toscano: la vodka si lega al profilo aromatico della spuma bionda.",
-      ingredients: [{"name": "Spuma bionda", "qty": "a colmare"}, {"name": "Vodka", "qty": "50 ml"}],
-      preparation: "Versa la vodka in tumbler alto pieno di ghiaccio e completa con spuma bionda ben fredda.", garnish: "Fetta di limone", taste: "Aromatico, dolce, vivace"
-    },
-    {
-      id: "longisland", name: "Long Island Iced Tea", glass: "Highball", base: "vodka gin rum tequila", menu: "menu", category: "classici sour",
-      desc: "Ricetta IBA. Cinque distillati bianchi, limone e zucchero, chiusi da un velo di cola: intenso, potente nella struttura.",
-      ingredients: [{"name": "Cola", "qty": "a colmare"}, {"name": "Sciroppo di zucchero", "qty": "30 ml"}, {"name": "Succo di limone", "qty": "25 ml"}, {"name": "Tequila", "qty": "15 ml"}, {"name": "Vodka", "qty": "15 ml"}, {"name": "Rum bianco", "qty": "15 ml"}, {"name": "Triple sec", "qty": "15 ml"}, {"name": "Gin", "qty": "15 ml"}],
-      preparation: "Versa tutti gli ingredienti in un highball pieno di ghiaccio, mescola delicatamente, completa con cola.", garnish: "Fetta di limone", taste: "Intenso, agrumato, deciso"
-    },
-    {
-      id: "manhattan", name: "Manhattan", glass: "Coppetta Cocktail", base: "whiskey rye vermouth", menu: "menu", category: "classici aperitivo vermut",
-      desc: "Ricetta IBA. Rye whiskey, vermouth rosso e Angostura mescolati con cura: uno dei cocktail più antichi e influenti della storia.",
-      ingredients: [{"name": "Rye Whiskey", "qty": "50 ml"}, {"name": "Vermouth rosso dolce", "qty": "20 ml"}, {"name": "Angostura bitter", "qty": "1 dash"}],
-      preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Robusto, speziato, vellutato"
-    },
-    {
-      id: "margarita", name: "Margarita", glass: "Coppa / Rocks Glass", base: "tequila", menu: "menu", category: "classici sour",
-      desc: "Il grande classico messicano: tequila, triple sec e lime fresco in perfetto equilibrio.",
-      ingredients: [{"name": "Tequila", "qty": "60 ml"}, {"name": "Triple sec", "qty": "30 ml"}, {"name": "Succo di lime", "qty": "30 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio. Filtra in coppa con bordo salato, oppure servi on the rocks.", garnish: "Rondella di lime", taste: "Agrumato, equilibrato, sapido"
-    },
-    {
-      id: "martinez", name: "Martinez", glass: "Coppetta Cocktail", base: "gin vermouth", menu: "fuori-menu", category: "classici vermut",
-      desc: "Ricetta IBA. Gin, vermouth rosso e maraschino: considerato l'antenato del Dry Martini.",
-      ingredients: [{"name": "Gin", "qty": "30 ml"}, {"name": "Vermouth rosso", "qty": "30 ml"}, {"name": "Maraschino", "qty": "7,5 ml"}, {"name": "Angostura Orange", "qty": "2 dash"}],
-      preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Aromatico, dolce, deciso"
-    },
-    {
-      id: "marypickford", name: "Mary Pickford", glass: "Coppetta Cocktail", base: "rum", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Rum bianco, ananas, granatina e maraschino: dolce, tropicale e fruttato.",
-      ingredients: [{"name": "Rum bianco", "qty": "60 ml"}, {"name": "Succo d'ananas", "qty": "60 ml"}, {"name": "Granatina", "qty": "7,5 ml"}, {"name": "Maraschino", "qty": "7,5 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Fetta d'ananas", taste: "Dolce, tropicale, fruttato"
-    },
-    {
-      id: "mimosa", name: "Mimosa", glass: "Flute", base: "prosecco champagne vino", menu: "fuori-menu", category: "classici aperitivo",
-      desc: "Ricetta IBA. Succo d'arancia e champagne in parti uguali: il classico da brunch.",
-      ingredients: [{"name": "Succo d'arancia", "qty": "75 ml"}, {"name": "Champagne (o Prosecco brut)", "qty": "75 ml"}],
-      preparation: "Versa il succo d'arancia nel flute, completa con champagne ben freddo.", garnish: "Twist d'arancia", taste: "Fruttato, frizzante, delicato"
-    },
-    {
-      id: "mitomilanotorino", name: "MI-TO (Milano-Torino)", glass: "Rocks Glass", base: "campari vermouth bitter", menu: "menu", category: "classici aperitivo vermut",
-      desc: "Punt e Mes e Campari in parti uguali: il classico piemontese-lombardo, diretto e amaricante.",
-      ingredients: [{"name": "Punt e Mes", "qty": "50 ml"}, {"name": "Campari", "qty": "50 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, aromatico, robusto"
-    },
-    {
-      id: "mintjulep", name: "Mint Julep", glass: "Julep Cup", base: "whiskey bourbon", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Bourbon e menta pestati con zucchero su ghiaccio tritato: il classico del Kentucky.",
-      ingredients: [{"name": "Bourbon", "qty": "60 ml"}, {"name": "Sciroppo di zucchero", "qty": "10 ml"}, {"name": "Foglie di menta", "qty": "6-8"}],
-      preparation: "Pesta delicatamente la menta con lo sciroppo sul fondo del bicchiere, riempi di ghiaccio tritato, versa il bourbon e mescola.", garnish: "Rametto di menta abbondante", taste: "Mentolato, robusto, fresco"
-    },
-    {
-      id: "mintkick", name: "Mint Kick", glass: "Rocks Glass", base: "analcolico", menu: "menu", category: "caffeina",
-      desc: "Analcolico. Espresso caldo shakerato con menta e zucchero: tostato, mentolato ed energico.",
-      ingredients: [{"name": "Caffè espresso fresco", "qty": "30 ml"}, {"name": "Sciroppo o foglie di menta", "qty": "15 ml"}, {"name": "Zucchero", "qty": "1 cucchiaino"}],
-      preparation: "Shakera energicamente l'espresso caldo con zucchero, menta e ghiaccio abbondante. Filtra.", garnish: "Foglia di menta", taste: "Tostato, mentolato, energico"
-    },
-    {
-      id: "mojito", name: "Mojito (pestato)", glass: "Highball", base: "rum", menu: "menu", category: "classici mojito sour",
-      desc: "Pestato. Rum bianco, lime e menta pestati con zucchero, allungati da soda ghiacciata.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Rum bianco", "qty": "50 ml"}, {"name": "Foglie di menta", "qty": "8-10"}, {"name": "Zucchero semolato", "qty": "2 cucchiaini"}, {"name": "Lime a spicchi", "qty": "1/2"}],
-      preparation: "Pesta lime, zucchero e menta sul fondo del bicchiere, aggiungi rum, riempi di ghiaccio tritato, completa con soda, mescola.", garnish: "Menta", taste: "Fresco, mentolato, agrumato"
-    },
-    {
-      id: "mojitoanalcolico", name: "Mojito Analcolico", glass: "Highball", base: "analcolico", menu: "menu", category: "mojito",
-      desc: "Analcolico. Lime e menta pestati con zucchero di canna, allungati da Ginger Ale.",
-      ingredients: [{"name": "Ginger Ale", "qty": "a colmare"}, {"name": "Menta fresca", "qty": "6-8 foglie"}, {"name": "Zucchero di canna", "qty": "2 cucchiaini"}, {"name": "Lime a spicchi", "qty": "1/2"}],
-      preparation: "Pesta menta, lime e zucchero sul fondo del bicchiere. Aggiungi ghiaccio tritato e Ginger Ale.", garnish: "Rametto di menta", taste: "Fresco, mentolato, speziato"
-    },
-    {
-      id: "mojitomerini", name: "Mojito Merini", glass: "Highball", base: "iovem amaro", menu: "menu", category: "mojito",
-      desc: "Twist sul classico mojito con liquore Iovem.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Iovem", "qty": "50 ml"}, {"name": "Succo di lime", "qty": "20 ml"}, {"name": "Sciroppo di zucchero", "qty": "20 ml"}, {"name": "Foglie di menta", "qty": "8-10"}],
-      preparation: "Pesta lime, zucchero e menta sul fondo del bicchiere, aggiungi Iovem, ghiaccio tritato e soda.", garnish: "Menta", taste: "Fresco, mentolato, agrumato"
-    },
-    {
-      id: "mojitomarinetti", name: "Mojito Marinetti", glass: "Highball", base: "campari bitter", menu: "menu", category: "mojito",
-      desc: "Twist sul classico mojito con Bitter Martini.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Bitter Martini Riserva", "qty": "50 ml"}, {"name": "Succo di lime", "qty": "20 ml"}, {"name": "Sciroppo di zucchero", "qty": "20 ml"}, {"name": "Foglie di menta", "qty": "8-10"}],
-      preparation: "Pesta lime, zucchero e menta, aggiungi Bitter Riserva, ghiaccio a scaglie e soda.", garnish: "Menta", taste: "Fresco, mentolato, agrumato"
-    },
-    {
-      id: "mojitomalaparte", name: "Mojito Malaparte", glass: "Highball", base: "liquore", menu: "menu", category: "mojito",
-      desc: "Twist sul classico mojito con liquore al sedano.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Liquore al Sedano", "qty": "50 ml"}, {"name": "Succo di lime", "qty": "20 ml"}, {"name": "Sciroppo di zucchero", "qty": "20 ml"}, {"name": "Foglie di menta", "qty": "8-10"}],
-      preparation: "Pesta lime, zucchero e menta, aggiungi liquore al sedano, ghiaccio tritato e soda.", garnish: "Sedano", taste: "Fresco, mentolato, agrumato"
-    },
-    {
-      id: "mojitomarquez", name: "Mojito Marquez", glass: "Highball", base: "cachaca rum", menu: "menu", category: "mojito",
-      desc: "Twist sul classico mojito con Cachaça e Passion Fruit.",
-      ingredients: [{"name": "Soda", "qty": "a colmare"}, {"name": "Cachaça", "qty": "50 ml"}, {"name": "Passion Fruit", "qty": "20 ml"}, {"name": "Succo di lime", "qty": "20 ml"}, {"name": "Sciroppo di zucchero", "qty": "20 ml"}, {"name": "Foglie di menta", "qty": "8-10"}, {"name": "Tabasco", "qty": "1-2 gocce"}],
-      preparation: "Pesta lime, zucchero, menta e passion fruit, aggiungi cachaça, tabasco e soda.", garnish: "Menta", taste: "Tropicale, piccante"
-    },
-    {
-      id: "monkeygland", name: "Monkey Gland", glass: "Coppetta Cocktail", base: "gin", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Gin e arancia con un tocco di assenzio e granatina: fruttato, con una nota anisata e speziata sul finale.",
-      ingredients: [{"name": "Gin", "qty": "45 ml"}, {"name": "Succo d'arancia", "qty": "25 ml"}, {"name": "Assenzio", "qty": "2 dash"}, {"name": "Granatina", "qty": "2 dash"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Fruttato, speziato, anisato"
-    },
-    {
-      id: "moscowmule", name: "Moscow Mule", glass: "Mule Cup / Rocks Glass", base: "vodka", menu: "menu", category: "classici",
-      desc: "Ricetta IBA. Vodka, lime e ginger beer, servito nella tipica coppa di rame: piccante, agrumato e sempre dissetante.",
-      ingredients: [{"name": "Ginger beer", "qty": "120 ml"}, {"name": "Vodka", "qty": "45 ml"}, {"name": "Succo di lime", "qty": "10 ml"}],
-      preparation: "Versa vodka e ginger beer nella mule cup con ghiaccio, aggiungi il lime e mescola delicatamente.", garnish: "Fetta di lime", taste: "Piccante, agrumato, dissetante"
-    },
-    {
-      id: "moscowmuleanalcolico", name: "Moscow Mule Analcolico", glass: "Tazza di Rame", base: "analcolico", menu: "menu", category: "classici",
-      desc: "Analcolico. Pompelmo e lime allungati da Ginger Beer: agrumato, pungente e fresco.",
-      ingredients: [{"name": "Ginger Beer", "qty": "a colmare"}, {"name": "Succo di pompelmo", "qty": "45 ml"}, {"name": "Succo di lime", "qty": "15 ml"}],
-      preparation: "Versa succo di pompelmo e lime su ghiaccio, completa con Ginger Beer.", garnish: "Spicchio di pompelmo", taste: "Agrumato, pungente, fresco"
-    },
-    {
-      id: "negroni", name: "Negroni", glass: "Rocks Glass", base: "gin campari vermouth bitter", menu: "menu", category: "classici negroni aperitivo vermut",
-      desc: "Il re dell'aperitivo italiano: perfetta armonia in parti uguali tra la balsamicità del gin, il dolce erbaceo del vermut e l'amaro deciso del bitter.",
-      ingredients: [{"name": "Gin Bombay Sapphire", "qty": "30 ml"}, {"name": "Martini Rosso", "qty": "30 ml"}, {"name": "Bitter Martini Riserva", "qty": "30 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negroniallajuri", name: "Alla Juri", glass: "Rocks Glass", base: "gin campari vermouth bitter", menu: "menu", category: "negroni aperitivo vermut",
-      desc: "Twist su Negroni arricchito dalla profondità speziata e complessa dell'Angostura Bitters.",
-      ingredients: [{"name": "Gin Bombay Sapphire", "qty": "30 ml"}, {"name": "Martini Rubino", "qty": "30 ml"}, {"name": "Bitter Martini Riserva", "qty": "30 ml"}, {"name": "Angostura", "qty": "2 dash"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene. Servire con cannuccia e fetta di limone.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negronipornonegroni", name: "Pornonegroni", glass: "Rocks Glass", base: "gin vermouth fernet amaro", menu: "menu", category: "negroni aperitivo vermut",
-      desc: "Negroni complesso ed erboristico: Select, Fernet, Assenzio e Disaronno creano un caleidoscopio aromatico unico.",
-      ingredients: [{"name": "Gin Bombay Sapphire", "qty": "25 ml"}, {"name": "Vermut Dandi", "qty": "20 ml"}, {"name": "Select", "qty": "20 ml"}, {"name": "Fernet", "qty": "10 ml"}, {"name": "Disaronno", "qty": "10 ml"}, {"name": "Assenzio", "qty": "2 dash"}],
-      preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Servire in coppetta Martini.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negronitoscano", name: "Toscano", glass: "Rocks Glass", base: "gin campari vermouth bitter", menu: "menu", category: "negroni aperitivo vermut",
-      desc: "L'omaggio al territorio con le eccellenze toscane di Prato e botaniche autoctone.",
-      ingredients: [{"name": "Gin Ambrosia", "qty": "30 ml"}, {"name": "Vermut di Prato", "qty": "30 ml"}, {"name": "Bitter Du.it", "qty": "30 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negronimediterraneo", name: "Mediterraneo", glass: "Rocks Glass", base: "gin campari vermouth bitter", menu: "menu", category: "negroni aperitivo vermut",
-      desc: "Le note di timo, basilico e oliva di Gin Mare incontrano la tradizione del bitter.",
-      ingredients: [{"name": "Gin Mare", "qty": "30 ml"}, {"name": "Vermut Du.it", "qty": "30 ml"}, {"name": "Campari", "qty": "30 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negronidellago", name: "Del Lago", glass: "Rocks Glass", base: "gin campari vermouth bitter", menu: "menu", category: "negroni aperitivo vermut",
-      desc: "Carattere alpino e lacustre con la linea selezionata Altolago.",
-      ingredients: [{"name": "Gin Tanqueray", "qty": "30 ml"}, {"name": "Vermut Altolago", "qty": "30 ml"}, {"name": "Bitter Altolago", "qty": "30 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negronidoc", name: "DOC", glass: "Rocks Glass", base: "gin campari vermouth bitter", menu: "menu", category: "negroni aperitivo vermut",
-      desc: "Twist strutturato con Vermouth Cocchi di Torino e Campari.",
-      ingredients: [{"name": "Gin Tanqueray", "qty": "30 ml"}, {"name": "Vermut Cocchi", "qty": "30 ml"}, {"name": "Campari", "qty": "30 ml"}, {"name": "Angostura", "qty": "2 dash"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negronibalsamico", name: "Balsamico", glass: "Rocks Glass", base: "vodka campari bitter vermouth", menu: "menu", category: "negroni aperitivo vermut",
-      desc: "Incontro intrigante tra le note agrodolci del vermut all'aceto balsamico e il cacao.",
-      ingredients: [{"name": "Vodka B42", "qty": "30 ml"}, {"name": "Vermut Aceto Balsamico", "qty": "30 ml"}, {"name": "Bitter Martini Riserva", "qty": "30 ml"}, {"name": "Cacao Bitters", "qty": "2 dash"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negronilacambiale", name: "La Cambiale", glass: "Rocks Glass", base: "gin campari liquore bitter", menu: "menu", category: "negroni aperitivo",
-      desc: "Freschezza vegetale e botanica grazie all'unione con liquore al sedano.",
-      ingredients: [{"name": "Gin Only JU", "qty": "30 ml"}, {"name": "Liquore al Sedano", "qty": "30 ml"}, {"name": "Bitter Du.it", "qty": "30 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "negronizero", name: "Negroni Analcolico 0%", glass: "Rocks Glass", base: "analcolico bitter", menu: "menu", category: "negroni aperitivo",
-      desc: "Il sapore deciso del Negroni senza una goccia di alcol.",
-      ingredients: [{"name": "Tanqueray 0.0", "qty": "30 ml"}, {"name": "Martini Vibrante", "qty": "30 ml"}, {"name": "Bitter Analcolico Altolago", "qty": "30 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico"
-    },
-    {
-      id: "oldcuban", name: "Old Cuban", glass: "Coppetta Cocktail", base: "rum prosecco vino", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Rum invecchiato, lime, menta e Angostura, allungati da prosecco: elegante, mentolato e frizzante.",
-      ingredients: [{"name": "Prosecco", "qty": "45 ml"}, {"name": "Havana Club (rum invecchiato)", "qty": "45 ml"}, {"name": "Succo di lime", "qty": "15 ml"}, {"name": "Sciroppo di zucchero", "qty": "15 ml"}, {"name": "Foglie di menta", "qty": "4"}, {"name": "Angostura bitter", "qty": "2 dash"}],
-      preparation: "Shakera rum, lime, zucchero, menta e Angostura con ghiaccio, doppio filtraggio in coppetta cocktail, completa con prosecco.", garnish: "Rametto di menta", taste: "Elegante, mentolato, frizzante"
-    },
-    {
-      id: "pratomule", name: "Prato Mule", glass: "Tazza Rame / Highball", base: "gin vermouth", menu: "menu", category: "nostri vermut",
-      desc: "Twist toscano sul Moscow Mule con Gin Only JU e note di Vermut di Prato.",
-      ingredients: [{"name": "Gin Only JU", "qty": "45 ml"}, {"name": "Vermut di Prato", "qty": "15 ml"}, {"name": "Orange Bitters", "qty": "2 dash"}, {"name": "Ginger Beer", "qty": "a colmare"}],
-      preparation: "Unisci gin, vermut e bitters nel bicchiere con ghiaccio, completa con ginger beer.", garnish: "Fettina di lime", taste: "Speziato, fresco, agrumato"
-    },
-    {
-      id: "rinascente", name: "Rinascente", glass: "Highball", base: "liquore", menu: "menu", category: "aperitivo",
-      desc: "Profumo intenso di cedro unito al tocco amaro della tonica.",
-      ingredients: [{"name": "Acqua di Cedro Nardini", "qty": "50 ml"}, {"name": "Acqua Tonica", "qty": "100 ml"}],
-      preparation: "Versa Acqua di Cedro su ghiaccio e completa con tonica.", garnish: "Scorza di cedro o limone", taste: "Agrumato, rinfrescante"
-    },
-    {
-      id: "rusty_nail", name: "Rusty Nail", glass: "Rocks Glass", base: "whiskey scotch", menu: "menu", category: "classici",
-      desc: "Ricetta IBA. Scotch whisky e Drambuie: un after-dinner intenso, dolce e speziato dal carattere scozzese deciso.",
-      ingredients: [{"name": "Scotch whisky", "qty": "45 ml"}, {"name": "Drambuie", "qty": "25 ml"}],
-      preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola delicatamente.", garnish: "Twist d'arancia", taste: "Intenso, dolce, speziato"
-    },
-    {
-      id: "sazerac", name: "Sazerac", glass: "Rocks Glass", base: "cognac", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Cognac, assenzio e Peychaud's bitters: il cocktail simbolo di New Orleans, speziato e dal profilo anisato.",
-      ingredients: [{"name": "Cognac", "qty": "50 ml"}, {"name": "Assenzio", "qty": "10 ml (risciacquo)"}, {"name": "Peychaud's Bitters", "qty": "2 dash"}, {"name": "Zolletta di zucchero", "qty": "1"}],
-      preparation: "Risciacqua un rocks glass freddo con l'assenzio. Mescola gli altri ingredienti con ghiaccio nel mixing glass. Elimina l'assenzio dal primo bicchiere, filtra il drink.", garnish: "Twist di limone", taste: "Speziato, aromatico, deciso"
-    },
-    {
-      id: "screwdriver", name: "Screwdriver", glass: "Highball", base: "vodka", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Vodka e succo d'arancia: il long drink più semplice ed essenziale, fruttato e sempre dissetante.",
-      ingredients: [{"name": "Succo d'arancia", "qty": "90 ml"}, {"name": "Vodka", "qty": "45 ml"}],
-      preparation: "Versa vodka e succo d'arancia su ghiaccio in highball, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Fruttato, semplice, dissetante"
-    },
-    {
-      id: "shirleytemple", name: "Shirley Temple", glass: "Highball", base: "analcolico", menu: "menu", category: "classici",
-      desc: "Analcolico. Ginger Ale e granatina: il mocktail più famoso al mondo, dolce, effervescente e leggermente speziato.",
-      ingredients: [{"name": "Ginger Ale", "qty": "120 ml"}, {"name": "Sciroppo di granatina", "qty": "15 ml"}],
-      preparation: "Versa il Ginger Ale su ghiaccio, aggiungi delicatamente la granatina.", garnish: "Ciliegina al maraschino", taste: "Dolce, effervescente, speziato"
-    },
-    {
-      id: "southside", name: "Southside", glass: "Coppetta Cocktail", base: "gin", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Gin, lime, zucchero e menta shakerati: un Mojito 'vestito elegante', fresco, mentolato e agrumato.",
-      ingredients: [{"name": "Gin", "qty": "45 ml"}, {"name": "Succo di lime", "qty": "25 ml"}, {"name": "Sciroppo di zucchero", "qty": "15 ml"}, {"name": "Foglie di menta", "qty": "6-8"}],
-      preparation: "Shakera energicamente tutti gli ingredienti con ghiaccio, doppio filtraggio in coppetta cocktail fredda.", garnish: "Rametto di menta", taste: "Fresco, mentolato, agrumato"
-    },
-    {
-      id: "spritz", name: "Spritz", glass: "Calice da Vino", base: "campari bitter prosecco vino", menu: "menu", category: "spritz aperitivo",
-      desc: "Il classico aperitivo veneto con Prosecco, Aperol/Bitter e soda.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "Aperol o Bitter", "qty": "60 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo"
-    },
-    {
-      id: "spritzbitter", name: "Spritz Bitter", glass: "Calice da Vino", base: "campari bitter prosecco vino", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante più amara con Martini Bitter.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "Martini Bitter", "qty": "60 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo"
-    },
-    {
-      id: "spritzvenezia", name: "Spritz Venezia", glass: "Calice da Vino", base: "campari bitter prosecco vino", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante veneziana con Select.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "Select", "qty": "60 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Oliva verde grande", taste: "Aromatico, amaricante, tradizionale"
-    },
-    {
-      id: "spritzcynar", name: "Spritz Cynar", glass: "Calice da Vino", base: "amaro prosecco vino", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante al carciofo con Cynar.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "Cynar", "qty": "60 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo"
-    },
-    {
-      id: "spritzlimoncello", name: "Spritz Limoncello", glass: "Calice da Vino", base: "vino prosecco", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante fresca con limoncello.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "Limoncello", "qty": "60 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Foglia di menta e limone", taste: "Dolce, citrico, dissetante"
-    },
-    {
-      id: "selispritz", name: "Seli Spritz", glass: "Calice da Vino", base: "liquore prosecco vino", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante al sedano con Selinon.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "Liquore al sedano Selinon", "qty": "60 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Foglia di sedano e menta", taste: "Vegetale, aromatico, fresco"
-    },
-    {
-      id: "spritzventuro", name: "Spritz Venturo", glass: "Calice da Vino", base: "campari bitter prosecco vino", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante blu con Venturo.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "Venturo", "qty": "60 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Crusta di sale o fetta di limone", taste: "Salmastro, botanico, agrumato"
-    },
-    {
-      id: "spritzit", name: "Spritz.it", glass: "Calice da Vino", base: "campari bitter prosecco vino", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante amara con Du.it.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "Bitter Du.it", "qty": "60 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Amaricante, brioso"
-    },
-    {
-      id: "hugo", name: "Hugo", glass: "Calice da Vino", base: "vino prosecco", menu: "menu", category: "spritz aperitivo",
-      desc: "Aperitivo alpino ai fiori di sambuco.",
-      ingredients: [{"name": "Prosecco", "qty": "90 ml"}, {"name": "St. Germain (fiori di sambuco)", "qty": "45 ml"}, {"name": "Soda", "qty": "splash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Ciuffo di menta", taste: "Floreale, fresco, leggero"
-    },
-    {
-      id: "antognoni", name: "Antognoni", glass: "Calice da Vino", base: "iovem amaro prosecco vino", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante violacea e speziata con Iovem.",
-      ingredients: [{"name": "Acqua Tonica", "qty": "90 ml"}, {"name": "Liquore Iovem", "qty": "60 ml"}, {"name": "Prosecco", "qty": "splash"}, {"name": "Orange bitter", "qty": "2 dash"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Spicchio di lime", taste: "Aromatico, speziato, vivace"
-    },
-    {
-      id: "spritzanalcolico", name: "Spritz Analcolico", glass: "Calice da Vino", base: "analcolico", menu: "menu", category: "spritz aperitivo",
-      desc: "Variante analcolica con Crodino e Martini Vibrante.",
-      ingredients: [{"name": "Acqua Tonica", "qty": "a colmare"}, {"name": "Crodino", "qty": "1"}, {"name": "Martini Vibrante", "qty": "30 ml"}],
-      preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Agrumato, amaricante, vivace"
-    },
-    {
-      id: "tequilasunrise", name: "Tequila Sunrise", glass: "Highball", base: "tequila", menu: "fuori-menu", category: "classici",
-      desc: "Ricetta IBA. Tequila e succo d'arancia con un fondo di granatina che crea il caratteristico effetto 'alba': fruttato e scenografico.",
-      ingredients: [{"name": "Succo d'arancia", "qty": "90 ml"}, {"name": "Tequila", "qty": "45 ml"}, {"name": "Granatina", "qty": "15 ml"}],
-      preparation: "Versa tequila e succo d'arancia su ghiaccio in highball, aggiungi la granatina versandola lentamente sul fondo.", garnish: "Fetta d'arancia", taste: "Fruttato, dolce, fresco"
-    },
-    {
-      id: "tomcollins", name: "Tom Collins", glass: "Collins Glass", base: "gin", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Come il John Collins ma con Old Tom Gin, più dolce e morbido: gin, limone, zucchero e soda costruiti sul ghiaccio.",
-      ingredients: [{"name": "Soda", "qty": "60 ml"}, {"name": "Old Tom Gin", "qty": "45 ml"}, {"name": "Succo di limone", "qty": "30 ml"}, {"name": "Sciroppo di zucchero", "qty": "15 ml"}],
-      preparation: "Versa tutti gli ingredienti direttamente in un Collins glass pieno di ghiaccio, mescola delicatamente.", garnish: "Fetta di limone", taste: "Agrumato, morbido, fresco"
-    },
-    {
-      id: "tommysmargarita", name: "Tommy's Margarita", glass: "Rocks Glass", base: "tequila", menu: "fuori-menu", category: "classici sour",
-      desc: "Variante secca e pulita del Margarita classico, senza triple sec: il succo di lime e l'agave lasciano parlare la tequila in tutta la sua purezza.",
-      ingredients: [{"name": "Tequila 100% agave (blanco)", "qty": "60 ml"}, {"name": "Succo di lime", "qty": "25 ml"}, {"name": "Sciroppo d'agave", "qty": "15 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio. Filtra in rocks glass con ghiaccio, oppure in coppa senza ghiaccio (up).", garnish: "Rondella di lime", taste: "Agrumato, dolce, fresco"
-    },
-    {
-      id: "whiskifacile", name: "Whisky Facile", glass: "Rocks Glass", base: "whiskey campari bitter vermouth", menu: "menu", category: "nostri aperitivo vermut",
-      desc: "Scotch Whisky, Martini Ambrato e St. Germain, chiuso da un cucchiaio di Laphroaig in superficie: affumicato, aromatico e robusto.",
-      ingredients: [{"name": "Scotch Whisky", "qty": "45 ml"}, {"name": "Martini Ambrato", "qty": "15 ml"}, {"name": "Laphroaig", "qty": "1 cucchiaio (floater)"}, {"name": "St. Germain", "qty": "10 ml"}, {"name": "Angostura", "qty": "2 dash"}],
-      preparation: "Versa in mixing glass con ghiaccio, mescola bene. Filtra in rocks glass con ghiaccio, completa con il Laphroaig.", garnish: "Scorza d'arancia", taste: "Affumicato, aromatico, robusto"
-    },
-    {
-      id: "whitelady", name: "White Lady", glass: "Coppetta Cocktail", base: "gin", menu: "fuori-menu", category: "classici sour",
-      desc: "Ricetta IBA. Gin, triple sec e limone shakerati: un sidecar 'vestito di bianco', secco, agrumato ed elegante.",
-      ingredients: [{"name": "Gin", "qty": "40 ml"}, {"name": "Triple sec", "qty": "30 ml"}, {"name": "Succo di limone", "qty": "20 ml"}],
-      preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail grande e fredda.", garnish: "Twist di limone", taste: "Agrumato, secco, elegante"
-    },
-    {
-      id: "whiterussian", name: "White Russian", glass: "Rocks Glass", base: "vodka", menu: "menu", category: "classici caffeina",
-      desc: "La versione ammorbidita del Black Russian: panna versata a strato addolcisce vodka e caffè in un sorso cremoso e avvolgente.",
-      ingredients: [{"name": "Vodka", "qty": "50 ml"}, {"name": "Liquore al caffè (Kahlúa)", "qty": "20 ml"}, {"name": "Panna liquida", "qty": "20 ml"}],
-      preparation: "Versa vodka e Kahlúa su ghiaccio, completa con panna versata delicatamente a strato sul dorso di un cucchiaio.", garnish: "Twist di limone", taste: "Cremoso, dolce, intenso"
-    },
-    {
-      id: "bicicletta", name: "Bicicletta", glass: "Rocks / Calice", base: "campari bitter vino", menu: "menu", category: "aperitivo",
-      desc: "Lo storico aperitivo italiano da osteria: bitter, vino bianco fermo e soda.",
-      ingredients: [{"name": "Martini Bitter Riserva", "qty": "45 ml"}, {"name": "Vino bianco secco", "qty": "60 ml"}, {"name": "Soda", "qty": "30 ml"}],
-      preparation: "Versa bitter, vino bianco e soda nel bicchiere con ghiaccio e mescola.", garnish: "Mezza fetta d'arancia", taste: "Secco, amaricante, tradizionale"
-    },
-    {
-      id: "mezzoemezzo", name: "Mezzo e Mezzo", glass: "Rocks Glass", base: "amaro liquore", menu: "menu", category: "aperitivo",
-      desc: "Il celebre aperitivo di Bassano del Grappa con Nardini Rosso e Rabarbaro.",
-      ingredients: [{"name": "Nardini Mezzo e Mezzo", "qty": "60 ml"}, {"name": "Soda", "qty": "60 ml"}],
-      preparation: "Servi freddo, aggiungi la soda al liquore e mescola.", garnish: "Scorza di limone", taste: "Amaricante, rabarbaro, agrumato"
-    },
-    {
-      id: "vermutesoda", name: "Vermut e Soda", glass: "Rocks Glass", base: "vermouth vermut", menu: "menu", category: "aperitivo vermut",
-      desc: "La quintessenza del sorseggio pomeridiano italiano con vermouth rosso e soda.",
-      ingredients: [{"name": "Martini Rubino Riserva", "qty": "60 ml"}, {"name": "Soda", "qty": "40 ml"}],
-      preparation: "Versa vermut su ghiaccio, completa con soda e mescola.", garnish: "Scorza d'arancia o limone", taste: "Speziato, vinoso, morbido"
-    },
-    {
-      id: "camparisoda", name: "Campari Soda", glass: "Bottiglietta / Rocks", base: "campari bitter", menu: "menu", category: "aperitivo",
-      desc: "La celebre monodose futurista ideata da Fortunato Depero nel 1932.",
-      ingredients: [{"name": "Campari Soda", "qty": "98 ml (1 bott.)"}],
-      preparation: "Servi freddissimo nella bottiglietta o in tumbler con ghiaccio.", garnish: "Scorza o fetta d'arancia", taste: "Secco, amaricante, frizzante"
-    },
-    {
-      id: "martinispritz", name: "Martini Spritz", glass: "Calice Ampio", base: "vermouth vermut prosecco vino", menu: "menu", category: "spritz aperitivo vermut",
-      desc: "Fresca interpretazione con Martini Bianco, Prosecco, lime e menta.",
-      ingredients: [{"name": "Martini Bianco", "qty": "60 ml"}, {"name": "Prosecco", "qty": "60 ml"}, {"name": "Soda", "qty": "30 ml"}],
-      preparation: "Versa in parti uguali Martini Bianco e Prosecco su ghiaccio, aggiungi soda.", garnish: "Foglioline di menta e lime", taste: "Morbido, floreale, rinfrescante"
-    },
-    {
-      id: "vinodestate", name: "Vino d'Estate", glass: "Highball / Calice", base: "vino", menu: "menu", category: "aperitivo",
-      desc: "Drink fresco da aperitivo estivo: vino aromatizzato alle spezie e lemonsoda ghiacciata.",
-      ingredients: [{"name": "Vino speziato", "qty": "90 ml"}, {"name": "Lemonsoda", "qty": "a colmare"}],
-      preparation: "Versa il vino speziato freddo su abbondante ghiaccio e completa con lemonsoda.", garnish: "Fetta di limone", taste: "Dissetante, agrumato, speziato"
-    }
+    { id: "allafrutta", name: "Alla Frutta", base: "analcolico", menu_status: "menu", category: "classici", desc: "Analcolico. Un mix libero di succhi freschi e sciroppi a piacere: fruttato, fresco e sempre dissetante, da comporre secondo la stagione.", ingredients: [{name: "Mix di succhi freschi e sciroppi", qty: "q.b."}], preparation: "Componi a piacere con frutta fresca e servi con ghiaccio.", garnish: "Spicchio d'agrume", taste: "Fruttato, fresco, dissetante", glass: "Highball / Calice" },
+    { id: "americano", name: "Americano", base: "campari vermut", menu_status: "menu", category: "aperitivo classici", desc: "Ricetta IBA. Campari e vermouth rosso allungati da soda: l'aperitivo italiano per eccellenza, amaricante e dissetante.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Campari", qty:"30 ml"}, {name:"Vermouth rosso", qty:"30 ml"}], preparation: "Versa Campari e vermouth su ghiaccio in rocks glass, completa con soda, mescola.", garnish: "Fetta d'arancia", taste: "Amaricante, aromatico, dissetante", glass: "Rocks Glass" },
+    { id: "annaemarco", name: "Anna e Marco", base: "vodka rum", menu_status: "menu", category: "nostri", desc: "Rum bianco e vodka fanno da base a un'onda di pesca, frutto della passione e fragola, ammorbidita dal triple sec. Colorato e conviviale.", ingredients: [{name:"Succo di pesca", qty:"80 ml"}, {name:"Rum bianco", qty:"30 ml"}, {name:"Triple sec", qty:"20 ml"}, {name:"Sciroppo frutto della passione", qty:"20 ml"}, {name:"Vodka", qty:"10 ml"}, {name:"Sciroppo di fragola", qty:"10 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio. Filtra nel balloon riempito di ghiaccio fresco.", garnish: "Fetta d'arancia", taste: "Dolce, fruttato, tropicale", glass: "Balloon 45cl" },
+    { id: "antognoni", name: "Antognoni", base: "vermut amaro iovem prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Variante violacea e speziata con Iovem, tonica e orange bitter.", ingredients: [{name:"Acqua Tonica", qty:"9 cl"}, {name:"Liquore Iovem", qty:"6 cl"}, {name:"Prosecco", qty:"splash"}, {name:"Orange bitter", qty:"2 dash"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo", glass: "Calice da Vino" },
+    { id: "bacardi", name: "Bacardi", base: "rum", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Rum Bacardi, lime e granatina: un Daiquiri addolcito dalla granatina, agrumato e fresco.", ingredients: [{name:"Rum Bacardi Carta Blanca", qty:"45 ml"}, {name:"Succo di lime", qty:"20 ml"}, {name:"Granatina", qty:"15 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Rondella di lime", taste: "Agrumato, dolce, fresco", glass: "Coppetta Cocktail" },
+    { id: "bahamamama", name: "Bahama Mama", base: "rum", menu_status: "menu", category: "classici", desc: "Il rum scuro prende il comando con note calde di caramello e spezie, addolcito da arancia e ananas, con un tocco cremoso di cocco e granatina.", ingredients: [{name:"Rum scuro", qty:"60 ml"}, {name:"Succo d'arancia", qty:"40 ml"}, {name:"Succo di ananas", qty:"40 ml"}, {name:"Sciroppo di cocco", qty:"15 ml"}, {name:"Granatina", qty:"10 ml"}], preparation: "Shakera tutti gli ingredienti energicamente con ghiaccio. Filtra in tiki mug o tumbler alto pieno di ghiaccio tritato.", garnish: "Fetta d'arancia", taste: "Dolce, speziato, avvolgente", glass: "Tiki mug / Highball" },
+    { id: "bahamaninho", name: "Bahama Ninho", base: "analcolico", menu_status: "menu", category: "classici", desc: "Analcolico. Arancia, ananas e cocco shakerati con un fondo di granatina: dolce, tropicale e cremoso, la versione analcolica del Bahama Mama.", ingredients: [{name:"Succo d'arancia", qty:"60 ml"}, {name:"Succo d'ananas", qty:"60 ml"}, {name:"Sciroppo di cocco", qty:"20 ml"}, {name:"Granatina", qty:"10 ml"}], preparation: "Shakera i succhi e il cocco con ghiaccio. Versa nel bicchiere con la granatina sul fondo.", garnish: "Fetta d'ananas", taste: "Dolce, tropicale, cremoso", glass: "Hurricane / Highball" },
+    { id: "balsamico", name: "Balsamico", base: "vodka campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Incontro intrigante tra le note agrodolci del vermut all'aceto balsamico e il cacao.", ingredients: [{name:"Vodka B42", qty:"30 ml"}, {name:"Vermut Aceto Balsamico", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}, {name:"Cacao Bitters", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "bellini", name: "Bellini", base: "prosecco vino", menu_status: "menu", category: "aperitivo classici", desc: "Ricetta IBA. Nato al Harry's Bar di Venezia: Prosecco e purea di pesca in un aperitivo elegante, delicato e frizzante.", ingredients: [{name:"Prosecco", qty:"100 ml"}, {name:"Purea di pesca", qty:"50 ml"}], preparation: "Versa direttamente nel flute la purea di pesca, poi completa con Prosecco ben freddo.", garnish: "Nessuno", taste: "Fruttato, delicato, frizzante", glass: "Flute" },
+    { id: "bicicletta", name: "Bicicletta", base: "campari vino", menu_status: "menu", category: "aperitivo classici", desc: "Lo storico aperitivo italiano da osteria: bitter, vino bianco fermo e soda.", ingredients: [{name:"Bitter", qty:"45 ml"}, {name:"Vino Bianco", qty:"60 ml"}, {name:"Soda", qty:"30 ml"}], preparation: "Versa bitter, vino bianco e soda nel bicchiere con ghiaccio.", garnish: "Mezza fetta d'arancia", taste: "Secco, amaricante, tradizionale", glass: "Calice / Rocks" },
+    { id: "blackrussian", name: "Black Russian", base: "vodka", menu_status: "menu", category: "classici caffeina", desc: "Vodka e liquore al caffè in purezza: un drink essenziale, deciso e senza compromessi, per chi ama il gusto diretto.", ingredients: [{name:"Vodka", qty:"50 ml"}, {name:"Liquore al caffè (Kahlúa)", qty:"20 ml"}], preparation: "Versa direttamente su ghiaccio in rocks glass, mescola.", garnish: "Twist di limone", taste: "Intenso, dolce, robusto", glass: "Rocks Glass" },
+    { id: "bloodymary", name: "Bloody Mary", base: "vodka", menu_status: "menu", category: "classici", desc: "Il cocktail 'salato' per eccellenza: vodka e succo di pomodoro si incontrano con la piccantezza del Tabasco e la profondità del Worcestershire, in un drink intenso e strutturato.", ingredients: [{name:"Succo di pomodoro", qty:"90 ml"}, {name:"Vodka", qty:"40 ml"}, {name:"Salsa Worcestershire", qty:"10 ml"}, {name:"Succo di limone", qty:"5 ml"}, {name:"Tabasco", qty:"2-3 dash"}, {name:"Sale e pepe nero", qty:"q.b."}], preparation: "Versa tutti gli ingredienti in tumbler alto pieno di ghiaccio, mescola bene dal basso verso l'alto (senza shakerare).", garnish: "Rondella di limone", taste: "Speziato, sapido, robusto", glass: "Highball" },
+    { id: "buonanottefiorellino", name: "Buonanotte Fiorellino", base: "gin", menu_status: "menu", category: "nostri sour", desc: "Gin Bathtub Numquam e St Germain si aprono in un long drink floreale, rinfrescato da limone e soda: delicato e profumato.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Gin Bathtub Numquam", qty:"50 ml"}, {name:"Succo di limone", qty:"20 ml"}, {name:"St Germain", qty:"10 ml"}, {name:"Zucchero (sciroppo)", qty:"10 ml"}], preparation: "Shakera gin, St Germain, limone e zucchero con ghiaccio, filtra in tumbler alto pieno di ghiaccio, completa con soda.", garnish: "Rametto di menta", taste: "Floreale, agrumato, fresco", glass: "Highball" },
+    { id: "caipirinha", name: "Caipirinha", base: "cachaca rum", menu_status: "menu", category: "classici sour", desc: "Il cocktail nazionale brasiliano: cachaça, lime pestato e zucchero in un drink diretto e rustico, dove la lavorazione manuale del lime dona un carattere intenso e resinoso.", ingredients: [{name:"Cachaça", qty:"50 ml"}, {name:"Zucchero semolato", qty:"2 cucchiaini"}, {name:"Lime a spicchi", qty:"1/2"}], preparation: "Taglia il lime a spicchi eliminando le estremità bianche, pestalo con lo zucchero nel bicchiere, riempi con ghiaccio tritato, versa la cachaça e mescola bene.", garnish: "Spicchio di lime", taste: "Agrumato, deciso, rustico", glass: "Rocks Glass" },
+    { id: "camparisoda", name: "Campari Soda", base: "campari", menu_status: "menu", category: "aperitivo", desc: "La celebre monodose futurista ideata da Fortunato Depero nel 1932.", ingredients: [{name:"Campari Soda", qty:"98 ml (1 bott.)"}], preparation: "Servire freddo nella bottiglietta o in tumbler con ghiaccio.", garnish: "Fetta d'arancia", taste: "Secco, frizzante", glass: "Bottiglietta / Rocks" },
+    { id: "catatumbo", name: "Catatumbo", base: "rum", menu_status: "fuori-menu", category: "nostri", desc: "Rum bianco, limone e miele in equilibrio agrodolce, allungati dalla piccantezza speziata della ginger beer.", ingredients: [{name:"Ginger beer", qty:"a colmare"}, {name:"Rum bianco", qty:"50 ml"}, {name:"Succo di limone", qty:"20 ml"}, {name:"Miele (in sciroppo)", qty:"15 ml"}], preparation: "Shakera rum, limone e miele con ghiaccio. Filtra in tumbler alto o mug da mule, completa con ginger beer.", garnish: "Fetta di limone", taste: "Agrodolce, speziato, fresco", glass: "Highball / Mug da Mule" },
+    { id: "cloverclub", name: "Clover Club", base: "gin", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Gin, limone e sciroppo di lampone montati con albume: fruttato e vellutato, dalla caratteristica testa serica.", ingredients: [{name:"Gin", qty:"45 ml"}, {name:"Succo di limone", qty:"15 ml"}, {name:"Sciroppo di lampone", qty:"15 ml"}, {name:"Albume d'uovo", qty:"1 (o 15 ml aquafaba)"}], preparation: "Dry shake senza ghiaccio 10-15 secondi per montare l'albume, poi shake normale con ghiaccio. Filtra in coppetta cocktail.", garnish: "Twist di limone", taste: "Fruttato, vellutato, agrumato", glass: "Coppetta Cocktail" },
+    { id: "cubalibre", name: "Cuba Libre", base: "rum", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Rum, cola e lime: il long drink cubano più semplice e conosciuto al mondo, dissetante e diretto.", ingredients: [{name:"Cola", qty:"a colmare"}, {name:"Rum", qty:"45 ml"}, {name:"Succo di lime", qty:"10 ml"}], preparation: "Versa rum e lime su ghiaccio in highball, completa con cola, mescola delicatamente.", garnish: "Rondella di lime", taste: "Agrumato, dolce, dissetante", glass: "Highball" },
+    { id: "cuccurucupaloma", name: "Cucurrucucú Paloma", base: "tequila", menu_status: "menu", category: "nostri", desc: "Una rivisitazione della Paloma classica: la tequila incontra la nota dolce-agrumata dell'Acqua di Cedro Nardini, ravvivata dal limone e chiusa dall'amaro fresco della soda al pompelmo.", ingredients: [{name:"Soda al pompelmo", qty:"a colmare"}, {name:"Tequila", qty:"40 ml"}, {name:"Acqua di Cedro Nardini", qty:"20 ml"}, {name:"Succo di limone", qty:"10 ml"}], preparation: "Versa tequila, Acqua di Cedro e limone su ghiaccio direttamente nel tumbler alto, completa con soda al pompelmo, mescola delicatamente.", garnish: "Rondella di limone", taste: "Agrumato, amaricante, fresco", glass: "Highball" },
+    { id: "daiquiri", name: "Daiquiri", base: "rum", menu_status: "menu", category: "classici sour", desc: "La quintessenza del cocktail shakerato: rum bianco, lime fresco e zucchero in un sorso pulito, fresco e diretto.", ingredients: [{name:"Rum bianco", qty:"50 ml"}, {name:"Succo di lime", qty:"30 ml"}, {name:"Sciroppo di zucchero", qty:"20 ml"}], preparation: "Shakera energicamente con ghiaccio. Filtra in coppetta martini fredda.", garnish: "Rondella di lime", taste: "Fresco, acidulo, pulito", glass: "Coppetta Martini" },
+    { id: "darknstormy", name: "Dark 'n' Stormy", base: "rum", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA (variante con Kraken spiced rum). Rum scuro e ginger beer con lime: piccante, speziato dalla vaniglia e cannella del Kraken.", ingredients: [{name:"Ginger beer", qty:"a colmare"}, {name:"Kraken (rum scuro)", qty:"50 ml"}, {name:"Succo di lime", qty:"10 ml"}], preparation: "Versa il rum e il lime su ghiaccio in highball, completa con ginger beer, mescola delicatamente.", garnish: "Rondella di lime", taste: "Piccante, speziato, dissetante", glass: "Highball" },
+    { id: "dellago", name: "Del Lago", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Carattere alpino e lacustre con la linea selezionata Altolago.", ingredients: [{name:"Gin Tanqueray", qty:"30 ml"}, {name:"Vermut Altolago", qty:"30 ml"}, {name:"Bitter Altolago", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "disaronnosour", name: "Disaronno Sour", base: "disaronno", menu_status: "menu", category: "sour", desc: "Disaronno, limone e zucchero shakerati in un sour dolce e avvolgente, dal carattere amaretto ben riconoscibile.", ingredients: [{name:"Disaronno", qty:"60 ml"}, {name:"Succo di limone", qty:"30 ml"}, {name:"Zucchero (sciroppo)", qty:"5 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in rocks glass con ghiaccio.", garnish: "Twist di limone", taste: "Dolce, agrumato, avvolgente", glass: "Rocks Glass" },
+    { id: "disaronnosourmorg", name: "Disaronno Sour — Variante Morgenthaler", base: "disaronno whiskey bourbon", menu_status: "fuori-menu", category: "sour", desc: "Variante del Disaronno Sour con l'aggiunta di bourbon: agrumato e più robusto, con una secchezza che bilancia la dolcezza dell'amaretto.", ingredients: [{name:"Succo di limone", qty:"30 ml"}, {name:"Disaronno", qty:"30 ml"}, {name:"Bourbon", qty:"20 ml"}, {name:"Zucchero (sciroppo)", qty:"10 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in rocks glass con ghiaccio.", garnish: "Twist di limone", taste: "Agrumato, robusto, equilibrato", glass: "Rocks Glass" },
+    { id: "doc", name: "DOC", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Twist strutturato con Vermouth Cocchi di Torino e Campari.", ingredients: [{name:"Gin Tanqueray", qty:"30 ml"}, {name:"Vermut Cocchi", qty:"30 ml"}, {name:"Campari", qty:"30 ml"}, {name:"Angostura", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "drymartini", name: "Dry Martini", base: "gin vermut", menu_status: "menu", category: "classici aperitivo", desc: "Ricetta IBA. Gin e vermouth secco in purezza: l'aperitivo più iconico e dibattuto della storia della miscelazione.", ingredients: [{name:"Gin", qty:"60 ml"}, {name:"Vermouth secco", qty:"10 ml"}], preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Filtra in coppetta martini fredda.", garnish: "Twist di limone", taste: "Secco, aromatico, deciso", glass: "Coppetta Martini" },
+    { id: "espressomartini", name: "Espresso Martini", base: "vodka", menu_status: "menu", category: "classici caffeina", desc: "Vodka e Caffè Borghetti si fondono con un espresso fresco in un drink intenso e vellutato, chiuso da una schiuma dorata.", ingredients: [{name:"Vodka", qty:"35 ml"}, {name:"Caffè Borghetti", qty:"25 ml"}, {name:"Espresso fresco", qty:"1"}, {name:"Sciroppo di zucchero", qty:"10-15 ml"}], preparation: "Shakera energicamente tutti gli ingredienti con ghiaccio. Doppio filtraggio in coppetta martini fredda.", garnish: "Rametto di menta", taste: "Intenso, cremoso, tostato", glass: "Coppetta Martini" },
+    { id: "fernandito", name: "Fernandito", base: "fernet", menu_status: "menu", category: "classici", desc: "Non IBA — celebre long drink sudamericano: Fernet-Branca e cola in un mix amaricante e rinfrescante.", ingredients: [{name:"Cola", qty:"a colmare"}, {name:"Fernet-Branca", qty:"50 ml"}], preparation: "Versa il Fernet su ghiaccio in tumbler alto, completa con cola e mescola delicatamente.", garnish: "Fetta di lime", taste: "Amaricante, deciso, rinfrescante", glass: "Highball" },
+    { id: "garibaldi", name: "Garibaldi", base: "campari", menu_status: "menu", category: "classici aperitivo", desc: "Ricetta IBA. Campari e succo d'arancia fresco: un aperitivo italiano semplice, colorato e dal carattere amaricante.", ingredients: [{name:"Succo d'arancia fresco", qty:"120 ml"}, {name:"Campari", qty:"50 ml"}], preparation: "Riempi il bicchiere di ghiaccio, versa Campari e succo d'arancia, mescola bene.", garnish: "Fetta d'arancia", taste: "Agrumato, amaricante, fresco", glass: "Highball" },
+    { id: "ginfizz", name: "Gin Fizz", base: "gin", menu_status: "menu", category: "classici sour", desc: "Ricetta IBA. Gin, limone e zucchero shakerati e allungati da un tocco di soda: fresco, frizzante, senza ghiaccio in bicchiere.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Gin", qty:"45 ml"}, {name:"Succo di limone", qty:"30 ml"}, {name:"Sciroppo di zucchero", qty:"10 ml"}], preparation: "Shakera gin, limone e sciroppo con ghiaccio (soda esclusa). Filtra in tumbler stretto e alto, completa con soda a colmare. Servi senza ghiaccio.", garnish: "Fetta di limone", taste: "Agrumato, frizzante, fresco", glass: "Tumbler" },
+    { id: "gintonic", name: "Gin Tonic", base: "gin", menu_status: "menu", category: "classici", desc: "Il re dei long drink: l'aroma secco e balsamico del ginepro incontra l'effervescenza amaricante del chinino.", ingredients: [{name:"Acqua Tonica", qty:"a colmare"}, {name:"Gin", qty:"50 ml"}], preparation: "Versa il distillato su ghiaccio in tumbler alto, completa con tonica e mescola.", garnish: "Fetta di limone o ginepro", taste: "Dissetante, versatile, essenziale", glass: "Highball" },
+    { id: "gintoniczero", name: "Gin Tonic Zero 0%", base: "analcolico gin zero", menu_status: "menu", category: "classici", desc: "Analcolico. Gin 0.0 e acqua tonica: la stessa struttura secca e botanica del classico, senza alcol.", ingredients: [{name:"Acqua Tonica", qty:"a colmare"}, {name:"Tanqueray 0.0 (o Gin Zero)", qty:"50 ml"}], preparation: "Riempi il bicchiere di ghiaccio, versa il Gin 0.0 e completa con tonica.", garnish: "Fetta di limone o bacche di ginepro", taste: "Secco, botanico, rinfrescante", glass: "Highball" },
+    { id: "godfather", name: "Godfather", base: "whiskey scotch disaronno", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Scotch whisky e Disaronno: after-dinner intenso e robusto, con una dolcezza di mandorla ad ammorbidire il whisky.", ingredients: [{name:"Scotch whisky", qty:"45 ml"}, {name:"Disaronno", qty:"15 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola delicatamente.", garnish: "Twist d'arancia", taste: "Intenso, dolce, robusto", glass: "Rocks Glass" },
+    { id: "godmother", name: "Godmother", base: "vodka disaronno", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Vodka e Disaronno: la versione 'al femminile' del Godfather, più morbida e altrettanto intensa.", ingredients: [{name:"Vodka", qty:"45 ml"}, {name:"Disaronno", qty:"15 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola delicatamente.", garnish: "Twist di limone", taste: "Dolce, morbido, intenso", glass: "Rocks Glass" },
+    { id: "hankypanky", name: "Hanky Panky", base: "gin vermut fernet", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Gin e vermouth rosso con un tocco di Fernet Branca: amaricante, erbaceo e deciso, creazione di Ada Coleman.", ingredients: [{name:"Gin", qty:"45 ml"}, {name:"Vermouth rosso", qty:"45 ml"}, {name:"Fernet Branca", qty:"2 dash"}], preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Amaricante, erbaceo, deciso", glass: "Coppetta Cocktail" },
+    { id: "hemingwayspecial", name: "Hemingway Special", base: "rum", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Rum bianco, pompelmo, lime e maraschino: un Daiquiri più secco e agrumato, ispirato allo scrittore.", ingredients: [{name:"Rum bianco", qty:"45 ml"}, {name:"Succo di pompelmo", qty:"20 ml"}, {name:"Succo di lime", qty:"15 ml"}, {name:"Maraschino", qty:"7,5 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Rondella di lime", taste: "Agrumato, secco, fresco", glass: "Coppetta Cocktail" },
+    { id: "horsesneck", name: "Horse's Neck", base: "whiskey bourbon", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Bourbon e ginger ale con un lungo twist di limone a spirale: secco, speziato e rinfrescante.", ingredients: [{name:"Ginger ale", qty:"a colmare"}, {name:"Bourbon", qty:"50 ml"}, {name:"Angostura bitter", qty:"2 dash"}], preparation: "Disponi una lunga scorza di limone a spirale nel bicchiere, versa il bourbon e l'Angostura su ghiaccio, completa con ginger ale.", garnish: "Lunga scorza di limone a spirale", taste: "Secco, speziato, rinfrescante", glass: "Highball" },
+    { id: "hugo", name: "Hugo", base: "vino prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Aperitivo alpino ai fiori di sambuco, menta e bollicine.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"St. Germain", qty:"45 ml"}, {name:"Soda", qty:"splash"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Ciuffo di menta", taste: "Floreale, fresco, leggero", glass: "Calice Ampio" },
+    { id: "iovemsour", name: "Iovem Sour", base: "amaro iovem", menu_status: "menu", category: "sour", desc: "Liquore Iovem, lime e zucchero shakerati con un tocco di orange bitter: un sour agrumato ed equilibrato, dal carattere aromatico distintivo.", ingredients: [{name:"Liquore Iovem", qty:"60 ml"}, {name:"Succo di lime", qty:"30 ml"}, {name:"Zucchero (sciroppo)", qty:"10 ml"}, {name:"Orange bitter", qty:"2 dash"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Scorza di limone", taste: "Agrumato, aromatico, equilibrato", glass: "Coppetta Cocktail" },
+    { id: "irishcoffee", name: "Irish Coffee", base: "whiskey jameson", menu_status: "fuori-menu", category: "classici caffeina", desc: "Ricetta IBA. Whiskey irlandese, caffè caldo e zucchero, chiuso da un velo di panna fresca non montata: caldo, dolce e robusto.", ingredients: [{name:"Caffè caldo", qty:"120 ml"}, {name:"Jameson (Irish Whiskey)", qty:"40 ml"}, {name:"Panna fresca", qty:"20 ml"}, {name:"Zucchero di canna", qty:"10 ml"}], preparation: "Sciogli lo zucchero nel caffè caldo, aggiungi il whiskey. Versa delicatamente la panna fresca sul dorso di un cucchiaio.", garnish: "Nessuna", taste: "Caldo, dolce, robusto", glass: "Bicchiere da Irish Coffee" },
+    { id: "johncollins", name: "John Collins", base: "gin", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Gin, limone, zucchero e soda costruiti direttamente sul ghiaccio: il fratello 'build' del Gin Fizz, lungo e dissetante.", ingredients: [{name:"Soda", qty:"60 ml"}, {name:"Gin", qty:"45 ml"}, {name:"Succo di limone", qty:"30 ml"}, {name:"Sciroppo di zucchero", qty:"15 ml"}], preparation: "Versa tutti gli ingredienti direttamente in un Collins glass pieno di ghiaccio, mescola delicatamente.", garnish: "Fetta di limone", taste: "Agrumato, dissetante, fresco", glass: "Collins Glass" },
+    { id: "kamikaze", name: "Kamikaze", base: "vodka", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Vodka, triple sec e lime in parti uguali: secco, agrumato e diretto, da bere tutto d'un fiato.", ingredients: [{name:"Vodka", qty:"30 ml"}, {name:"Triple sec", qty:"30 ml"}, {name:"Succo di lime", qty:"30 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Rondella di lime", taste: "Agrumato, secco, deciso", glass: "Coppetta Cocktail" },
+    { id: "lacambiale", name: "La Cambiale", base: "gin campari liquore", menu_status: "menu", category: "negroni aperitivo", desc: "Freschezza vegetale e botanica grazie all'unione con liquore al sedano.", ingredients: [{name:"Gin Only JU", qty:"30 ml"}, {name:"Liquore al Sedano", qty:"30 ml"}, {name:"Bitter Du.it", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "lemondrop", name: "Lemon Drop Martini", base: "vodka", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Vodka, triple sec, limone e zucchero: agrodolce e secco, spesso servito con un bordo di zucchero semolato.", ingredients: [{name:"Vodka", qty:"40 ml"}, {name:"Triple sec", qty:"15 ml"}, {name:"Succo di limone", qty:"15 ml"}, {name:"Sciroppo di zucchero", qty:"10 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta martini fredda.", garnish: "Twist di limone", taste: "Agrumato, dolce, secco", glass: "Coppetta Martini" },
+    { id: "longisland", name: "Long Island Iced Tea", base: "vodka gin rum tequila", menu_status: "menu", category: "classici sour", desc: "Ricetta IBA. Cinque distillati bianchi, limone e zucchero, chiusi da un velo di cola: intenso, ingannevole nel gusto, potente nella struttura.", ingredients: [{name:"Cola", qty:"a colmare"}, {name:"Sciroppo di zucchero", qty:"30 ml"}, {name:"Succo di limone", qty:"25 ml"}, {name:"Tequila", qty:"15 ml"}, {name:"Vodka", qty:"15 ml"}, {name:"Rum bianco", qty:"15 ml"}, {name:"Triple sec", qty:"15 ml"}, {name:"Gin", qty:"15 ml"}], preparation: "Versa tutti gli ingredienti in un highball pieno di ghiaccio, mescola, completa con cola.", garnish: "Fetta di limone", taste: "Intenso, agrumato, deciso", glass: "Highball" },
+    { id: "manhattan", name: "Manhattan", base: "whiskey rye vermut", menu_status: "menu", category: "classici aperitivo", desc: "Ricetta IBA. Rye whiskey, vermouth rosso e Angostura mescolati con cura: uno dei cocktail più antichi e influenti della storia.", ingredients: [{name:"Rye Whiskey", qty:"50 ml"}, {name:"Vermouth rosso dolce", qty:"20 ml"}, {name:"Angostura bitter", qty:"1 dash"}], preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Robusto, speziato, vellutato", glass: "Coppetta Cocktail" },
+    { id: "margarita", name: "Margarita", base: "tequila", menu_status: "menu", category: "classici sour", desc: "Il grande classico messicano: tequila, triple sec e lime fresco in perfetto equilibrio, tra sapidità del sale, dolcezza agrumata e acidità decisa.", ingredients: [{name:"Tequila", qty:"60 ml"}, {name:"Triple sec", qty:"30 ml"}, {name:"Succo di lime", qty:"30 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio. Filtra in coppa con bordo salato, oppure servi on the rocks.", garnish: "Rondella di lime", taste: "Agrumato, equilibrato, sapido", glass: "Coppa / Rocks Glass" },
+    { id: "martinez", name: "Martinez", base: "gin vermut", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Gin, vermouth rosso e maraschino: considerato l'antenato del Dry Martini, aromatico e più dolce del suo discendente.", ingredients: [{name:"Gin", qty:"30 ml"}, {name:"Vermouth rosso", qty:"30 ml"}, {name:"Maraschino", qty:"7,5 ml"}, {name:"Angostura Orange", qty:"2 dash"}], preparation: "Versa gli ingredienti nel mixing glass con ghiaccio, mescola bene. Filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Aromatico, dolce, deciso", glass: "Coppetta Cocktail" },
+    { id: "martinispritz", name: "Martini Spritz", base: "vermut prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Fresca interpretazione con Martini Bianco, Prosecco, lime e menta.", ingredients: [{name:"Martini Bianco", qty:"60 ml"}, {name:"Prosecco", qty:"60 ml"}, {name:"Soda", qty:"30 ml"}], preparation: "Versa in parti uguali Martini Bianco e Prosecco su ghiaccio, aggiungi soda.", garnish: "Lime e Menta", taste: "Morbido, floreale, rinfrescante", glass: "Calice Ampio" },
+    { id: "marypickford", name: "Mary Pickford", base: "rum", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Rum bianco, ananas, granatina e maraschino: dolce, tropicale e fruttato, dedicato alla diva del cinema muto.", ingredients: [{name:"Rum bianco", qty:"60 ml"}, {name:"Succo d'ananas", qty:"60 ml"}, {name:"Granatina", qty:"7,5 ml"}, {name:"Maraschino", qty:"7,5 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Fetta d'ananas", taste: "Dolce, tropicale, fruttato", glass: "Coppetta Cocktail" },
+    { id: "mediterraneo", name: "Mediterraneo", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Le note di timo, basilico e oliva di Gin Mare incontrano la tradizione del bitter.", ingredients: [{name:"Gin Mare", qty:"30 ml"}, {name:"Vermut Du.it", qty:"30 ml"}, {name:"Campari", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "mezzoemezzo", name: "Mezzo e Mezzo", base: "amaro", menu_status: "menu", category: "aperitivo", desc: "Il celebre aperitivo di Bassano del Grappa con Nardini Rosso e Rabarbaro.", ingredients: [{name:"Nardini Mezzo e Mezzo", qty:"60 ml"}, {name:"Soda", qty:"60 ml"}], preparation: "Servire freddo con soda e limone.", garnish: "Limone", taste: "Amaricante, rabarbaro", glass: "Rocks Glass" },
+    { id: "milanotorino", name: "Milano-Torino (MI-TO)", base: "campari vermut", menu_status: "menu", category: "classici aperitivo", desc: "Punt e Mes e Campari in parti uguali: il classico piemontese-lombardo, diretto e amaricante, cugino robusto del Negroni senza gin.", ingredients: [{name:"Punt e Mes", qty:"50 ml"}, {name:"Campari", qty:"50 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, aromatico, robusto", glass: "Rocks Glass" },
+    { id: "mimosa", name: "Mimosa", base: "prosecco champagne", menu_status: "fuori-menu", category: "classici aperitivo", desc: "Ricetta IBA. Succo d'arancia e champagne in parti uguali: il classico da brunch, semplice e sempre elegante.", ingredients: [{name:"Succo d'arancia", qty:"75 ml"}, {name:"Champagne (o Prosecco)", qty:"75 ml"}], preparation: "Versa il succo d'arancia nel flute, completa con champagne ben freddo.", garnish: "Twist d'arancia", taste: "Fruttato, frizzante, delicato", glass: "Flute" },
+    { id: "mintjulep", name: "Mint Julep", base: "whiskey bourbon", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Bourbon e menta pestati con zucchero su ghiaccio tritato: il classico del Kentucky, robusto e rinfrescante.", ingredients: [{name:"Bourbon", qty:"60 ml"}, {name:"Sciroppo di zucchero", qty:"10 ml"}, {name:"Foglie di menta", qty:"6-8"}], preparation: "Pesta delicatamente la menta con lo sciroppo sul fondo del bicchiere, riempi di ghiaccio tritato, versa il bourbon e mescola.", garnish: "Rametto di menta abbondante", taste: "Mentolato, robusto, fresco", glass: "Julep Cup / Rocks Glass" },
+    { id: "mintkick", name: "Mint Kick", base: "analcolico", menu_status: "menu", category: "caffeina", desc: "Analcolico. Espresso caldo shakerato con menta e zucchero: tostato, mentolato ed energico, una scossa di caffè con una nota rinfrescante.", ingredients: [{name:"Caffè espresso fresco", qty:"30 ml"}, {name:"Sciroppo o foglie di menta", qty:"15 ml"}, {name:"Zucchero", qty:"1 cucchiaino"}], preparation: "Shakera energicamente l'espresso caldo con zucchero, menta e ghiaccio abbondante. Filtra.", garnish: "Foglia di menta", taste: "Tostato, mentolato, energico", glass: "Rocks Glass" },
+    { id: "mojito", name: "Mojito (pestato)", base: "rum", menu_status: "menu", category: "classici mojito sour", desc: "Rum bianco, lime e menta pestati con zucchero, allungati da soda ghiacciata.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Rum bianco", qty:"50 ml"}, {name:"Foglie di menta", qty:"8-10"}, {name:"Zucchero semolato", qty:"2 cucchiaini"}, {name:"Lime a spicchi", qty:"1/2"}], preparation: "Pesta lime, zucchero e menta sul fondo del bicchiere, aggiungi rum, riempi di ghiaccio tritato, completa con soda, mescola.", garnish: "Menta", taste: "Fresco, mentolato, agrumato", glass: "Highball" },
+    { id: "mojitoanalcolico", name: "Mojito Analcolico", base: "analcolico", menu_status: "menu", category: "mojito", desc: "Analcolico. Lime e menta pestati con zucchero di canna, allungati da Ginger Ale: fresco, mentolato e con un tocco speziato.", ingredients: [{name:"Ginger Ale", qty:"a colmare"}, {name:"Menta fresca", qty:"6-8 foglie"}, {name:"Zucchero di canna", qty:"2 cucchiaini"}, {name:"Lime a spicchi", qty:"1/2"}], preparation: "Pesta menta, lime e zucchero sul fondo del bicchiere. Aggiungi ghiaccio tritato e Ginger Ale.", garnish: "Rametto di menta", taste: "Fresco, mentolato, speziato", glass: "Highball" },
+    { id: "mojitomalaparte", name: "Mojito Malaparte", base: "liquore", menu_status: "menu", category: "mojito", desc: "Twist sul classico mojito con liquore al sedano.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Liquore al Sedano", qty:"50 ml"}, {name:"Succo di lime", qty:"20 ml"}, {name:"Sciroppo di zucchero", qty:"20 ml"}, {name:"Foglie di menta", qty:"8-10"}], preparation: "Pesta lime, zucchero e menta, aggiungi liquore al sedano, ghiaccio tritato e soda.", garnish: "Sedano", taste: "Vegetale, aromatico", glass: "Highball" },
+    { id: "mojitomarinetti", name: "Mojito Marinetti", base: "campari", menu_status: "menu", category: "mojito", desc: "Twist sul classico mojito con Bitter Martini.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Bitter Martini Riserva", qty:"50 ml"}, {name:"Succo di lime", qty:"20 ml"}, {name:"Sciroppo di zucchero", qty:"20 ml"}, {name:"Foglie di menta", qty:"8-10"}], preparation: "Pesta lime, zucchero e menta, aggiungi Bitter Riserva, ghiaccio a scaglie e soda.", garnish: "Menta", taste: "Amaro, fresco", glass: "Highball" },
+    { id: "mojitomerini", name: "Mojito Merini", base: "iovem", menu_status: "menu", category: "mojito", desc: "Twist sul classico mojito con liquore Iovem.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Iovem", qty:"50 ml"}, {name:"Succo di lime", qty:"20 ml"}, {name:"Sciroppo di zucchero", qty:"20 ml"}, {name:"Foglie di menta", qty:"8-10"}], preparation: "Pesta lime, zucchero e menta sul fondo del bicchiere, aggiungi Iovem, ghiaccio tritato e soda.", garnish: "Menta", taste: "Floreale, speziato", glass: "Highball" },
+    { id: "mojitomarquez", name: "Mojito Marquez", base: "cachaca rum", menu_status: "menu", category: "mojito", desc: "Twist sul classico mojito con Cachaça e Passion Fruit.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Cachaça", qty:"50 ml"}, {name:"Passion Fruit", qty:"20 ml"}, {name:"Succo di lime", qty:"20 ml"}, {name:"Sciroppo di zucchero", qty:"20 ml"}, {name:"Foglie di menta", qty:"8-10"}, {name:"Tabasco", qty:"1-2 gocce"}], preparation: "Pesta lime, zucchero, menta e passion fruit, aggiungi cachaça, tabasco e soda.", garnish: "Menta", taste: "Tropicale, piccante", glass: "Highball" },
+    { id: "monkeygland", name: "Monkey Gland", base: "gin", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Gin e arancia con un tocco di assenzio e granatina: fruttato, con una nota anisata e speziata sul finale.", ingredients: [{name:"Gin", qty:"45 ml"}, {name:"Succo d'arancia", qty:"25 ml"}, {name:"Assenzio", qty:"2 dash"}, {name:"Granatina", qty:"2 dash"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Twist d'arancia", taste: "Fruttato, speziato, anisato", glass: "Coppetta Cocktail" },
+    { id: "moscowmule", name: "Moscow Mule", base: "vodka", menu_status: "menu", category: "classici", desc: "Ricetta IBA. Vodka, lime e ginger beer, servito nella tipica coppa di rame: piccante, agrumato e sempre dissetante.", ingredients: [{name:"Ginger beer", qty:"120 ml"}, {name:"Vodka", qty:"45 ml"}, {name:"Succo di lime", qty:"10 ml"}], preparation: "Versa vodka e ginger beer nella mule cup con ghiaccio, aggiungi il lime e mescola delicatamente.", garnish: "Fetta di lime", taste: "Piccante, agrumato, dissetante", glass: "Mule Cup / Rocks Glass" },
+    { id: "moscowmuleanalcolico", name: "Moscow Mule Analcolico", base: "analcolico", menu_status: "menu", category: "classici", desc: "Analcolico. Pompelmo e lime allungati da Ginger Beer: agrumato, pungente e fresco, la stessa spina dorsale del classico senza alcol.", ingredients: [{name:"Ginger Beer", qty:"a colmare"}, {name:"Succo di pompelmo", qty:"45 ml"}, {name:"Succo di lime", qty:"15 ml"}], preparation: "Versa succo di pompelmo e lime su ghiaccio, completa con Ginger Beer.", garnish: "Spicchio di pompelmo", taste: "Agrumato, pungente, fresco", glass: "Tazza di Rame" },
+    { id: "negroni", name: "Negroni", base: "gin campari vermut", menu_status: "menu", category: "classici negroni aperitivo", desc: "Il re dell'aperitivo italiano: perfetta armonia in parti uguali tra la balsamicità del gin, il dolce erbaceo del vermut e l'amaro deciso del bitter.", ingredients: [{name:"Gin Bombay Sapphire", qty:"30 ml"}, {name:"Martini Rosso", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negroniallajuri", name: "Alla Juri", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Twist su Negroni arricchito dalla profondità speziata e complessa dell'Angostura Bitters.", ingredients: [{name:"Gin Bombay Sapphire", qty:"30 ml"}, {name:"Martini Rubino", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}, {name:"Angostura", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negronibalsamico", name: "Balsamico", base: "vodka campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Incontro intrigante tra le note agrodolci del vermut all'aceto balsamico e il cacao.", ingredients: [{name:"Vodka B42", qty:"30 ml"}, {name:"Vermut Aceto Balsamico", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}, {name:"Cacao Bitters", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negronidellago", name: "Del Lago", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Carattere alpino e lacustre con la linea selezionata Altolago.", ingredients: [{name:"Gin Tanqueray", qty:"30 ml"}, {name:"Vermut Altolago", qty:"30 ml"}, {name:"Bitter Altolago", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negronidoc", name: "DOC", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Twist strutturato con Vermouth Cocchi di Torino e Campari.", ingredients: [{name:"Gin Tanqueray", qty:"30 ml"}, {name:"Vermut Cocchi", qty:"30 ml"}, {name:"Campari", qty:"30 ml"}, {name:"Angostura", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negronilacambiale", name: "La Cambiale", base: "gin campari liquore", menu_status: "menu", category: "negroni aperitivo", desc: "Freschezza vegetale e botanica grazie all'unione con liquore al sedano.", ingredients: [{name:"Gin Only JU", qty:"30 ml"}, {name:"Liquore al Sedano", qty:"30 ml"}, {name:"Bitter Du.it", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negronimediterraneo", name: "Mediterraneo", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Le note di timo, basilico e oliva di Gin Mare incontrano la tradizione del bitter.", ingredients: [{name:"Gin Mare", qty:"30 ml"}, {name:"Vermut Du.it", qty:"30 ml"}, {name:"Campari", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negronipornonegroni", name: "Pornonegroni", base: "gin vermut fernet", menu_status: "menu", category: "negroni aperitivo", desc: "Negroni complesso ed erboristico: Select, Fernet, Assenzio e Disaronno creano un caleidoscopio aromatico unico.", ingredients: [{name:"Gin Bombay Sapphire", qty:"25 ml"}, {name:"Vermut Dandi", qty:"20 ml"}, {name:"Select", qty:"20 ml"}, {name:"Fernet", qty:"10 ml"}, {name:"Disaronno", qty:"10 ml"}, {name:"Assenzio", qty:"2 dash"}], preparation: "Mescola energicamente in mixing glass con ghiaccio e filtra.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negronitoscano", name: "Toscano", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "L'omaggio al territorio con le eccellenze toscane di Prato e botaniche autoctone.", ingredients: [{name:"Gin Ambrosia", qty:"30 ml"}, {name:"Vermut di Prato", qty:"30 ml"}, {name:"Bitter Du.it", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negronizero", name: "Negroni Analcolico 0%", base: "analcolico campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Il sapore deciso del Negroni senza una goccia di alcol.", ingredients: [{name:"Tanqueray 0.0", qty:"30 ml"}, {name:"Martini Vibrante", qty:"30 ml"}, {name:"Bitter Analcolico Altolago", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "oldcuban", name: "Old Cuban", base: "rum prosecco", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Rum invecchiato, lime, menta e Angostura, allungati da prosecco: elegante, mentolato e frizzante, un Mojito da coppetta.", ingredients: [{name:"Prosecco", qty:"45 ml"}, {name:"Havana Club (rum invecchiato)", qty:"45 ml"}, {name:"Succo di lime", qty:"15 ml"}, {name:"Sciroppo di zucchero", qty:"15 ml"}, {name:"Foglie di menta", qty:"4"}, {name:"Angostura bitter", qty:"2 dash"}], preparation: "Shakera rum, lime, zucchero, menta e Angostura con ghiaccio, doppio filtraggio in coppetta cocktail, completa con prosecco.", garnish: "Rametto di menta", taste: "Elegante, mentolato, frizzante", glass: "Coppetta Cocktail" },
+    { id: "oldfashioned", name: "Old Fashioned", base: "whiskey bourbon", menu_status: "menu", category: "classici", desc: "Il grande classico americano: bourbon, zucchero e Angostura in un rituale essenziale, dove il liquore resta sempre protagonista assoluto.", ingredients: [{name:"Bourbon (o rye)", qty:"60 ml"}, {name:"Angostura bitter", qty:"2-3 dash"}, {name:"Zucchero", qty:"1 zolletta / 10 ml sciroppo"}], preparation: "Sciogli zucchero e Angostura con un goccio d'acqua nel bicchiere, aggiungi il liquore e ghiaccio, mescola bene.", garnish: "Twist d'arancia", taste: "Robusto, speziato, avvolgente", glass: "Rocks Glass" },
+    { id: "paloma", name: "Paloma", base: "tequila", menu_status: "menu", category: "classici", desc: "Il long drink messicano per eccellenza: tequila, pompelmo e lime si fondono in un sorso fresco, leggermente amaro e dissetante, chiuso da una nota salina.", ingredients: [{name:"Soda al pompelmo", qty:"a colmare"}, {name:"Tequila blanco", qty:"50 ml"}, {name:"Succo di lime", qty:"10 ml"}, {name:"Sale", qty:"un pizzico"}], preparation: "Versa tequila e lime su ghiaccio in tumbler alto, completa con soda al pompelmo, mescola delicatamente.", garnish: "Rondella di lime", taste: "Agrumato, amaricante, fresco", glass: "Highball" },
+    { id: "pratomule", name: "Prato Mule", base: "gin vermut", menu_status: "menu", category: "nostri", desc: "Twist toscano sul Moscow Mule con Gin Only JU e note di Vermut di Prato.", ingredients: [{name:"Gin Only JU", qty:"45 ml"}, {name:"Vermut di Prato", qty:"15 ml"}, {name:"Orange Bitters", qty:"2 dash"}, {name:"Ginger Beer", qty:"a colmare"}], preparation: "Unisci gin, vermut e bitters nel bicchiere con ghiaccio, completa con ginger beer.", garnish: "Fettina di lime", taste: "Speziato, fresco, agrumato", glass: "Tazza Rame" },
+    { id: "rinascente", name: "Rinascente", base: "liquore", menu_status: "menu", category: "aperitivo", desc: "Profumo intenso di cedro unito al tocco amaro della tonica.", ingredients: [{name:"Acqua di Cedro Nardini", qty:"50 ml"}, {name:"Acqua Tonica", qty:"100 ml"}], preparation: "Versa Acqua di Cedro su ghiaccio e completa con tonica.", garnish: "Scorza di cedro o limone", taste: "Agrumato, rinfrescante", glass: "Highball" },
+    { id: "rumcola", name: "Rum e Cola", base: "rum", menu_status: "menu", category: "classici", desc: "Il celebre Cuba Libre essenziale.", ingredients: [{name:"Cola", qty:"a colmare"}, {name:"Rum", qty:"50 ml"}], preparation: "Riempi il bicchiere di ghiaccio, aggiungi il rum e colma con cola fresca.", garnish: "Limone", taste: "Morbido, dolce, dissetante", glass: "Highball" },
+    { id: "rustynail", name: "Rusty Nail", base: "whiskey scotch", menu_status: "menu", category: "classici", desc: "Ricetta IBA. Scotch whisky e Drambuie: un after-dinner intenso, dolce e speziato dal carattere scozzese deciso.", ingredients: [{name:"Scotch whisky", qty:"45 ml"}, {name:"Drambuie", qty:"25 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola delicatamente.", garnish: "Twist d'arancia (opzionale)", taste: "Intenso, dolce, speziato", glass: "Rocks Glass" },
+    { id: "sally", name: "Sally", base: "tequila campari", menu_status: "menu", category: "nostri", desc: "Tequila come spina dorsale, Bitter Riserva Martini per profondità erbacea, pompelmo e passion fruit per succosità tropicale, chiuso dalla tonica.", ingredients: [{name:"Acqua tonica", qty:"a colmare"}, {name:"Tequila", qty:"40 ml"}, {name:"Succo di pompelmo", qty:"20 ml"}, {name:"Bitter Riserva Martini", qty:"15 ml"}, {name:"Sciroppo frutto della passione", qty:"10 ml"}], preparation: "Shakera tequila, bitter, pompelmo e sciroppo con ghiaccio. Filtra in tumbler alto, completa con tonica e mescola delicatamente.", garnish: "Fetta di lime", taste: "Amaricante, agrumato, aromatico", glass: "Highball" },
+    { id: "sazerac", name: "Sazerac", base: "cognac", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Cognac, assenzio e Peychaud's bitters: il cocktail simbolo di New Orleans, speziato e dal profilo anisato.", ingredients: [{name:"Cognac", qty:"50 ml"}, {name:"Assenzio", qty:"10 ml (risciacquo)"}, {name:"Peychaud's Bitters", qty:"2 dash"}, {name:"Zolletta di zucchero", qty:"1"}], preparation: "Risciacqua un rocks glass freddo con l'assenzio. Mescola gli altri ingredienti con ghiaccio nel mixing glass. Elimina l'assenzio dal primo bicchiere, filtra il drink.", garnish: "Twist di limone", taste: "Speziato, aromatico, deciso", glass: "Rocks Glass" },
+    { id: "screwdriver", name: "Screwdriver", base: "vodka", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Vodka e succo d'arancia: il long drink più semplice ed essenziale, fruttato e sempre dissetante.", ingredients: [{name:"Succo d'arancia", qty:"90 ml"}, {name:"Vodka", qty:"45 ml"}], preparation: "Versa vodka e succo d'arancia su ghiaccio in highball, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Fruttato, semplice, dissetante", glass: "Highball" },
+    { id: "selispritz", name: "Seli Spritz", base: "liquore prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Variante al sedano con Selinon e bollicine.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"Liquore al sedano Selinon", qty:"60 ml"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Foglia di sedano e menta", taste: "Frizzante, versatile, aperitivo", glass: "Calice da Vino" },
+    { id: "shirleytemple", name: "Shirley Temple", base: "analcolico", menu_status: "menu", category: "classici", desc: "Analcolico. Ginger Ale e granatina: il mocktail più famoso al mondo, dolce, effervescente e leggermente speziato.", ingredients: [{name:"Ginger Ale", qty:"120 ml"}, {name:"Sciroppo di granatina", qty:"15 ml"}], preparation: "Versa il Ginger Ale su ghiaccio, aggiungi delicatamente la granatina.", garnish: "Ciliegina al maraschino", taste: "Dolce, effervescente, speziato", glass: "Highball" },
+    { id: "southside", name: "Southside", base: "gin", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Gin, lime, zucchero e menta shakerati: un Mojito 'vestito elegante', fresco, mentolato e agrumato.", ingredients: [{name:"Gin", qty:"45 ml"}, {name:"Succo di lime", qty:"25 ml"}, {name:"Sciroppo di zucchero", qty:"15 ml"}, {name:"Foglie di menta", qty:"6-8"}], preparation: "Shakera energicamente tutti gli ingredienti con ghiaccio, doppio filtraggio in coppetta cocktail fredda.", garnish: "Rametto di menta", taste: "Fresco, mentolato, agrumato", glass: "Coppetta Cocktail" },
+    { id: "spritz", name: "Spritz", base: "campari prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Il classico aperitivo veneto con Prosecco, Aperol/Bitter e soda.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"Casoni Aperitivo", qty:"60 ml"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo", glass: "Calice da Vino" },
+    { id: "spritzanalcolico", name: "Spritz Analcolico", base: "analcolico", menu_status: "menu", category: "spritz aperitivo", desc: "Aperitivo analcolico con Crodino, Martini Vibrante e spruzzo di tonica.", ingredients: [{name:"Acqua Tonica", qty:"a colmare"}, {name:"Crodino", qty:"1"}, {name:"Martini Vibrante", qty:"3 cl"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo", glass: "Calice da Vino" },
+    { id: "spritzbitter", name: "Spritz Bitter", base: "campari prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Variante più amara con Martini Bitter.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"Martini Bitter", qty:"60 ml"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo", glass: "Calice da Vino" },
+    { id: "spritzcynar", name: "Spritz Cynar", base: "amaro prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Variante al carciofo con Cynar.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"Cynar", qty:"60 ml"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo", glass: "Calice da Vino" },
+    { id: "spritzit", name: "Spritz.it", base: "campari prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Variante amara con Du.it.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"Bitter Du.it", qty:"60 ml"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Fetta d'arancia", taste: "Frizzante, versatile, aperitivo", glass: "Calice da Vino" },
+    { id: "spritzlimoncello", name: "Spritz Limoncello", base: "vino prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Variante fresca con limoncello.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"Limoncello", qty:"60 ml"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Foglia di menta e limone", taste: "Dolce, citrico, dissetante", glass: "Calice da Vino" },
+    { id: "spritzvenezia", name: "Spritz Venezia", base: "campari prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Variante veneziana con Select.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"Select", qty:"60 ml"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Oliva verde grande", taste: "Aromatico, amaricante, tradizionale", glass: "Calice da Vino" },
+    { id: "spritzventuro", name: "Spritz Venturo", base: "campari prosecco", menu_status: "menu", category: "spritz aperitivo", desc: "Variante blu con Venturo.", ingredients: [{name:"Prosecco", qty:"90 ml"}, {name:"Venturo", qty:"60 ml"}], preparation: "Riempi un calice da vino con ghiaccio, versa gli ingredienti, mescola delicatamente.", garnish: "Crusta di sale o fetta di limone", taste: "Salmastro, botanico, agrumato", glass: "Calice da Vino" },
+    { id: "stregowich", name: "Stregowich", base: "vodka liquore", menu_status: "menu", category: "nostri", desc: "Le note speziate e balsamiche del liquore Strega incontrano la freschezza agrumata di lime e pompelmo, allungate dal frizzante amaro della tonica.", ingredients: [{name:"Acqua tonica", qty:"a colmare"}, {name:"Liquore Strega", qty:"30 ml"}, {name:"Vodka", qty:"20 ml"}, {name:"Succo di pompelmo", qty:"20 ml"}, {name:"Succo di lime", qty:"15 ml"}], preparation: "Shakera Strega, vodka, lime e pompelmo con ghiaccio. Filtra in tumbler alto pieno di ghiaccio, completa con tonica e mescola delicatamente.", garnish: "Rametto di menta", taste: "Erbaceo, agrumato, amaricante", glass: "Highball" },
+    { id: "tequilasunrise", name: "Tequila Sunrise", base: "tequila", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Tequila e succo d'arancia con un fondo di granatina che crea il caratteristico effetto 'alba': fruttato e scenografico.", ingredients: [{name:"Succo d'arancia", qty:"90 ml"}, {name:"Tequila", qty:"45 ml"}, {name:"Granatina", qty:"15 ml"}], preparation: "Versa tequila e succo d'arancia su ghiaccio in highball, aggiungi la granatina versandola lentamente sul fondo (non mescolare).", garnish: "Fetta d'arancia", taste: "Fruttato, dolce, fresco", glass: "Highball" },
+    { id: "tequilatonic", name: "Tequila Tonic", base: "tequila", menu_status: "menu", category: "classici", desc: "Il carattere vegetale e pungente della Tequila spinta dalle bollicine.", ingredients: [{name:"Acqua Tonica", qty:"a colmare"}, {name:"Tequila", qty:"50 ml"}], preparation: "Versa il distillato su ghiaccio in tumbler alto, completa con il topping indicato e mescola.", garnish: "Lime", taste: "Dissetante, versatile, essenziale", glass: "Highball" },
+    { id: "tomcollins", name: "Tom Collins", base: "gin", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Come il John Collins ma con Old Tom Gin, più dolce e morbido: gin, limone, zucchero e soda costruiti sul ghiaccio.", ingredients: [{name:"Soda", qty:"60 ml"}, {name:"Old Tom Gin", qty:"45 ml"}, {name:"Succo di limone", qty:"30 ml"}, {name:"Sciroppo di zucchero", qty:"15 ml"}], preparation: "Versa tutti gli ingredienti direttamente in un Collins glass pieno di ghiaccio, mescola delicatamente.", garnish: "Fetta di limone", taste: "Agrumato, morbido, fresco", glass: "Collins Glass" },
+    { id: "tommysmargarita", name: "Tommy's Margarita", base: "tequila", menu_status: "fuori-menu", category: "classici sour", desc: "Variante secca e pulita del Margarita classico, senza triple sec: il succo di lime e l'agave lasciano parlare la tequila in tutta la sua purezza.", ingredients: [{name:"Tequila 100% agave (blanco)", qty:"60 ml"}, {name:"Succo di lime", qty:"25 ml"}, {name:"Sciroppo d'agave", qty:"15 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio. Filtra in rocks glass con ghiaccio, oppure in coppa senza ghiaccio (up).", garnish: "Rondella di lime", taste: "Agrumato, dolce, fresco", glass: "Rocks Glass" },
+    { id: "tropicana", name: "Tropicana", base: "rum", menu_status: "menu", category: "nostri", desc: "Midori dal colore verde brillante, avvolto da rum bianco, ananas succoso e una punta cremosa di cocco. Scenografico e conviviale.", ingredients: [{name:"Soda", qty:"a colmare"}, {name:"Midori", qty:"40 ml"}, {name:"Succo di ananas", qty:"30 ml"}, {name:"Rum bianco", qty:"20 ml"}, {name:"Succo di lime", qty:"15 ml"}, {name:"Sciroppo di cocco", qty:"10 ml"}], preparation: "Shakera Midori, rum, ananas, cocco e lime con ghiaccio. Filtra nel balloon pieno di ghiaccio, completa con soda a colmare.", garnish: "Fetta di lime", taste: "Dolce, tropicale, cremoso", glass: "Balloon 45cl" },
+    { id: "vermutesoda", name: "Vermut e Soda", base: "vermut", menu_status: "menu", category: "aperitivo", desc: "La quintessenza del sorseggio pomeridiano italiano.", ingredients: [{name:"Martini Rubino Riserva", qty:"60 ml"}, {name:"Soda", qty:"40 ml"}], preparation: "Versa vermut su ghiaccio, completa con soda e mescola.", garnish: "Scorza d'arancia o limone", taste: "Speziato, vinoso, morbido", glass: "Rocks Glass" },
+    { id: "vinodestate", name: "Vino d'Estate", base: "vino", menu_status: "menu", category: "aperitivo", desc: "Drink fresco da aperitivo estivo: vino aromatizzato alle spezie e lemonsoda ghiacciata.", ingredients: [{name:"Vino speziato", qty:"90 ml"}, {name:"Lemonsoda", qty:"a colmare"}], preparation: "Versa il vino speziato freddo su abbondante ghiaccio e completa con lemonsoda.", garnish: "Limone", taste: "Speziato, agrumato", glass: "Calice" },
+    { id: "vodkaspuma", name: "Vodka Spuma", base: "vodka", menu_status: "menu", category: "classici", desc: "Il grande classico da bar toscano: la vodka si lega al profilo aromatico della spuma bionda.", ingredients: [{name:"Spuma bionda", qty:"a colmare"}, {name:"Vodka", qty:"50 ml"}], preparation: "Versa la vodka in tumbler alto pieno di ghiaccio e completa con spuma bionda ben fredda.", garnish: "Arancia", taste: "Dissetante, versatile, essenziale", glass: "Highball" },
+    { id: "vodkatonic", name: "Vodka Tonic", base: "vodka", menu_status: "menu", category: "classici", desc: "Un long drink lineare, pulito e fresco.", ingredients: [{name:"Acqua Tonica", qty:"a colmare"}, {name:"Vodka", qty:"50 ml"}], preparation: "Costruisci direttamente nel bicchiere colmo di ghiaccio, versa la vodka e completa con l'acqua tonica.", garnish: "Lime", taste: "Dissetante, versatile, essenziale", glass: "Highball" },
+    { id: "volevoesseremunduro", name: "Volevo Essere un Duro", base: "analcolico vermut", menu_status: "menu", category: "nostri aperitivo", desc: "Analcolico. Martini Vibrante e sciroppo di lampone allungati da Lemon Soda: fruttato, frizzante e agrodolce.", ingredients: [{name:"Lemon Soda", qty:"a colmare"}, {name:"Martini Vibrante", qty:"60 ml"}, {name:"Sciroppo di lampone", qty:"15 ml"}], preparation: "Versa Martini Vibrante e sciroppo di lampone su ghiaccio, completa con Lemon Soda e mescola.", garnish: "Fetta di limone", taste: "Fruttato, frizzante, agrodolce", glass: "Calice" },
+    { id: "whiskycola", name: "Whisky e Cola", base: "whiskey", menu_status: "menu", category: "classici", desc: "L'incontro classico tra il calore legnoso del whisky e la dolcezza speziata della cola.", ingredients: [{name:"Cola", qty:"a colmare"}, {name:"Whisky", qty:"50 ml"}], preparation: "Versa il whisky sul ghiaccio, completa con cola e mescola.", garnish: "Arancia", taste: "Dissetante, versatile, essenziale", glass: "Highball" },
+    { id: "whiskeysour", name: "Whiskey Sour", base: "whiskey bourbon", menu_status: "menu", category: "classici sour", desc: "Ricetta IBA. Bourbon, limone e zucchero shakerati in perfetto equilibrio agrodolce: un sour robusto e vellutato, intramontabile.", ingredients: [{name:"Bourbon Whiskey", qty:"50 ml"}, {name:"Succo di limone", qty:"30 ml"}, {name:"Sciroppo di zucchero", qty:"15 ml"}, {name:"Albume d'uovo", qty:"qualche goccia (opzionale)"}], preparation: "Shakera con ghiaccio, filtra in rocks glass con ghiaccio.", garnish: "Twist di limone", taste: "Agrumato, robusto, vellutato", glass: "Rocks Glass" },
+    { id: "whiskifacile", name: "Whisky Facile", base: "whiskey campari vermut", menu_status: "menu", category: "nostri aperitivo", desc: "Scotch Whisky, Martini Ambrato e St. Germain, chiuso da un cucchiaio di Laphroaig in superficie: affumicato, aromatico e robusto.", ingredients: [{name:"Scotch Whisky", qty:"45 ml"}, {name:"Martini Ambrato", qty:"15 ml"}, {name:"Laphroaig", qty:"1 cucchiaio (floater)"}, {name:"St. Germain", qty:"10 ml"}, {name:"Angostura", qty:"2 dash"}], preparation: "Versa Scotch, Martini Ambrato, St. Germain e Angostura nel mixing glass con ghiaccio, mescola bene. Filtra in rocks glass con ghiaccio, completa con un cucchiaio di Laphroaig versato delicatamente in superficie.", garnish: "Scorza d'arancia", taste: "Affumicato, aromatico, robusto", glass: "Rocks Glass" },
+    { id: "whitelady", name: "White Lady", base: "gin", menu_status: "fuori-menu", category: "classici sour", desc: "Ricetta IBA. Gin, triple sec e limone shakerati: un sidecar 'vestito di bianco', secco, agrumato ed elegante.", ingredients: [{name:"Gin", qty:"40 ml"}, {name:"Triple sec", qty:"30 ml"}, {name:"Succo di limone", qty:"20 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail grande e fredda.", garnish: "Twist di limone", taste: "Agrumato, secco, elegante", glass: "Coppetta Cocktail" },
+    { id: "whiterussian", name: "White Russian", base: "vodka", menu_status: "menu", category: "classici caffeina", desc: "La versione ammorbidita del Black Russian: panna versata a strato addolcisce vodka e caffè in un sorso cremoso e avvolgente.", ingredients: [{name:"Vodka", qty:"50 ml"}, {name:"Liquore al caffè (Kahlúa)", qty:"20 ml"}, {name:"Panna liquida", qty:"20 ml"}], preparation: "Versa vodka e Kahlúa su ghiaccio, completa con panna versata delicatamente a strato sul dorso di un cucchiaio.", garnish: "Twist di limone", taste: "Cremoso, dolce, intenso", glass: "Rocks Glass" }
   ];
 
   let cocktails = JSON.parse(localStorage.getItem('gradisca_db_v5')) || initialCocktails;
@@ -1662,116 +781,165 @@
   const noResults = document.getElementById('noResults');
   const container = document.getElementById('cocktailsContainer');
   
-  const baseChips = document.querySelectorAll('#baseFilters .filter-chip');
-  const categoryChips = document.querySelectorAll('#categoryFilters .filter-chip');
-  
   let activeBase = '';
+  let activeMenuStatus = '';
   let activeCategory = '';
 
   function saveToLocalStorage() {
     localStorage.setItem('gradisca_db_v5', JSON.stringify(cocktails));
   }
 
-  // --- LOGICHE DI MATCH RIGOROSE E CONDIVISE ---
-  function isBaseMatch(item, baseVal) {
-    if (!baseVal) return true;
-    const b = (item.base || '').toLowerCase();
-    if (baseVal === 'vodka') return b.includes('vodka');
-    if (baseVal === 'rum') return b.includes('rum') || b.includes('cachaca') || b.includes('cachaça');
-    if (baseVal === 'gin') return b.includes('gin');
-    if (baseVal === 'tequila') return b.includes('tequila');
-    if (baseVal === 'whiskey') {
-      return b.includes('whiskey') || b.includes('whisky') || b.includes('bourbon') || b.includes('rye') || b.includes('scotch');
+  // --- MOTORE DI VERIFICA (Unico per conteggio e rendering) ---
+  function matchesItem(item, filters) {
+    const { base, menuStatus, category, query } = filters;
+    
+    // Filtro Base
+    if (base) {
+      const b = (item.base || '').toLowerCase();
+      if (base === 'vodka' && !b.includes('vodka')) return false;
+      if (base === 'rum' && !(b.includes('rum') || b.includes('cachaca') || b.includes('cachaça'))) return false;
+      if (base === 'gin' && !b.includes('gin')) return false;
+      if (base === 'tequila' && !b.includes('tequila')) return false;
+      if (base === 'whiskey' && !(b.includes('whiskey') || b.includes('bourbon') || b.includes('rye') || b.includes('scotch'))) return false;
+      if (base === 'campari' && !(b.includes('campari') || b.includes('bitter'))) return false;
+      if (base === 'vermut' && !(b.includes('vermut') || b.includes('vermouth') || b.includes('punt e mes'))) return false;
+      if (base === 'analcolico' && !(b.includes('analcolico') || b.includes('zero') || b.includes('caffè'))) return false;
     }
-    if (baseVal === 'campari') return b.includes('campari') || b.includes('bitter') || b.includes('vermut') || b.includes('vermouth');
-    if (baseVal === 'analcolico') return b.includes('analcolico');
-    return b.includes(baseVal);
-  }
-
-  function isCategoryMatch(item, catVal) {
-    if (!catVal) return true;
-    const c = (item.category || '').toLowerCase();
-    return c.includes(catVal);
-  }
-
-  function isSearchMatch(item, query) {
-    if (!query) return true;
-    const name = (item.name || '').toLowerCase();
-    const b = (item.base || '').toLowerCase();
-    const c = (item.category || '').toLowerCase();
-    const taste = (item.taste || '').toLowerCase();
-    const desc = (item.desc || '').toLowerCase();
-    const ings = item.ingredients ? item.ingredients.map(i => i.name.toLowerCase()).join(' ') : '';
-    const allText = `${name} ${b} ${c} ${taste} ${desc} ${ings}`;
-
-    let q = query.trim().toLowerCase();
-    if (q === 'whisky' || q === 'whiskey') {
-      return allText.includes('whisk');
+    
+    // Filtro Menù / Fuori Menù
+    if (menuStatus) {
+      const s = (item.menu_status || 'menu').toLowerCase();
+      if (s !== menuStatus) return false;
     }
-    return allText.includes(q);
-  }
-
-  // --- CALCOLO ESATTO E SINCRONIZZATO DEI CONTATORI ---
-  function updateFilterCounts() {
-    const q = searchInput.value.trim().toLowerCase();
-
-    // 1. Contatori Riga Basi
-    baseChips.forEach(chip => {
-      const bVal = chip.getAttribute('data-filter-value');
-      const count = cocktails.filter(item => {
-        return isBaseMatch(item, bVal) && isCategoryMatch(item, activeCategory) && isSearchMatch(item, q);
-      }).length;
-      const label = chip.id === 'chip-base-all' ? 'Tutte le basi' : chip.innerText.split('(')[0].trim();
-      chip.innerHTML = `${label} <span class="count">(${count})</span>`;
-    });
-
-    // 2. Contatori Riga Categorie
-    categoryChips.forEach(chip => {
-      const cVal = chip.getAttribute('data-filter-value');
-      const count = cocktails.filter(item => {
-        return isBaseMatch(item, activeBase) && isCategoryMatch(item, cVal) && isSearchMatch(item, q);
-      }).length;
+    
+    // Filtro Categoria Gradisca
+    if (category) {
+      const c = ((item.category || '') + ' ' + (item.tags || '') + ' ' + (item.special || '')).toLowerCase();
+      if (category === 'nostri' && !(c.includes('nostri') || c.includes('i-nostri'))) return false;
+      if (category === 'aperitivo' && !c.includes('aperitivo')) return false;
+      if (category === 'spritz' && !c.includes('spritz')) return false;
+      if (category === 'mojito' && !c.includes('mojito')) return false;
+      if (category === 'classici' && !c.includes('classici')) return false;
+      if (category === 'negroni' && !c.includes('negroni')) return false;
+      if (category === 'sour' && !c.includes('sour')) return false;
+      if (category === 'caffeina' && !c.includes('caffeina')) return false;
+    }
+    
+    // Ricerca testuale
+    if (query) {
+      const q = query.toLowerCase().trim();
+      const name = (item.name || '').toLowerCase();
+      const b = (item.base || '').toLowerCase();
+      const taste = (item.taste || '').toLowerCase();
+      const desc = (item.desc || '').toLowerCase();
+      const glass = (item.glass || '').toLowerCase();
+      const ings = item.ingredients ? item.ingredients.map(i => (i.name + ' ' + i.qty).toLowerCase()).join(' ') : '';
+      const all = `${name} ${b} ${taste} ${desc} ${glass} ${ings}`;
       
-      let label = 'Tutte';
-      if (cVal === 'nostri') label = '⭐ Nostri';
-      else if (cVal === 'aperitivo') label = 'Aperitivo';
-      else if (cVal === 'spritz') label = '🥂 Spritz';
-      else if (cVal === 'mojito') label = '🌿 Mojito';
-      else if (cVal === 'classici') label = 'Classici';
-      else if (cVal === 'negroni') label = '🍸 Negroni';
-      else if (cVal === 'sour') label = '🍋 Sour';
-      else if (cVal === 'caffeina') label = '☕ Caffeina';
+      if (q === 'whisky' || q === 'whiskey') {
+        if (!all.includes('whisky') && !all.includes('whiskey')) return false;
+      } else {
+        if (!all.includes(q)) return false;
+      }
+    }
+    
+    return true;
+  }
 
-      chip.innerHTML = `${label} <span class="count">(${count})</span>`;
+  // --- CALCOLO ESATTO E MATEMATICO DEI CONTATORI ---
+  function updateFilterCounts() {
+    const q = searchInput.value.trim();
+
+    // 1. Contatori Basi
+    const bases = [
+      { id: 'chip-base-all', key: '', label: 'Tutte le basi' },
+      { id: 'chip-base-vodka', key: 'vodka', label: 'Vodka' },
+      { id: 'chip-base-rum', key: 'rum', label: 'Rum' },
+      { id: 'chip-base-gin', key: 'gin', label: 'Gin' },
+      { id: 'chip-base-tequila', key: 'tequila', label: 'Tequila' },
+      { id: 'chip-base-whiskey', key: 'whiskey', label: 'Whiskey' },
+      { id: 'chip-base-campari', key: 'campari', label: 'Campari / Bitter' },
+      { id: 'chip-base-vermut', key: 'vermut', label: 'Vermut' },
+      { id: 'chip-base-analcolico', key: 'analcolico', label: 'Analcolico' }
+    ];
+    bases.forEach(b => {
+      const count = cocktails.filter(item => matchesItem(item, {
+        base: b.key,
+        menuStatus: activeMenuStatus,
+        category: activeCategory,
+        query: q
+      })).length;
+      const el = document.getElementById(b.id);
+      if (el) el.innerHTML = `${b.label} <span class="count" style="opacity:0.6; font-size:0.9em;">(${count})</span>`;
+    });
+
+    // 2. Contatori Menù / Fuori Menù
+    const menus = [
+      { id: 'chip-menu-all', key: '', label: 'Tutti' },
+      { id: 'chip-menu-in', key: 'menu', label: 'Menù' },
+      { id: 'chip-menu-out', key: 'fuori-menu', label: 'Fuori Menù' }
+    ];
+    menus.forEach(m => {
+      const count = cocktails.filter(item => matchesItem(item, {
+        base: activeBase,
+        menuStatus: m.key,
+        category: activeCategory,
+        query: q
+      })).length;
+      const el = document.getElementById(m.id);
+      if (el) el.innerHTML = `${m.label} <span class="count" style="opacity:0.6; font-size:0.9em;">(${count})</span>`;
+    });
+
+    // 3. Contatori Categorie
+    const cats = [
+      { id: 'chip-cat-all', key: '', label: 'Tutte le categorie' },
+      { id: 'chip-cat-nostri', key: 'nostri', label: '⭐ I Nostri' },
+      { id: 'chip-cat-aperitivo', key: 'aperitivo', label: 'Aperitivo' },
+      { id: 'chip-cat-spritz', key: 'spritz', label: '🥂 Spritz' },
+      { id: 'chip-cat-mojito', key: 'mojito', label: '🌿 Mojito' },
+      { id: 'chip-cat-classici', key: 'classici', label: 'Classici' },
+      { id: 'chip-cat-negroni', key: 'negroni', label: '🍸 Negroni' },
+      { id: 'chip-cat-sour', key: 'sour', label: '🍋 Sour' },
+      { id: 'chip-cat-caffeina', key: 'caffeina', label: '☕ Caffeina' }
+    ];
+    cats.forEach(c => {
+      const count = cocktails.filter(item => matchesItem(item, {
+        base: activeBase,
+        menuStatus: activeMenuStatus,
+        category: c.key,
+        query: q
+      })).length;
+      const el = document.getElementById(c.id);
+      if (el) el.innerHTML = `${c.label} <span class="count" style="opacity:0.6; font-size:0.9em;">(${count})</span>`;
     });
   }
 
-  // --- CREAZIONE HTML SCHEDA ---
+  // Costruisce la scheda HTML del singolo cocktail
   function createCardHTML(item) {
     let ingHtml = item.ingredients ? item.ingredients.map(ing => `<li><span>${escapeHtml(ing.name)}</span> <span class="amt">${escapeHtml(ing.qty)}</span></li>`).join('') : '';
-    
+
+    const BASE_VALUES = ['vodka','rum','gin','tequila','whiskey','campari','vermut','analcolico'];
     let tagsHtml = '';
-    const BASE_VALUES = ['vodka','rum','gin','tequila','whiskey','campari','analcolico'];
+
     const baseLow = (item.base || '').toLowerCase();
-    
     BASE_VALUES.forEach(b => {
-      if (isBaseMatch(item, b)) {
-        tagsHtml += `<span class="card-tag" onclick="setBaseFilter('${b}'); scrollToResults();">${b.charAt(0).toUpperCase() + b.slice(1)}</span>`;
+      if(baseLow.includes(b)){
+        tagsHtml += `<span class="card-tag">${b.charAt(0).toUpperCase() + b.slice(1)}</span>`;
       }
     });
 
-    if (item.menu === 'fuori-menu') {
-      tagsHtml += `<span class="card-tag card-tag--fuori-menu">Fuori Menù</span>`;
+    if(item.menu_status === 'fuori-menu'){
+      tagsHtml += `<span class="card-tag card-tag--fuorimenu">Fuori Menù</span>`;
     }
 
-    const cats = (item.category || '').toLowerCase();
-    if(cats.includes('nostri')) tagsHtml += `<span class="card-tag card-tag--nostri" onclick="setCategoryFilter('nostri'); scrollToResults();">⭐ I Nostri</span>`;
-    if(cats.includes('sour')) tagsHtml += `<span class="card-tag card-tag--sour" onclick="setCategoryFilter('sour'); scrollToResults();">🍋 Sour</span>`;
-    if(cats.includes('caffeina')) tagsHtml += `<span class="card-tag card-tag--caffeina" onclick="setCategoryFilter('caffeina'); scrollToResults();">☕ Caffeina</span>`;
-    if(cats.includes('negroni')) tagsHtml += `<span class="card-tag card-tag--negroni" onclick="setCategoryFilter('negroni'); scrollToResults();">🍸 Negroni</span>`;
-    if(cats.includes('spritz')) tagsHtml += `<span class="card-tag card-tag--spritz" onclick="setCategoryFilter('spritz'); scrollToResults();">🥂 Spritz</span>`;
-    if(cats.includes('mojito')) tagsHtml += `<span class="card-tag card-tag--mojito" onclick="setCategoryFilter('mojito'); scrollToResults();">🌿 Mojito</span>`;
-    if(cats.includes('aperitivo')) tagsHtml += `<span class="card-tag card-tag--aperitivo" onclick="setCategoryFilter('aperitivo'); scrollToResults();">Aperitivo</span>`;
+    const c = (item.category || '').toLowerCase();
+    if(c.includes('nostri')) tagsHtml += `<span class="card-tag card-tag--nostri">⭐ I Nostri</span>`;
+    if(c.includes('aperitivo')) tagsHtml += `<span class="card-tag card-tag--aperitivo">Aperitivo</span>`;
+    if(c.includes('spritz')) tagsHtml += `<span class="card-tag card-tag--spritz">🥂 Spritz</span>`;
+    if(c.includes('mojito')) tagsHtml += `<span class="card-tag card-tag--mojito">🌿 Mojito</span>`;
+    if(c.includes('negroni')) tagsHtml += `<span class="card-tag card-tag--negroni">🍸 Negroni</span>`;
+    if(c.includes('sour')) tagsHtml += `<span class="card-tag card-tag--sour">🍋 Sour</span>`;
+    if(c.includes('caffeina')) tagsHtml += `<span class="card-tag card-tag--caffeina">☕ Caffeina</span>`;
 
     const tagsContainerHtml = tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : '';
 
@@ -1786,7 +954,7 @@
       ${item.garnish ? `<div class="garnish"><span class="label">Garnish</span> — ${escapeHtml(item.garnish)}</div>` : ''}
       ${item.taste ? `<div class="garnish"><span class="label">Gusto</span> — ${escapeHtml(item.taste)}</div>` : ''}
       ${tagsContainerHtml}
-      <div class="card-actions-edit">
+      <div class="card-actions-edit admin-only">
         <button class="btn-action" onclick="editCocktail('${item.id}')">Modifica</button>
         <button class="btn-action" onclick="deleteCocktail('${item.id}')" style="color:var(--accent); border-color:var(--accent);">Elimina</button>
       </div>
@@ -1797,13 +965,20 @@
   function renderCocktails() {
     container.innerHTML = '';
     let visibleCount = 0;
-    const q = searchInput.value.trim().toLowerCase();
+    const q = searchInput.value.trim();
 
     // Ordinamento alfabetico
-    cocktails.sort((a,b) => (a.name > b.name) ? 1 : -1).forEach(item => {
-      const match = isBaseMatch(item, activeBase) && isCategoryMatch(item, activeCategory) && isSearchMatch(item, q);
+    const sorted = [...cocktails].sort((a,b) => (a.name || '').localeCompare(b.name || ''));
 
-      if (match) {
+    sorted.forEach(item => {
+      const isVisible = matchesItem(item, {
+        base: activeBase,
+        menuStatus: activeMenuStatus,
+        category: activeCategory,
+        query: q
+      });
+
+      if (isVisible) {
         visibleCount++;
         const card = document.createElement('div');
         card.className = 'card';
@@ -1819,31 +994,82 @@
     updateFilterCounts();
   }
 
-  // --- GESTIONE CLICK SUI FILTRI ---
+  // --- AZIONI SUI BOTTONI FILTRO ---
   function setBaseFilter(val){
     activeBase = val;
-    baseChips.forEach(c => c.classList.toggle('active', c.getAttribute('data-filter-value') === val));
+    document.querySelectorAll('#baseFilters .filter-chip').forEach(c => c.classList.toggle('active', c.getAttribute('data-filter-value') === val));
+    renderCocktails();
+  }
+
+  function setMenuFilter(val){
+    activeMenuStatus = val;
+    document.querySelectorAll('#menuFilters .filter-chip').forEach(c => c.classList.toggle('active', c.getAttribute('data-filter-value') === val));
     renderCocktails();
   }
 
   function setCategoryFilter(val){
     activeCategory = val;
-    categoryChips.forEach(c => c.classList.toggle('active', c.getAttribute('data-filter-value') === val));
+    document.querySelectorAll('#categoryFilters .filter-chip').forEach(c => c.classList.toggle('active', c.getAttribute('data-filter-value') === val));
     renderCocktails();
-  }
-
-  function scrollToResults(){
-    const wrap = document.querySelector('.search-wrap');
-    if(wrap) wrap.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
   searchInput.addEventListener('input', renderCocktails);
 
-  baseChips.forEach(chip => chip.addEventListener('click', () => setBaseFilter(chip.getAttribute('data-filter-value'))));
-  categoryChips.forEach(chip => chip.addEventListener('click', () => setCategoryFilter(chip.getAttribute('data-filter-value'))));
+  document.querySelectorAll('#baseFilters .filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => setBaseFilter(chip.getAttribute('data-filter-value')));
+  });
+  document.querySelectorAll('#menuFilters .filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => setMenuFilter(chip.getAttribute('data-filter-value')));
+  });
+  document.querySelectorAll('#categoryFilters .filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => setCategoryFilter(chip.getAttribute('data-filter-value')));
+  });
 
-  // --- GESTIONE MODULO ---
+  // --- GESTIONE MODALITÀ ADMIN CON PIN ---
+  function toggleAdminMode() {
+    if (document.body.classList.contains('admin-mode')) {
+      document.body.classList.remove('admin-mode');
+      sessionStorage.removeItem('gradisca_admin');
+      updateAdminBtn();
+      document.getElementById('formPanel').style.display = 'none';
+      return;
+    }
+    const pin = prompt("Inserisci il PIN responsabile per sbloccare le modifiche:");
+    if (pin === ADMIN_PIN) {
+      document.body.classList.add('admin-mode');
+      sessionStorage.setItem('gradisca_admin', 'true');
+      updateAdminBtn();
+    } else if (pin !== null) {
+      alert("PIN errato.");
+    }
+  }
+
+  function updateAdminBtn() {
+    const btn = document.getElementById('adminToggleBtn');
+    if (!btn) return;
+    if (document.body.classList.contains('admin-mode')) {
+      btn.innerHTML = '🔓 Esci Admin';
+      btn.style.borderColor = 'var(--accent)';
+      btn.style.color = 'var(--accent)';
+    } else {
+      btn.innerHTML = '🔒 Area Riservata';
+      btn.style.borderColor = 'var(--line)';
+      btn.style.color = 'var(--ink)';
+    }
+  }
+
+  // Controllo sessione admin all'avvio
+  if (sessionStorage.getItem('gradisca_admin') === 'true') {
+    document.body.classList.add('admin-mode');
+  }
+  updateAdminBtn();
+
+  // --- GESTIONE FORM AGGIUNTA / MODIFICA ---
   function toggleForm() {
+    if (!document.body.classList.contains('admin-mode')) {
+      alert("Funzione riservata. Accedi prima come Admin.");
+      return;
+    }
     const p = document.getElementById('formPanel');
     p.style.display = p.style.display === 'none' ? 'block' : 'none';
     if (p.style.display === 'block') document.getElementById('nameInput').focus();
@@ -1856,20 +1082,23 @@
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.style.borderColor = "var(--accent)";
-        setTimeout(() => el.style.borderColor = "var(--line)", 1500);
+        setTimeout(() => el.style.borderColor = "var(--line)", 1600);
       }
     }, 150);
   }
 
   function saveCocktail(e) {
     e.preventDefault();
+    if (!document.body.classList.contains('admin-mode')) return;
+
     const editingId = document.getElementById('editingId').value;
     const id = editingId || 'id_' + Date.now();
 
     const name = document.getElementById('nameInput').value.trim();
     const glass = document.getElementById('glassInput').value.trim();
-    const base = document.getElementById('baseInput').value.trim().toLowerCase();
-    const category = document.getElementById('categoryInput').value.trim().toLowerCase();
+    const base = document.getElementById('baseInput').value.trim();
+    const menu_status = document.getElementById('menuStatusInput').value;
+    const category = document.getElementById('categoryInput').value.trim();
     const desc = document.getElementById('descInput').value.trim();
     const prep = document.getElementById('prepInput').value.trim();
     const garnish = document.getElementById('garnishInput').value.trim();
@@ -1888,7 +1117,7 @@
       });
     }
 
-    const data = { id, name, glass, base, category, desc, ingredients, preparation: prep, garnish, taste };
+    const data = { id, name, glass, base, menu_status, category, desc, ingredients, preparation: prep, garnish, taste };
     const idx = cocktails.findIndex(c => c.id === id);
     if (idx >= 0) cocktails[idx] = data;
     else cocktails.unshift(data);
@@ -1906,6 +1135,8 @@
   }
 
   function editCocktail(id) {
+    if (!document.body.classList.contains('admin-mode')) return;
+
     const item = cocktails.find(c => c.id === id);
     if (!item) return;
 
@@ -1913,6 +1144,7 @@
     document.getElementById('nameInput').value = item.name || '';
     document.getElementById('glassInput').value = item.glass || '';
     document.getElementById('baseInput').value = item.base || '';
+    document.getElementById('menuStatusInput').value = item.menu_status || 'menu';
     document.getElementById('categoryInput').value = item.category || '';
     document.getElementById('descInput').value = item.desc || '';
     document.getElementById('prepInput').value = item.preparation || '';
@@ -1928,44 +1160,14 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Gestione modali personalizzati senza l'uso di confirm() nativo
-  let modalConfirmCallback = null;
-
-  function openCustomModal({ title, desc, onConfirm }) {
-    const modal = document.getElementById('customModal');
-    document.getElementById('customModalTitle').innerText = title || 'Conferma Operazione';
-    document.getElementById('customModalDesc').innerText = desc || 'Sei sicuro di voler procedere?';
-    modalConfirmCallback = onConfirm;
-    modal.style.display = 'flex';
-
-    document.getElementById('customModalConfirmBtn').onclick = () => {
-      if (typeof modalConfirmCallback === 'function') {
-        modalConfirmCallback();
-      }
-      closeCustomModal();
-    };
-  }
-
-  function closeCustomModal() {
-    const modal = document.getElementById('customModal');
-    if (modal) modal.style.display = 'none';
-    modalConfirmCallback = null;
-  }
-
   function deleteCocktail(id) {
-    const item = cocktails.find(c => c.id === id);
-    const cocktailName = item ? item.name : 'questa ricetta';
+    if (!document.body.classList.contains('admin-mode')) return;
 
-    openCustomModal({
-      title: 'Elimina Scheda Cocktail',
-      desc: `Sei sicuro di voler eliminare definitivamente "${cocktailName}" dal ricettario?`,
-      onConfirm: () => {
-        cocktails = cocktails.filter(c => c.id !== id);
-        saveToLocalStorage();
-        renderCocktails();
-        showToast(`"${cocktailName}" rimosso con successo.`, '🗑️');
-      }
-    });
+    if (confirm('Sei sicuro di voler eliminare questa ricetta?')) {
+      cocktails = cocktails.filter(c => c.id !== id);
+      saveToLocalStorage();
+      renderCocktails();
+    }
   }
 
   function resetForm() {
@@ -1977,6 +1179,8 @@
 
   // --- ESPORTAZIONE E BACKUP ---
   function exportHtmlFile() {
+    if (!document.body.classList.contains('admin-mode')) return;
+
     const clone = document.cloneNode(true);
     const scripts = clone.getElementsByTagName('script');
     for (let s of scripts) {
@@ -1994,10 +1198,11 @@
     link.href = URL.createObjectURL(blob);
     link.download = 'ricette_gradisca.html';
     link.click();
-    showToast('File HTML esportato con successo!', '📥');
   }
 
   function exportBackupJson() {
+    if (!document.body.classList.contains('admin-mode')) return;
+
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cocktails, null, 2));
     const a = document.createElement('a');
     a.href = dataStr;
@@ -2005,10 +1210,11 @@
     document.body.appendChild(a);
     a.click();
     a.remove();
-    showToast('Backup JSON scaricato!', '📤');
   }
 
   function importBackupJson(e) {
+    if (!document.body.classList.contains('admin-mode')) return;
+
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -2019,263 +1225,13 @@
           cocktails = imported;
           saveToLocalStorage();
           renderCocktails();
-          showToast('Ricettario importato con successo!', '✅');
+          alert("Ricettario importato con successo!");
         }
       } catch (err) {
-        showToast('Errore durante la lettura del file JSON.', '⚠️');
+        alert("Errore nel caricamento del file JSON.");
       }
     };
     reader.readAsText(file);
-  }
-
-  function showToast(message, icon = '🍸') {
-    const toast = document.getElementById('toastNotification');
-    if (!toast) return;
-    document.getElementById('toastIcon').innerText = icon;
-    document.getElementById('toastMessage').innerText = message;
-    toast.style.display = 'flex';
-
-    if (window.toastTimeout) clearTimeout(window.toastTimeout);
-    window.toastTimeout = setTimeout(() => {
-      toast.style.display = 'none';
-    }, 3200);
-  }
-
-  // --- FUNZIONALITÀ BARMAN AI & LAB MISCELAZIONE ---
-  function toggleAiAssistant() {
-    const panel = document.getElementById('aiAssistantPanel');
-    const genPanel = document.getElementById('aiGeneratorPanel');
-    if (!panel) return;
-    
-    if (genPanel) genPanel.style.display = 'none';
-    const isHidden = panel.style.display === 'none' || panel.style.display === '';
-    panel.style.display = isHidden ? 'block' : 'none';
-
-    if (isHidden) {
-      const input = document.getElementById('aiUserInput');
-      if (input) input.focus();
-      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  function toggleAiGenerator() {
-    const panel = document.getElementById('aiGeneratorPanel');
-    const aiPanel = document.getElementById('aiAssistantPanel');
-    if (!panel) return;
-
-    if (aiPanel) aiPanel.style.display = 'none';
-    const isHidden = panel.style.display === 'none' || panel.style.display === '';
-    panel.style.display = isHidden ? 'block' : 'none';
-
-    if (isHidden) {
-      const input = document.getElementById('aiRecipePrompt');
-      if (input) input.focus();
-      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  function highlightAndScrollCocktail(id) {
-    if (!id) return;
-    // Rimuovi eventuali filtri restrittivi per mostrare la scheda selezionata
-    activeBase = '';
-    activeCategory = '';
-    searchInput.value = '';
-    baseChips.forEach(c => c.classList.toggle('active', c.getAttribute('data-filter-value') === ''));
-    categoryChips.forEach(c => c.classList.toggle('active', c.getAttribute('data-filter-value') === ''));
-    renderCocktails();
-
-    setTimeout(() => {
-      const cardEl = document.getElementById('card-' + id);
-      if (cardEl) {
-        cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        cardEl.style.outline = '2px solid var(--accent)';
-        cardEl.style.boxShadow = '0 0 18px rgba(200, 16, 46, 0.4)';
-        setTimeout(() => {
-          cardEl.style.outline = '';
-          cardEl.style.boxShadow = '';
-        }, 2200);
-      }
-    }, 150);
-  }
-
-  function askQuickPrompt(promptText) {
-    const input = document.getElementById('aiUserInput');
-    if (input) {
-      input.value = promptText;
-      sendAiMessage();
-    }
-  }
-
-  function sendAiMessage() {
-    const input = document.getElementById('aiUserInput');
-    const history = document.getElementById('aiChatHistory');
-    const loading = document.getElementById('aiAssistantLoading');
-    if (!input || !history) return;
-
-    const query = input.value.trim();
-    if (!query) return;
-
-    // Aggiungi messaggio utente alla chat
-    const userMsg = document.createElement('div');
-    userMsg.className = 'ai-msg ai-msg-user';
-    userMsg.textContent = query;
-    history.appendChild(userMsg);
-    input.value = '';
-
-    if (loading) loading.style.display = 'flex';
-    history.scrollTop = history.scrollHeight;
-
-    // Elaborazione intelligente basata sul database completo delle ricette Gradisca
-    setTimeout(() => {
-      const qLower = query.toLowerCase();
-      let matched = [];
-
-      // Punteggio di pertinenza semantica sul database
-      cocktails.forEach(item => {
-        let score = 0;
-        const name = (item.name || '').toLowerCase();
-        const base = (item.base || '').toLowerCase();
-        const taste = (item.taste || '').toLowerCase();
-        const desc = (item.desc || '').toLowerCase();
-        const cat = (item.category || '').toLowerCase();
-        const ings = item.ingredients ? item.ingredients.map(i => i.name.toLowerCase()).join(' ') : '';
-        const all = `${name} ${base} ${taste} ${desc} ${cat} ${ings}`;
-
-        // Analisi parole chiave
-        const tokens = qLower.split(/[\s,.'";!?]+/).filter(w => w.length > 2);
-        tokens.forEach(tok => {
-          if (all.includes(tok)) score += 2;
-          if (name.includes(tok)) score += 4;
-          if (taste.includes(tok)) score += 3;
-          if (base.includes(tok)) score += 3;
-        });
-
-        // Correlazioni di gradazione e stile
-        if (qLower.includes('analcol') && base.includes('analcolico')) score += 6;
-        if ((qLower.includes('amaro') || qLower.includes('amaricante')) && (taste.includes('amar') || base.includes('campari') || base.includes('bitter'))) score += 4;
-        if (qLower.includes('sour') && (name.includes('sour') || cat.includes('sour') || taste.includes('agrum'))) score += 5;
-        if (qLower.includes('fresco') && (taste.includes('fresco') || taste.includes('mentol') || taste.includes('agrum'))) score += 3;
-        if ((qLower.includes('dopo cena') || qLower.includes('after dinner') || qLower.includes('caffè')) && (cat.includes('caffeina') || taste.includes('tostato') || taste.includes('robusto'))) score += 5;
-        if (qLower.includes('negroni') && (name.includes('negroni') || cat.includes('negroni'))) score += 6;
-        if (qLower.includes('spritz') && (name.includes('spritz') || cat.includes('spritz'))) score += 6;
-
-        if (score > 0) {
-          matched.push({ item, score });
-        }
-      });
-
-      matched.sort((a, b) => b.score - a.score);
-      const topPicks = matched.slice(0, 3).map(m => m.item);
-
-      // Risposta formulata dal Barman
-      let botResponseHtml = '';
-      if (topPicks.length > 0) {
-        botResponseHtml = `Ecco cosa ti suggerisco dalla carta di <strong>Gradisca 1973</strong>:<br><br>`;
-        topPicks.forEach((drink, index) => {
-          botResponseHtml += `${index + 1}. <span class="ai-cocktail-link" onclick="highlightAndScrollCocktail('${drink.id}')">${escapeHtml(drink.name)}</span>`;
-          if (drink.taste) botResponseHtml += ` — <em>${escapeHtml(drink.taste)}</em>`;
-          if (drink.desc) botResponseHtml += `<br><span style="font-size:13px; color:#4a5875;">${escapeHtml(drink.desc.slice(0, 130))}...</span><br><br>`;
-        });
-        botResponseHtml += `Clicca sul nome di un drink per visualizzarne subito dosaggi e metodo di preparazione.`;
-      } else {
-        const randomDrink = cocktails[Math.floor(Math.random() * cocktails.length)];
-        botResponseHtml = `Per questa combinazione non ho un abbinamento immediato, ma ti consiglio di provare un nostro cavallo di battaglia: <span class="ai-cocktail-link" onclick="highlightAndScrollCocktail('${randomDrink.id}')">${escapeHtml(randomDrink.name)}</span> (${escapeHtml(randomDrink.taste || 'Aromatico')}). Desideri altre indicazioni su gusti dolci, sour o amaricanti?`;
-      }
-
-      if (loading) loading.style.display = 'none';
-
-      const botMsg = document.createElement('div');
-      botMsg.className = 'ai-msg ai-msg-bot';
-      botMsg.innerHTML = botResponseHtml;
-      history.appendChild(botMsg);
-
-      history.scrollTop = history.scrollHeight;
-    }, 450);
-  }
-
-  function generateCocktailWithAi() {
-    const promptInput = document.getElementById('aiRecipePrompt');
-    const loading = document.getElementById('aiGenLoading');
-    const btn = document.getElementById('aiGenerateBtn');
-    if (!promptInput) return;
-
-    const concept = promptInput.value.trim();
-    if (!concept) {
-      showToast("Descrivi l'ispirazione per il cocktail!", "💡");
-      promptInput.focus();
-      return;
-    }
-
-    if (loading) loading.style.display = 'flex';
-    if (btn) btn.disabled = true;
-
-    setTimeout(() => {
-      const cLower = concept.toLowerCase();
-      
-      // Calcolo base prevalente
-      let guessedBase = 'gin';
-      if (cLower.includes('vodka')) guessedBase = 'vodka';
-      else if (cLower.includes('rum') || cLower.includes('cuba')) guessedBase = 'rum';
-      else if (cLower.includes('tequila') || cLower.includes('mezcal')) guessedBase = 'tequila';
-      else if (cLower.includes('whiskey') || cLower.includes('whisky') || cLower.includes('bourbon')) guessedBase = 'whiskey bourbon';
-      else if (cLower.includes('analcolico') || cLower.includes('zero')) guessedBase = 'analcolico';
-      else if (cLower.includes('bitter') || cLower.includes('campari') || cLower.includes('vermut')) guessedBase = 'campari vermouth';
-
-      // Nomenclatura coerente
-      const baseWords = concept.split(' ').filter(w => w.length > 3);
-      const titleKeyword = baseWords.length > 0 ? baseWords[0].charAt(0).toUpperCase() + baseWords[0].slice(1) : 'Sogno';
-      const cocktailName = `${titleKeyword} Gradisca`;
-
-      let category = 'nostri';
-      if (cLower.includes('spritz')) category += ' spritz aperitivo';
-      if (cLower.includes('sour') || cLower.includes('limone')) category += ' sour';
-      if (cLower.includes('negroni')) category += ' negroni aperitivo';
-      if (cLower.includes('caffè') || cLower.includes('borghetti')) category += ' caffeina';
-
-      let glass = 'Rocks Glass';
-      if (cLower.includes('spritz') || cLower.includes('vino')) glass = 'Calice da Vino';
-      else if (cLower.includes('highball') || cLower.includes('tonica') || cLower.includes('soda')) glass = 'Highball';
-      else if (cLower.includes('martini') || cLower.includes('coppa')) glass = 'Coppetta Martini';
-
-      // Composizione dosaggi bilanciati
-      let ingredientsText = '';
-      if (guessedBase === 'whiskey bourbon') {
-        ingredientsText = "Bourbon Whiskey - 45 ml\nVermouth Rosso di Prato - 25 ml\nBitter alle noci o agrumi - 2 dash\nSciroppo di castagna o miele - 10 ml";
-      } else if (guessedBase === 'gin') {
-        ingredientsText = "Gin Botanico Toscano - 45 ml\nLiquore al Cedro o Fiori - 20 ml\nSucco di limone fresco - 20 ml\nSoda o Ginger Beer - a colmare";
-      } else if (guessedBase === 'rum') {
-        ingredientsText = "Rum Invecchiato - 50 ml\nSucco di lime fresco - 25 ml\nSciroppo speziato - 15 ml\nAngostura Bitters - 1 dash";
-      } else if (guessedBase === 'tequila') {
-        ingredientsText = "Tequila Blanco 100% Agave - 45 ml\nSucco di pompelmo rosa - 30 ml\nSciroppo d'agave - 15 ml\nSoda al pompelmo - a colmare";
-      } else if (guessedBase === 'analcolico') {
-        ingredientsText = "Martini Vibrante Analcolico - 50 ml\nSucco di pompelmo fresco - 30 ml\nSciroppo di rosmarino - 15 ml\nTonica mediterranea - a colmare";
-      } else {
-        ingredientsText = "Campari - 30 ml\nVermouth Rosso Storico - 30 ml\nGin all'arancia amara - 30 ml\nBitter aromatizzato - 2 dash";
-      }
-
-      // Popola il modulo di modifica/creazione ricetta
-      document.getElementById('editingId').value = '';
-      document.getElementById('nameInput').value = cocktailName;
-      document.getElementById('glassInput').value = glass;
-      document.getElementById('baseInput').value = guessedBase;
-      document.getElementById('categoryInput').value = category;
-      document.getElementById('descInput').value = `Creazione ideata dal Lab AI: ${concept}. Profilo aromatico equilibrato con spiccata identità Gradisca.`;
-      document.getElementById('ingredientsInput').value = ingredientsText;
-      document.getElementById('prepInput').value = "Versa gli ingredienti principali nel mixing glass con abbondante ghiaccio secco, mescola con cura per raggiungere perfetta temperatura e diluizione. Filtra nel bicchiere di servizio.";
-      document.getElementById('garnishInput').value = "Rametto di rosmarino fiammeggiato o twist d'agrume";
-      document.getElementById('tasteInput').value = "Aromatico, bilanciato, avvolgente";
-
-      document.getElementById('formTitle').innerText = 'Nuova Ricetta (Composta dall\'AI)';
-      document.getElementById('formPanel').style.display = 'block';
-
-      if (loading) loading.style.display = 'none';
-      if (btn) btn.disabled = false;
-
-      // Chiudi il pannello generatore e scorri al modulo compilato
-      toggleAiGenerator();
-      document.getElementById('formPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      showToast('✨ Scheda tecnica compilata! Verificala e clicca Salva Scheda.', '🧪');
-    }, 600);
   }
 
   function escapeHtml(t) {
@@ -2283,7 +1239,7 @@
     return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
-  // Start
+  // Avvio iniziale
   renderCocktails();
 </script>
 </body>
