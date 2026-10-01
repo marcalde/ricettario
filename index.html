@@ -1113,14 +1113,14 @@
 
     const bases = [
       { id: 'chip-base-all', key: '', label: 'Tutte le basi' },
-      { id: 'chip-base-analcolico', key: 'analcolico', label: 'Analcolico' }
+      { id: 'chip-base-analcolico', key: 'analcolico', label: 'Analcolico' },
       { id: 'chip-base-campari', key: 'campari', label: 'Campari / Bitter' },
       { id: 'chip-base-gin', key: 'gin', label: 'Gin' },
       { id: 'chip-base-rum', key: 'rum', label: 'Rum' },
       { id: 'chip-base-tequila', key: 'tequila', label: 'Tequila' },
       { id: 'chip-base-vermut', key: 'vermut', label: 'Vermut' },
       { id: 'chip-base-vodka', key: 'vodka', label: 'Vodka' },
-      { id: 'chip-base-whiskey', key: 'whiskey', label: 'Whiskey' },
+      { id: 'chip-base-whiskey', key: 'whiskey', label: 'Whiskey' }
     ];
     bases.forEach(b => {
       const count = cocktails.filter(item => matchesItem(item, {
@@ -1153,12 +1153,12 @@
       { id: 'chip-cat-all', key: '', label: 'Tutte le categorie' },
       { id: 'chip-cat-nostri', key: 'nostri', label: '⭐ I Nostri' },
       { id: 'chip-cat-aperitivo', key: 'aperitivo', label: 'Aperitivo' },
-      { id: 'chip-cat-caffeina', key: 'caffeina', label: '☕ Caffeina' }
+      { id: 'chip-cat-caffeina', key: 'caffeina', label: '☕ Caffeina' },
       { id: 'chip-cat-classici', key: 'classici', label: 'Classici' },
       { id: 'chip-cat-mojito', key: 'mojito', label: '🌿 Mojito' },
       { id: 'chip-cat-negroni', key: 'negroni', label: '🍸 Negroni' },
       { id: 'chip-cat-sour', key: 'sour', label: '🍋 Sour' },
-      { id: 'chip-cat-spritz', key: 'spritz', label: '🥂 Spritz' },
+      { id: 'chip-cat-spritz', key: 'spritz', label: '🥂 Spritz' }
     ];
     cats.forEach(c => {
       const count = cocktails.filter(item => matchesItem(item, {
