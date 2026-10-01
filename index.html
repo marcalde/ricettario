@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Gradisca — Ricette</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=Space+Mono:wght@400;700&display=swap');
@@ -24,9 +24,10 @@
     font-family:'Inter', -apple-system, sans-serif;
     font-size: 16px;
     line-height: 1.5;
-    padding: 60px 20px 100px;
+    padding: 40px 16px 80px;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .menu{
@@ -36,41 +37,41 @@
 
   header{
     text-align:center;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
   }
 
   .eyebrow{
     font-family: 'Playfair Display', serif;
     letter-spacing: 0.04em;
-    font-size: 26px;
+    font-size: clamp(20px, 4vw, 26px);
     font-weight: 700;
     color: var(--accent);
     text-transform: none;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
 
   h1{
     font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 98px;
+    font-size: clamp(46px, 12vw, 98px);
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     color: #000000;
-    line-height: 1.05;
+    line-height: 1.02;
   }
 
   .subtitle{
     font-style: italic;
     font-weight: 500;
     color: #2c3e5c;
-    margin-top: 10px;
-    font-size: 17px;
+    margin-top: 8px;
+    font-size: clamp(14px, 3.5vw, 17px);
   }
 
   .divider{
-    width: 80px;
+    width: 60px;
     height: 2px;
     background: var(--accent);
-    margin: 26px auto 0;
+    margin: 18px auto 0;
   }
 
   /* --- STRUMENTI GESTIONALI --- */
@@ -79,7 +80,7 @@
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
 
   .btn {
@@ -87,7 +88,8 @@
     font-size: 11px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    padding: 8px 16px;
+    padding: 9px 14px;
+    min-height: 38px;
     border: 1px solid var(--line);
     background: var(--panel);
     color: var(--ink);
@@ -96,7 +98,9 @@
     transition: all 0.15s ease;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
+    border-radius: 4px;
   }
 
   .btn:hover {
@@ -138,7 +142,7 @@
     color: #ffffff;
   }
 
-  /* --- PROTEZIONE ADMIN (VISIBILE SOLO IN ADMIN-MODE) --- */
+  /* --- PROTEZIONE ADMIN --- */
   .admin-only {
     display: none !important;
   }
@@ -156,36 +160,37 @@
     background: var(--panel);
     border: 1px solid var(--line);
     box-shadow: 0 2px 10px rgba(10,31,68,0.08);
-    padding: 34px 38px;
-    margin-bottom: 40px;
+    padding: clamp(20px, 4vw, 34px);
+    margin-bottom: 30px;
     position: relative;
+    border-radius: 4px;
   }
 
   .form-panel::before {
     content: "";
     position: absolute;
-    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
     border: 1px solid rgba(0,41,110,0.15);
     pointer-events: none;
   }
 
   .form-title {
-    font-size: 26px;
+    font-size: clamp(20px, 4vw, 26px);
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .form-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 12px;
+    margin-bottom: 12px;
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
   }
 
   .form-group.full-width {
@@ -195,7 +200,7 @@
   .form-group label {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--gold);
     font-weight: 700;
@@ -203,19 +208,20 @@
 
   .form-group input, .form-group textarea, .form-group select {
     font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 15.5px;
+    font-size: 15px;
     border: 1px solid var(--line);
     background: var(--paper);
     color: var(--ink);
-    padding: 10px 14px;
+    padding: 10px 12px;
     outline: none;
+    border-radius: 3px;
   }
 
   .form-group textarea {
     font-family: 'Space Mono', monospace;
-    font-size: 13.5px;
+    font-size: 13px;
     resize: vertical;
-    min-height: 80px;
+    min-height: 75px;
   }
 
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
@@ -224,8 +230,9 @@
 
   .form-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    margin-top: 24px;
+    margin-top: 18px;
     position: relative;
     z-index: 10;
   }
@@ -234,18 +241,19 @@
   .card{
     background: var(--panel);
     border: 1px solid var(--line);
-    box-shadow: 0 2px 10px rgba(10,31,68,0.08);
-    padding: 34px 38px;
-    margin-bottom: 26px;
+    box-shadow: 0 2px 8px rgba(10,31,68,0.06);
+    padding: clamp(20px, 4vw, 34px);
+    margin-bottom: 20px;
     position: relative;
-    scroll-margin-top: 20px;
+    scroll-margin-top: 16px;
     transition: border-color 0.3s ease;
+    border-radius: 4px;
   }
 
   .card::before{
     content: "";
     position: absolute;
-    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
     border: 1px solid rgba(0,41,110,0.15);
     pointer-events:none;
   }
@@ -254,95 +262,107 @@
     display:flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 20px;
+    gap: 12px;
     border-bottom: 1px dashed var(--line);
-    padding-bottom: 14px;
-    margin-bottom: 18px;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   .card-name{
-    font-size: 28px;
+    font-size: clamp(21px, 4.5vw, 28px);
     font-weight: 700;
+    line-height: 1.15;
   }
 
   .card-glass{
     font-family:'Space Mono', monospace;
     font-size: 11px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--accent2);
     white-space: nowrap;
+    font-weight: 600;
   }
 
   .desc{
     font-style: italic;
     color: #33456b;
-    font-size: 16px;
-    line-height: 1.55;
-    margin-bottom: 20px;
+    font-size: clamp(14px, 3.5vw, 16px);
+    line-height: 1.5;
+    margin-bottom: 16px;
   }
 
   .ingredients{
     list-style: none;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .ingredients li{
     font-family:'Space Mono', monospace;
-    font-size: 14.5px;
+    font-size: clamp(12.5px, 3.2vw, 14px);
     display:flex;
     justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
     padding: 5px 0;
     border-bottom: 1px dotted #c7ccd6;
   }
 
   .ingredients li:last-child{ border-bottom:none; }
 
+  .ingredients li span:first-child {
+    flex: 1;
+  }
+
   .ingredients .amt{
     color: var(--accent);
     font-weight: 700;
+    white-space: nowrap;
+    text-align: right;
   }
 
   .method{
-    font-size: 14.5px;
+    font-size: clamp(13px, 3.3vw, 14.5px);
     color: #2c3e5c;
-    line-height: 1.6;
-    margin-top: 14px;
+    line-height: 1.55;
+    margin-top: 12px;
   }
 
   .method .label{
     font-family:'Space Mono', monospace;
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: 10.5px;
     letter-spacing: 0.1em;
     color: var(--gold);
     display:block;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
+    font-weight: 700;
   }
 
   .garnish{
-    margin-top: 10px;
-    font-size: 14px;
+    margin-top: 8px;
+    font-size: clamp(12.5px, 3.2vw, 14px);
     color: #4a5875;
   }
 
   .garnish .label{
     font-family:'Space Mono', monospace;
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: 10.5px;
     letter-spacing: 0.1em;
     color: var(--gold);
     display: inline-block;
     margin-bottom: 0;
     margin-right: 4px;
+    font-weight: 700;
   }
 
   .card-tags{
     display:flex;
     flex-wrap:wrap;
-    gap: 6px;
-    margin-top: 16px;
-    padding-top: 14px;
+    gap: 5px;
+    margin-top: 14px;
+    padding-top: 12px;
     border-top: 1px solid var(--line);
     position: relative;
     z-index: 10;
@@ -350,10 +370,10 @@
 
   .card-tag{
     font-family:'Space Mono', monospace;
-    font-size: 10px;
+    font-size: 9.5px;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    padding: 4px 10px;
+    padding: 3px 8px;
     border: 1px solid var(--line);
     border-radius: 20px;
     background: var(--paper);
@@ -367,9 +387,9 @@
   .card-actions-edit {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 24px;
-    padding-top: 14px;
+    gap: 8px;
+    margin-top: 18px;
+    padding-top: 12px;
     border-top: 1px dashed var(--line);
     position: relative;
     z-index: 10;
@@ -380,12 +400,13 @@
     font-size: 10px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    padding: 5px 12px;
+    padding: 6px 12px;
     border: 1px solid var(--line);
     background: var(--paper);
     color: #55503f;
     cursor: pointer;
     transition: all 0.15s ease;
+    border-radius: 3px;
   }
 
   .btn-action:hover {
@@ -396,7 +417,7 @@
   /* --- RICERCA E FILTRI --- */
   .search-wrap{
     max-width: 760px;
-    margin: 0 auto 40px;
+    margin: 0 auto 30px;
   }
 
   .search-box{
@@ -404,8 +425,9 @@
     align-items:center;
     background: var(--panel);
     border: 1.5px solid var(--line);
-    padding: 14px 20px;
-    gap: 12px;
+    padding: 12px 16px;
+    gap: 10px;
+    border-radius: 4px;
   }
 
   .search-box svg{
@@ -422,6 +444,7 @@
     font-size: 14px;
     color: var(--ink);
     letter-spacing: 0.02em;
+    width: 100%;
   }
 
   .search-box input::placeholder{
@@ -434,29 +457,38 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--accent2);
-    margin-top: 20px;
-    margin-bottom: 8px;
+    margin-top: 14px;
+    margin-bottom: 6px;
     font-weight: 700;
   }
 
   .filter-row{
     display:flex;
-    flex-wrap:wrap;
-    gap: 8px;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+  .filter-row::-webkit-scrollbar {
+    display: none;
   }
 
   .filter-chip{
+    flex-shrink: 0;
+    white-space: nowrap;
     font-family:'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.05em;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    padding: 7px 14px;
+    padding: 7px 12px;
     border: 1px solid var(--line);
     background: var(--panel);
     color: #2c3e5c;
     cursor: pointer;
     user-select:none;
     transition: all 0.15s ease;
+    border-radius: 3px;
   }
 
   .filter-chip:hover{
@@ -481,13 +513,13 @@
   .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10, 31, 68, 0.6);
-    backdrop-filter: blur(3px);
+    background: rgba(10, 31, 68, 0.65);
+    backdrop-filter: blur(4px);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: 20px;
+    padding: 16px;
   }
   .modal-overlay.open {
     display: flex;
@@ -501,13 +533,14 @@
     max-height: 85vh;
     display: flex;
     flex-direction: column;
-    padding: 30px;
+    padding: clamp(20px, 4vw, 30px);
     position: relative;
+    border-radius: 4px;
   }
   .modal-box::before {
     content: "";
     position: absolute;
-    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
     border: 1px solid rgba(0,41,110,0.15);
     pointer-events: none;
   }
@@ -517,12 +550,12 @@
     align-items: center;
     border-bottom: 1px dashed var(--line);
     padding-bottom: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     position: relative;
     z-index: 1;
   }
   .modal-title {
-    font-size: 22px;
+    font-size: clamp(18px, 4vw, 22px);
     font-weight: 700;
     color: var(--ink);
   }
@@ -530,28 +563,30 @@
     background: transparent;
     border: none;
     font-family: 'Space Mono', monospace;
-    font-size: 20px;
+    font-size: 22px;
     cursor: pointer;
     color: var(--ink);
+    padding: 4px 8px;
   }
   .modal-body {
     overflow-y: auto;
     flex: 1;
     position: relative;
     z-index: 1;
-    padding-right: 6px;
+    padding-right: 4px;
   }
   .chat-messages {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   .chat-msg {
-    padding: 12px 16px;
-    font-size: 14.5px;
+    padding: 10px 14px;
+    font-size: 14px;
     line-height: 1.5;
-    max-width: 88%;
+    max-width: 90%;
+    border-radius: 4px;
   }
   .chat-msg.user {
     align-self: flex-end;
@@ -566,19 +601,28 @@
   }
   .quick-prompts {
     display: flex;
-    flex-wrap: wrap;
     gap: 6px;
-    margin-bottom: 14px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .quick-prompts::-webkit-scrollbar {
+    display: none;
   }
   .quick-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
     font-family: 'Space Mono', monospace;
     font-size: 10px;
     text-transform: uppercase;
-    padding: 4px 10px;
+    padding: 5px 9px;
     border: 1px solid var(--line);
     background: var(--paper);
     color: var(--ink);
     cursor: pointer;
+    border-radius: 3px;
   }
   .quick-btn:hover {
     border-color: var(--accent);
@@ -594,11 +638,12 @@
     flex: 1;
     font-family: 'Inter', sans-serif;
     font-size: 14px;
-    padding: 10px 14px;
+    padding: 10px 12px;
     border: 1px solid var(--line);
     background: var(--paper);
     color: var(--ink);
     outline: none;
+    border-radius: 3px;
   }
   .chat-input-row input:focus {
     border-color: var(--accent);
@@ -614,12 +659,13 @@
     cursor: pointer;
     font-size: 13.5px;
     text-decoration: underline;
+    border-radius: 3px;
   }
 
-  /* --- FOOTER E LUCCHETTO SEGRETO --- */
+  /* --- FOOTER E LUCCHETTO --- */
   footer {
     text-align: center;
-    margin-top: 60px;
+    margin-top: 50px;
     font-family: 'Space Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.15em;
@@ -633,9 +679,10 @@
 
   .secret-lock {
     cursor: pointer;
-    opacity: 0.2;
-    font-size: 12px;
+    opacity: 0.25;
+    font-size: 14px;
     user-select: none;
+    padding: 8px;
     transition: opacity 0.2s ease, transform 0.15s ease;
   }
   .secret-lock:hover {
@@ -647,7 +694,7 @@
     filter: drop-shadow(0 0 2px var(--accent));
   }
 
-  /* --- STAMPA PDF --- */
+  /* --- STAMPA PDF VETTORIALE --- */
   @page {
     size: A4 portrait;
     margin: 15mm 15mm;
@@ -664,28 +711,6 @@
     .method .label, .garnish .label { color: var(--gold) !important; }
     .divider { background: var(--accent) !important; }
   }
-
-  @media (max-width: 640px){
-    body{ padding: 32px 14px 70px; }
-    h1{ font-size: 56px; }
-    .eyebrow{ font-size: 16px; }
-    .divider{ margin-top: 20px; }
-    header{ margin-bottom: 32px; }
-    .search-wrap{ margin-bottom: 28px; }
-    .search-box{ padding: 12px 16px; }
-    .search-box input{ font-size: 16px; }
-    .filter-row{ flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; margin-left: -2px; scrollbar-width: none; }
-    .filter-row::-webkit-scrollbar{ display: none; }
-    .filter-chip{ flex-shrink: 0; white-space: nowrap; }
-    .card{ padding: 22px 18px; margin-bottom: 18px; }
-    .card::before{ top: 6px; left: 6px; right: 6px; bottom: 6px; }
-    .card-head{ flex-direction: column; align-items: flex-start; gap: 4px; }
-    .card-name{ font-size: 23px; }
-    .card-glass{ font-size: 10px; }
-    .desc{ font-size: 14.5px; }
-    .ingredients li{ font-size: 13px; flex-wrap: wrap; }
-    .method, .garnish{ font-size: 13px; }
-  }
 </style>
 </head>
 <body>
@@ -700,7 +725,7 @@
   <!-- Barra Strumenti -->
   <div class="tools-bar">
     <button type="button" class="btn btn-pdf" onclick="window.print()">📄 Stampa PDF</button>
-    <button type="button" class="btn btn-ai admin-only" onclick="openBarmanAi()">🤖 Barman AI</button>
+    <button type="button" class="btn btn-ai" onclick="openBarmanAi()">🤖 Barman AI</button>
     <button type="button" class="btn btn-ai admin-only" onclick="openLabAi()">✨ Inventa Ricetta AI</button>
     <button type="button" class="btn admin-only" onclick="openApiKeyModal()">⚙️ API Key</button>
     <button type="button" class="btn btn-primary admin-only" onclick="toggleForm()">➕ Aggiungi Ricetta</button>
@@ -825,7 +850,7 @@
 
   <div id="cocktailsContainer"></div>
 
-  <!-- Footer con icona lucchetto discreta per accedere alla modalità Admin -->
+  <!-- Footer con icona lucchetto discreta -->
   <footer>
     <span id="footerCount">Carta creata su misura</span>
     <span>—</span>
@@ -899,10 +924,7 @@
 </div>
 
 <script>
-  // SE VUOI CHE TUTTI I DISPOSITIVI ABBIANO L'AI ATTIVA SENZA DIGITARE NULLA,
-  // INCOLLA LA TUA CHIAVE DI GOOGLE AI STUDIO QUI TRA LE VIRGOLETTE:
   const DEFAULT_API_KEY = ""; 
-
   const ADMIN_PIN = "1973";
 
   const initialCocktails = [
@@ -958,7 +980,7 @@
     { id: "marypickford", name: "Mary Pickford", base: "rum", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Rum bianco, ananas, granatina e maraschino: dolce, tropicale e fruttato, dedicato alla diva del cinema muto.", ingredients: [{name:"Rum bianco", qty:"60 ml"}, {name:"Succo d'ananas", qty:"60 ml"}, {name:"Granatina", qty:"7,5 ml"}, {name:"Maraschino", qty:"7,5 ml"}], preparation: "Shakera tutti gli ingredienti con ghiaccio, filtra in coppetta cocktail fredda.", garnish: "Fetta d'ananas", taste: "Dolce, tropicale, fruttato", glass: "Coppetta Cocktail" },
     { id: "mediterraneo", name: "Mediterraneo", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Le note di timo, basilico e oliva di Gin Mare incontrano la tradizione del bitter.", ingredients: [{name:"Gin Mare", qty:"30 ml"}, {name:"Vermut Du.it", qty:"30 ml"}, {name:"Campari", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
     { id: "mezzoemezzo", name: "Mezzo e Mezzo", base: "amaro", menu_status: "menu", category: "aperitivo", desc: "Il celebre aperitivo di Bassano del Grappa con Nardini Rosso e Rabarbaro.", ingredients: [{name:"Nardini Mezzo e Mezzo", qty:"60 ml"}, {name:"Soda", qty:"60 ml"}], preparation: "Servire freddo con soda e limone.", garnish: "Limone", taste: "Amaricante, rabarbaro", glass: "Rocks Glass" },
-    { id: "milanotorino", name: "Milano-Torino (MI-TO)", base: "campari vermut", menu_status: "menu", category: "classici aperitivo", desc: "Punt e Mes e Campari in parti uguali: il classico piemontese-lombardo, diretto e amaricante, cugino robusto del Negroni senza gin.", ingredients: [{name:"Punt e Mes", qty:"50 ml"}, {name:"Campari", qty:"50 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, aromatico, robusto", glass: "Rocks Glass" },
+    { id: "milanotorino", name: "Milano-Torino (MI-TO)", base: "campari vermut", menu_status: "menu", category: "classici aperitivo", desc: "Punt e Mes e Campari in parti uguali: il classico piemontese-lombardo, diretto e amaricante, cugino robusto del Negroni senza gin.", ingredients: [{name:"Punt e Mes", qty:"50 ml"}, {name:"Campari", qty:"50 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
     { id: "mimosa", name: "Mimosa", base: "prosecco champagne", menu_status: "fuori-menu", category: "classici aperitivo", desc: "Ricetta IBA. Succo d'arancia e champagne in parti uguali: il classico da brunch, semplice e sempre elegante.", ingredients: [{name:"Succo d'arancia", qty:"75 ml"}, {name:"Champagne (o Prosecco)", qty:"75 ml"}], preparation: "Versa il succo d'arancia nel flute, completa con champagne ben freddo.", garnish: "Twist d'arancia", taste: "Fruttato, frizzante, delicato", glass: "Flute" },
     { id: "mintjulep", name: "Mint Julep", base: "whiskey bourbon", menu_status: "fuori-menu", category: "classici", desc: "Ricetta IBA. Bourbon e menta pestati con zucchero su ghiaccio tritato: il classico del Kentucky, robusto e rinfrescante.", ingredients: [{name:"Bourbon", qty:"60 ml"}, {name:"Sciroppo di zucchero", qty:"10 ml"}, {name:"Foglie di menta", qty:"6-8"}], preparation: "Pesta delicatamente la menta con lo sciroppo sul fondo del bicchiere, riempi di ghiaccio tritato, versa il bourbon e mescola.", garnish: "Rametto di menta abbondante", taste: "Mentolato, robusto, fresco", glass: "Julep Cup / Rocks Glass" },
     { id: "mintkick", name: "Mint Kick", base: "analcolico", menu_status: "menu", category: "caffeina", desc: "Analcolico. Espresso caldo shakerato con menta e zucchero: tostato, mentolato ed energico, una scossa di caffè con una nota rinfrescante.", ingredients: [{name:"Caffè espresso fresco", qty:"30 ml"}, {name:"Sciroppo o foglie di menta", qty:"15 ml"}, {name:"Zucchero", qty:"1 cucchiaino"}], preparation: "Shakera energicamente l'espresso caldo con zucchero, menta e ghiaccio abbondante. Filtra.", garnish: "Foglia di menta", taste: "Tostato, mentolato, energico", glass: "Rocks Glass" },
@@ -972,7 +994,7 @@
     { id: "moscowmule", name: "Moscow Mule", base: "vodka", menu_status: "menu", category: "classici", desc: "Ricetta IBA. Vodka, lime e ginger beer, servito nella tipica coppa di rame: piccante, agrumato e sempre dissetante.", ingredients: [{name:"Ginger beer", qty:"120 ml"}, {name:"Vodka", qty:"45 ml"}, {name:"Succo di lime", qty:"10 ml"}], preparation: "Versa vodka e ginger beer nella mule cup con ghiaccio, aggiungi il lime e mescola delicatamente.", garnish: "Fetta di lime", taste: "Piccante, agrumato, dissetante", glass: "Mule Cup / Rocks Glass" },
     { id: "moscowmuleanalcolico", name: "Moscow Mule Analcolico", base: "analcolico", menu_status: "menu", category: "classici", desc: "Analcolico. Pompelmo e lime allungati da Ginger Beer: agrumato, pungente e fresco.", ingredients: [{name:"Ginger Beer", qty:"a colmare"}, {name:"Succo di pompelmo", qty:"45 ml"}, {name:"Succo di lime", qty:"15 ml"}], preparation: "Versa succo di pompelmo e lime su ghiaccio, completa con Ginger Beer.", garnish: "Spicchio di pompelmo", taste: "Agrumato, pungente, fresco", glass: "Tazza di Rame" },
     { id: "negroni", name: "Negroni", base: "gin campari vermut", menu_status: "menu", category: "classici negroni aperitivo", desc: "Il re dell'aperitivo italiano: perfetta armonia in parti uguali tra la balsamicità del gin, il dolce erbaceo del vermut e l'amaro deciso del bitter.", ingredients: [{name:"Gin Bombay Sapphire", qty:"30 ml"}, {name:"Martini Rosso", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
-    { id: "negroniallajuri", name: "Alla Juri", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Twist su Negroni arricchito dalla profondità speziata e complessa dell'Angostura Bitters.", ingredients: [{name:"Gin Bombay Sapphire", qty:"30 ml"}, {name:"Martini Rubino", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}, {name:"Angostura", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
+    { id: "negroniallajuri", name: "Alla Juri", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Twist su Negroni arricchito dalla profondità speziata e complessa dell'Angostura Bitters.", ingredients: [{name:"Gin Bombay Sapphire", qty:"30 ml"}, {name:"Martini Rubino", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}, {name:"Angostura", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Fetta di limone", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
     { id: "negronibalsamico", name: "Balsamico", base: "vodka campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Incontro intrigante tra le note agrodolci del vermut all'aceto balsamico e il cacao.", ingredients: [{name:"Vodka B42", qty:"30 ml"}, {name:"Vermut Aceto Balsamico", qty:"30 ml"}, {name:"Bitter Martini Riserva", qty:"30 ml"}, {name:"Cacao Bitters", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
     { id: "negronidellago", name: "Del Lago", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Carattere alpino e lacustre con la linea selezionata Altolago.", ingredients: [{name:"Gin Tanqueray", qty:"30 ml"}, {name:"Vermut Altolago", qty:"30 ml"}, {name:"Bitter Altolago", qty:"30 ml"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
     { id: "negronidoc", name: "DOC", base: "gin campari vermut", menu_status: "menu", category: "negroni aperitivo", desc: "Twist strutturato con Vermouth Cocchi di Torino e Campari.", ingredients: [{name:"Gin Tanqueray", qty:"30 ml"}, {name:"Vermut Cocchi", qty:"30 ml"}, {name:"Campari", qty:"30 ml"}, {name:"Angostura", qty:"2 dash"}], preparation: "Versa gli ingredienti direttamente su ghiaccio in rocks glass, mescola bene.", garnish: "Twist d'arancia", taste: "Amaricante, robusto, aromatico", glass: "Rocks Glass" },
@@ -1257,7 +1279,7 @@
     chip.addEventListener('click', () => setCategoryFilter(chip.getAttribute('data-filter-value')));
   });
 
-  // --- GESTIONE ADMIN (LUCCHETTO DISCRETO) ---
+  // --- GESTIONE ADMIN PIN ---
   function toggleAdminMode() {
     if (document.body.classList.contains('admin-mode')) {
       document.body.classList.remove('admin-mode');
@@ -1503,7 +1525,10 @@
   }
 
   function openLabAi() {
-    if (!document.body.classList.contains('admin-mode')) return;
+    if (!document.body.classList.contains('admin-mode')) {
+      alert("La creazione di ricette con l'AI è riservata agli amministratori.");
+      return;
+    }
     openModal('labAiModal');
     document.getElementById('labPromptInput').focus();
   }
